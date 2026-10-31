@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    container_name: congress_fund_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: congress_fund
+      POSTGRES_PASSWORD: dev_password_change_me
+      POSTGRES_DB: congress_fund
+    ports:
+      - "5432:5432"
+    volumes:
+      - congress_fund_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  congress_fund_data:
