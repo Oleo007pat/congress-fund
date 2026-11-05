@@ -34,9 +34,19 @@ PAUSE_SECONDS = 0.3
 
 TRADE_FIELDS = [
     "member", "state_dst", "filing_id", "year", "owner", "sub_holding", "ticker", "asset",
-    "asset_type", "side", "partial", "amount_low", "amount_high", "transaction_date", "disclosure_date",
-    "description",
+    "asset_type", "side", "partial", "amount_low", "amount_high",
+    "transaction_date", "notification_date", "filing_date",
+    "short_related", "description",
 ]
+
+
+def index_date(value: str) -> str | None:
+    """Indeksets FilingDate står som M/D/YYYY, fx '1/2/2024'."""
+    try:
+        m, d, y = (int(x) for x in value.strip().split("/"))
+        return f"{y:04d}-{m:02d}-{d:02d}"
+    except (ValueError, AttributeError):
+        return None
 
 
 def get_text(session: requests.Session, year: int, doc_id: str) -> str:
@@ -51,6 +61,10 @@ def get_text(session: requests.Session, year: int, doc_id: str) -> str:
     path.write_text(text, encoding="utf-8")
     time.sleep(PAUSE_SECONDS)
     return text
+
+
+def member_name(f: dict) -> str:
+    return f"{f['first']} {f['last']}".strip()
 
 
 def parse_years(arg: str) -> list[int]:
@@ -84,17 +98,21 @@ def main() -> None:
                     text = get_text(session, year, f["doc_id"])
                     result = parse_ptr_text(text)
                 except Exception as exc:  # én dårlig fil må ikke stoppe resten
-                    failures.append({"year": year, "doc_id": f["doc_id"], "reason": f"fejl: {exc}"})
+                    failures.append({"year": year, "doc_id": f["doc_id"], "member": member_name(f),
+                                     "reason": f"fejl: {exc}"})
                     continue
 
                 if result["warnings"]:
-                    failures.append({"year": year, "doc_id": f["doc_id"], "reason": "; ".join(result["warnings"])})
+                    failures.append({"year": year, "doc_id": f["doc_id"], "member": member_name(f),
+                                     "reason": "; ".join(result["warnings"])})
                 n_ok += 1
                 for t in result["trades"]:
                     if t["is_stock"]:
-                        # Navn og stat fra indekset er mest pålidelige, hvis de findes
-                        t["member"] = f"{f['first']} {f['last']}".strip() or t["member"]
+                        # Navn, stat, ID og indleveringsdato fra indekset er mest pålidelige
+                        t["member"] = member_name(f) or t["member"]
                         t["state_dst"] = f["state_dst"] or t["state_dst"]
+                        t["filing_id"] = f["doc_id"]
+                        t["filing_date"] = index_date(f["filing_date"]) or t["filing_date"]
                         t["year"] = year
                         writer.writerow(t)
                         n_trades += 1
@@ -103,7 +121,7 @@ def main() -> None:
                     print(f"  {i}/{len(filings)} ... {n_trades} aktiehandler indtil nu")
 
     with FAILURES_CSV.open("w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=["year", "doc_id", "reason"])
+        w = csv.DictWriter(fh, fieldnames=["year", "doc_id", "member", "reason"])
         w.writeheader()
         w.writerows(failures)
 
