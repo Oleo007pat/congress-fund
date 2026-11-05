@@ -2,3 +2,6 @@
 .env
 __pycache__/
 *.pyc
+house_cache/
+house_sample/
+*.csv
