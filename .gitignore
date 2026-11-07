@@ -2,6 +2,14 @@
 .env
 __pycache__/
 *.pyc
-house_cache/
-house_sample/
+
+# Data der kan hentes/genskabes (store filer)
+data/house_cache/
+data/house_sample/
+data/prices_cache/
 *.csv
+
+# Referencedata bygget til projektet - skal med i Git
+!data/committee_assignments.csv
+!data/member_ids.csv
+!data/ticker_sectors.csv

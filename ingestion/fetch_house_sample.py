@@ -5,7 +5,7 @@ TRIN 1 af den gratis historiske datakilde: hent et lille udsnit af Repræsentant
 Hus' officielle indberetninger (Periodic Transaction Reports) og vis den rå tekst,
 så vi kan bygge en parser efter det, filerne faktisk indeholder.
 
-Kør:  python3 fetch_house_sample.py 2024 3
+Kør:  python3 ingestion/fetch_house_sample.py 2024 3
       (år, antal PDF'er der hentes som prøve)
 
 Kræver:  pip3 install requests pypdf
@@ -22,7 +22,7 @@ from pathlib import Path
 import requests
 
 BASE = "https://disclosures-clerk.house.gov/public_disc"
-OUT_DIR = Path("house_sample")
+OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "house_sample"
 
 
 def fetch_index(year: int) -> list[dict]:

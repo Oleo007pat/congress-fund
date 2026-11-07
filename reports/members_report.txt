@@ -1,0 +1,81 @@
+BACKTEST: FØLG DE BEDSTE MEDLEMMER + UDVALGSRELEVANS
+==============================================================================
+Mål: overnormalt afkast over 63 handelsdage (aktie minus SPY, efter omkostninger).
+Top-medlemmer vælges hver måned ud fra signaler med kendt udfald (ingen fremadskuen).
+Kalibrering: indleveret 2022-01-01 til 2025-11-01. Ren test: fra 2025-11-01.
+'t (mdr.)' er t-værdien på månedsgennemsnit og er den mest ærlige. Kræv klart over 2.
+
+1. SAMMENLIGNINGSGRUNDLAG: ALLE KØBSSIGNALER
+                                                antal      gns.  positive       t  t (mdr.)
+  kalibrering                                    5648    -0.49%     44.8%   -2.06     -1.09
+  ren test                                       1450     0.08%     43.7%    0.13     -0.03
+
+2. FØLG TOP-MEDLEMMER (rangeret på historisk overnormalt afkast)
+                                                antal      gns.  positive       t  t (mdr.)
+  top 5, historik 12 mdr. - kalibrering           732     0.02%     45.1%    0.02     -0.61
+  top 5, historik 12 mdr. - ren test              145     1.43%     49.0%    0.63      0.52
+  top 5, historik 24 mdr. - kalibrering           422     0.24%     47.6%    0.32     -1.93
+  top 5, historik 24 mdr. - ren test              102     2.50%     51.0%    0.87      1.21
+  top 10, historik 12 mdr. - kalibrering         1124    -1.01%     43.5%   -2.00     -1.03
+  top 10, historik 12 mdr. - ren test             339     0.97%     46.0%    0.71      1.08
+  top 10, historik 24 mdr. - kalibrering          973    -1.64%     41.8%   -3.07     -2.32
+  top 10, historik 24 mdr. - ren test             171     1.13%     52.0%    0.61      0.47
+  top 20, historik 12 mdr. - kalibrering         1215    -0.93%     43.9%   -1.96     -1.07
+  top 20, historik 12 mdr. - ren test             342     1.01%     46.2%    0.75      1.12
+  top 20, historik 24 mdr. - kalibrering         1410    -0.95%     44.4%   -2.22     -1.20
+  top 20, historik 24 mdr. - ren test             306     0.54%     46.7%    0.38      0.49
+  Alle 6 varianter vises, så man kan se, om resultatet er robust eller hænger på ét valg.
+
+3. UDVALGSRELEVANS (alle medlemmer, kun aktier med kendt sektor)
+                                                antal      gns.  positive       t  t (mdr.)
+  aktie i udvalgets branche - kalibrering         271    -1.76%     30.6%   -0.93      0.23
+  aktie i udvalgets branche - ren test            141    -5.73%     29.8%   -4.82     -4.68
+    heraf formand/ledende mindretalsmedlem - kalibrering     15    -4.83%     26.7%   -2.10     -0.82
+    heraf formand/ledende mindretalsmedlem - ren test      0         -         -       -         -
+  aktie uden for udvalgets brancher - kalibrering   4958    -0.51%     45.2%   -2.15     -1.23
+  aktie uden for udvalgets brancher - ren test   1280     0.66%     45.2%    0.94      0.45
+
+   Fordeling af relevante signaler på udvalg:
+     Financial Services                          293    -2.57%     29.7%   -1.47      0.09
+     Energy and Commerce                          39    -7.04%     30.8%   -2.51     -2.24
+     Transportation and Infrastructure            30     0.29%     46.7%    0.10      0.78
+     Natural Resources                            20    -2.41%     25.0%   -0.95      0.46
+     Science, Space, and Technology               14    -6.85%      7.1%   -9.20     -3.62
+     Agriculture                                   9   -12.26%     22.2%   -2.23     -1.96
+     Homeland Security                             5    -0.44%     40.0%   -0.06      0.15
+     Armed Services                                2     5.38%    100.0%   10.41      0.00
+     Ways and Means                                1         -         -       -         -
+
+4. KOMBINATION: TOP-MEDLEMMER OG KUN AKTIER I DERES UDVALGS BRANCHER
+                                                antal      gns.  positive       t  t (mdr.)
+  top 5, 12 mdr. + udvalg - kalibrering            17    -6.12%     23.5%   -2.17     -1.61
+  top 5, 12 mdr. + udvalg - ren test                9    -1.13%     33.3%   -0.20      0.67
+  top 5, 24 mdr. + udvalg - kalibrering             8    -9.36%     12.5%   -2.48     -2.22
+  top 5, 24 mdr. + udvalg - ren test                7     1.59%     42.9%    0.24      1.26
+  top 10, 12 mdr. + udvalg - kalibrering           36    -6.42%     30.6%   -2.86     -2.04
+  top 10, 12 mdr. + udvalg - ren test              38    -8.63%     15.8%   -4.29     -0.41
+  top 10, 24 mdr. + udvalg - kalibrering           48    -3.27%     31.2%   -1.57     -1.32
+  top 10, 24 mdr. + udvalg - ren test              11    -4.98%     27.3%   -0.94     -0.33
+  top 20, 12 mdr. + udvalg - kalibrering           37    -5.92%     32.4%   -2.64     -1.61
+  top 20, 12 mdr. + udvalg - ren test              38    -8.63%     15.8%   -4.29     -0.41
+  top 20, 24 mdr. + udvalg - kalibrering           62    -3.09%     33.9%   -1.79     -1.65
+  top 20, 24 mdr. + udvalg - ren test              38    -8.29%     15.8%   -4.17     -0.65
+
+5. TOP 10 MEDLEMMER VED 2026-11-01 (historik 24 mdr.) - kandidater til at blive fulgt
+   Cleo Fields                      score   7.52%   afsluttede signaler: 148
+   Tim Moore                        score   7.15%   afsluttede signaler: 110
+   Ed Case                          score   4.06%   afsluttede signaler: 9
+   Jared Moskowitz                  score   3.52%   afsluttede signaler: 93
+   Maria Elvira Salazar             score   2.31%   afsluttede signaler: 35
+   Byron Donalds                    score   1.87%   afsluttede signaler: 41
+   Rick Larsen                      score   1.83%   afsluttede signaler: 13
+   Virginia Foxx                    score   1.83%   afsluttede signaler: 26
+   Julie Johnson                    score   1.75%   afsluttede signaler: 76
+   Marjorie Taylor Greene           score   1.48%   afsluttede signaler: 240
+
+FORBEHOLD
+  - Medlemmer, der kun indleverer på papir (fx Khanna, McCaul), er ikke med.
+  - Koblingen mellem udvalg og brancher er en vurdering (se COMMITTEE_SCOPE i scriptet).
+  - Sektor findes kun for aktier, der er børsnoteret i dag. Afnoterede aktier mangler.
+  - Seks varianter er testet. Ved så mange forsøg kan én se god ud ved tilfældighed,
+    så kig efter et mønster, der går igen på tværs af varianterne og i den rene test.

@@ -5,8 +5,8 @@ Henter mange PTR-indberetninger fra Repræsentanternes Hus og samler alle aktieh
 i én CSV-fil, klar til backtest.
 
 Kør (fra projektmappen):
-    python3 build_house_trades.py 2024 50        # prøvekørsel: 50 indberetninger fra 2024
-    python3 build_house_trades.py 2021-2026      # alt fra 2021 til 2026 (tager lang tid)
+    python3 ingestion/build_house_trades.py 2024 50        # prøvekørsel: 50 indberetninger fra 2024
+    python3 ingestion/build_house_trades.py 2021-2026      # alt fra 2021 til 2026 (tager lang tid)
 
 Rart at vide:
   - PDF-teksten gemmes i house_cache/, så en afbrudt kørsel kan genoptages uden at hente igen.
@@ -27,9 +27,12 @@ import requests
 from fetch_house_sample import fetch_index, pdf_to_text, pdf_url
 from house_ptr_parser import parse_ptr_text
 
-CACHE_DIR = Path("house_cache")
-TRADES_CSV = Path("house_trades.csv")
-FAILURES_CSV = Path("house_failures.csv")
+ROOT = Path(__file__).resolve().parent.parent   # projektmappen
+DATA = ROOT / "data"
+REPORTS = ROOT / "reports"
+CACHE_DIR = DATA / "house_cache"
+TRADES_CSV = DATA / "house_trades.csv"
+FAILURES_CSV = DATA / "house_failures.csv"
 PAUSE_SECONDS = 0.3
 
 TRADE_FIELDS = [
