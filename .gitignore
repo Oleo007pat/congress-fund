@@ -13,3 +13,6 @@ data/prices_cache/
 !data/committee_assignments.csv
 !data/member_ids.csv
 !data/ticker_sectors.csv
+
+# Rå data fra House Clerk (hentes med ingestion/collect_house_raw.py)
+data/raw/
