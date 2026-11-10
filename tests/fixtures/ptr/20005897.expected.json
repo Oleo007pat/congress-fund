@@ -1,0 +1,39 @@
+{
+ "doc_id": "20005897",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Lou Barletta",
+ "state_dst": "PA11",
+ "signed_date": "2016-09-16",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 2,
+ "trades": [
+  {
+   "owner": "self",
+   "asset": "LB, LLC- Edgewood in the Pines Golf Course",
+   "ticker": "",
+   "type": "sell",
+   "transaction_date": "2016-07-01",
+   "notification_date": "2016-07-01",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "",
+   "description": "Sold share of ownership",
+   "include_v1": false
+  },
+  {
+   "owner": "joint",
+   "asset": "SPDR Dow Jones Industrial Average ETF (DIA)",
+   "ticker": "DIA",
+   "type": "sell",
+   "transaction_date": "2016-08-30",
+   "notification_date": "2016-08-30",
+   "amount_low": 15001,
+   "amount_high": 50000,
+   "sub_holding": "LPL 3847-6317",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

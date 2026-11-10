@@ -1,0 +1,142 @@
+P
+erioDic  t ranSaction  r ePort Clerk of the House of Re
+presentatives • Legislative Resource Center • 135 Cannon Building • Washington, dC 20515f
+iler  i nformation name:
+Hon. Lou Barletta Status:
+Member State/District:
+PA11 t
+ranSactionS iD
+owner asset transaction type
+Date
+notification Date
+amount
+SP
+Alerian MLP ETF (AMLP) S 12/9/2015 12/9/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 5494 Berkshire Hathaw
+ay Inc. New (BRK.B)P 09/22/2015 09/22/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 SP
+First Trust NASdAQ Technology dividend Index Fund (TdIV)
+P
+01/27/2015 01/27/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 5494 First Trust NASdAQ Technology
+dividend Index Fund (TdIV)
+P
+01/27/2015 01/27/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 JT
+First Trust NASdAQ Technology dividend Index Fund (TdIV)
+P
+01/27/2015 01/27/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 9039 iShares global Telecom ETF (IXP)
+S 06/30/2015 06/30/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 JT
+iShares Morningstar Mult i-Asset IncomeETF (IYLd)
+P
+03/30/2015 03/30/2015 $15,001 - $50,000 Filing Id #20004906
+
+F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 JT
+iShares Morningstar Mult i-Asset IncomeETF (IYLd)
+S
+10/29/2015 10/29/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 LMP Capital and Income Fund Inc.
+(SCd)
+S
+08/5/2015 08/5/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 SP
+LMP Capital and Income Fund Inc. (SCd)
+S
+08/5/2015 08/5/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 5494 JT
+Oppenheimer Large C ap Revenue ETF(RWL)
+P
+06/3/2015 06/3/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 9039 JT
+Oppenheimer Ultra dividend Revenue ETF (RdIV)
+P
+03/30/2015 03/30/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 JT
+PowerShares Buyback Achievers (PKW) P 01/8/2015 01/8/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 PowerShares Buyback Achievers (PKW)
+P 01/8/2015 01/8/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 SPdR dow Jones Industrial 
+AverageETF (dIA)
+P
+09/1/2015 09/1/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 SP
+SPdR dow Jones Industrial AverageETF (dIA)
+P
+09/1/2015 09/1/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 5494 iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+JT
+SPdR S&P dividend ETF (SdY) S 04/23/2015 04/23/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 9039 JT
+SPdR Select Sector Fund - Health C are(XLV)
+P
+01/27/2015 01/27/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 9039 JT
+Vanguard Financials ETF - dNQ (VFH) P 12/4/2015 12/4/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 JT
+Vanguard High dividend Yield ETF - dNQ (VYM)
+P
+12/28/2015 12/28/2015 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 SP
+Vanguard High dividend Yield ETF - dNQ (VYM)
+P
+12/18/2015 12/18/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 5494 Vanguard High dividend Yield ETF -
+dNQ (VYM)
+P
+12/18/2015 12/18/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 Vanguard Mega 
+Cap growth ETF (MgK)S 08/26/2015 08/26/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial IRA 3851 JT
+Vanguard Mega Cap growth ETF (MgK)S 09/11/2015 09/11/2015 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : Ameriprise Financial 7802 a
+SSet  c laSS  D etailS Ameriprise Financi
+al 7802 (Owner: JT)L
+OCATION : US Ameriprise Financi
+al 9039 (Owner: JT)L
+OCATION : US Ameriprise Financial IRA 3851
+iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+Ameriprise Financi
+al IRA 5494 (Owner: SP)i
+nitial  P ublic  o fferingS n
+mlkj Yes n mlkji Noc
+ertification  anD  S ignature g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge a
+nd belief.Digitally Signed: 
+Hon. Lou Barletta , 04/15/2016 

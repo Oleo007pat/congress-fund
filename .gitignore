@@ -16,3 +16,4 @@ data/prices_cache/
 
 # Rå data fra House Clerk (hentes med ingestion/collect_house_raw.py)
 data/raw/
+data/interim/

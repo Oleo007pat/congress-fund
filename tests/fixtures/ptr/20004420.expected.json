@@ -1,0 +1,26 @@
+{
+ "doc_id": "20004420",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Brad Ashford",
+ "state_dst": "NE02",
+ "signed_date": "2016-01-15",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 1,
+ "trades": [
+  {
+   "owner": "joint",
+   "asset": "Mondelez International, Inc. - Class A (MDLZ)",
+   "ticker": "MDLZ",
+   "type": "sell",
+   "transaction_date": "2015-12-28",
+   "notification_date": "2015-12-28",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Brad and Ann Ashford Joint Account",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

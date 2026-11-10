@@ -1,0 +1,48 @@
+                                                                                                                            Filing ID #20006308
+                         PerioDic tranSaction rePort
+
+
+
+         Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515
+
+
+filer information
+name:               Hon. Brad Ashford
+Status:             Member
+State/District:     NE02
+
+
+tranSactionS
+
+iD        owner      asset                                        transaction       Date          notification      amount
+                                                                  type                            Date
+
+          SP         Medtronic plc. Ordinary Shares (MDT)         S                 11/28/2016    11/28/2016        $1,001 - $15,000
+
+                     FILINg STATUS: New
+                     SUBHOLDINg OF: Ann Ashford Stock Account
+                     DESCRIPTION: Sold 100 shares of Medtronic at $74.445 per share for a total of $7,434.34.
+
+          SP         Pfizer, Inc. (PFE)                           S                 11/28/2016    11/28/2016        $1,001 - $15,000
+
+                     FILINg STATUS: New
+                     SUBHOLDINg OF: Ann Ashford Stock Account
+                     DESCRIPTION: Sold 100 shares of Pfizer at $31.58 per share for a total of $3147.94.
+
+
+aSSet claSS DetailS
+
+     Ann Ashford Stock Account (Owner: SP)
+     LOCATION: Omaha/ Douglas, NE, US
+
+
+initial Public offeringS
+
+ nmlkj Yes nmlkji No
+
+certification anD Signature
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Brad Ashford , 12/5/2016

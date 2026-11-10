@@ -1,0 +1,46 @@
+{
+ "fixture": "2026_20033804",
+ "source": "data/legacy_text/house_cache/2026/20033804.txt",
+ "special_case": "ejerkode DC (dependent child) og transaktionstype E (exchange)",
+ "template": "new_2022",
+ "member": "August Lee Pfluger II",
+ "state_dst": "TX11",
+ "signed_date": "2026-01-20",
+ "checked": "Forventede handler er skrevet ned ved at læse tekstfilen (PDF'en findes ikke for 2021-2026). Ikke kopieret fra parserens output.",
+ "trades": [
+  {
+   "owner": "dependent child",
+   "asset": "Liberty Media Corporation - Series C Liberty Formula One Common Stock (FWONK)",
+   "ticker": "FWONK",
+   "asset_type": "ST",
+   "side": "exchange",
+   "partial": false,
+   "transaction_date": "2025-12-16",
+   "notification_date": "2026-01-13",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "CP Roth IRA",
+   "description": "Shares surrendered thru merger",
+   "option_like": false,
+   "short_related": false,
+   "include_v1": true
+  },
+  {
+   "owner": "dependent child",
+   "asset": "Liberty Media Corporation - Series C Liberty Live Common Stock (LLYVK)",
+   "ticker": "LLYVK",
+   "asset_type": "ST",
+   "side": "exchange",
+   "partial": false,
+   "transaction_date": "2025-12-16",
+   "notification_date": "2026-01-13",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "CP Roth IRA",
+   "description": "Shares received thru merger",
+   "option_like": false,
+   "short_related": false,
+   "include_v1": true
+  }
+ ]
+}

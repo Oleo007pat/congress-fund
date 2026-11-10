@@ -1,0 +1,29 @@
+{
+ "fixture": "2025_20030458",
+ "source": "data/legacy_text/house_cache/2025/20030458.txt",
+ "special_case": "NUL-tegn; delvist salg; beskrivelsen siger put-kontrakter -> option_like",
+ "template": "new_2022",
+ "member": "Laurel Lee",
+ "state_dst": "FL15",
+ "signed_date": "2025-06-22",
+ "checked": "Forventede handler er skrevet ned ved at læse tekstfilen (PDF'en findes ikke for 2021-2026). Ikke kopieret fra parserens output.",
+ "trades": [
+  {
+   "owner": "spouse",
+   "asset": "Novo Nordisk A/S Common Stock (NVO)",
+   "ticker": "NVO",
+   "asset_type": "ST",
+   "side": "sell",
+   "partial": true,
+   "transaction_date": "2025-05-08",
+   "notification_date": "2025-06-04",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "",
+   "description": "Five put contracts in Novo Nordisk (NVO) expiring June 20, 2025 at the $65 strike for $4 per share.",
+   "option_like": true,
+   "short_related": false,
+   "include_v1": false
+  }
+ ]
+}

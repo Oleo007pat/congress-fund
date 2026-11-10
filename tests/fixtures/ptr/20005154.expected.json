@@ -1,0 +1,39 @@
+{
+ "doc_id": "20005154",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Brian Babin",
+ "state_dst": "TX36",
+ "signed_date": "2016-05-13",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 2,
+ "trades": [
+  {
+   "owner": "self",
+   "asset": "Orbital ATK, Inc. (OA)",
+   "ticker": "OA",
+   "type": "buy",
+   "transaction_date": "2016-04-08",
+   "notification_date": "2016-04-22",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "",
+   "description": "",
+   "include_v1": true
+  },
+  {
+   "owner": "self",
+   "asset": "Orbital ATK, Inc. (OA)",
+   "ticker": "OA",
+   "type": "sell",
+   "transaction_date": "2016-04-19",
+   "notification_date": "2016-04-22",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

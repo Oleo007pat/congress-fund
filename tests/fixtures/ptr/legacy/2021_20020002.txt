@@ -1,0 +1,73 @@
+P
+erIODIC  T rANSACTION  r ePOrT Clerk of the House of Re
+presentatives • legislative Resource Center • 135 Cannon Building • Washington, dC 20515f
+Iler  I NfOrmATION Name:
+Hon. James E Hon Banks Status:
+Member State/District:
+IN03 T
+rANSACTIONS ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?
+JT
+Peloton Interactive, Inc. (PTON) [ST]
+P
+11/12/2021 11/18/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New Peloton Interactive, Inc. (PTON)
+[ST]
+P
+11/12/2021 11/16/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New S
+uBHOldINg  O F : Schwab IRA Peloton Interactive, Inc. (PTON)
+[ST]
+P
+11/15/2021 11/17/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New S
+uBHOldINg  O F : Schwab IRA JT
+Roblox Corporation Class A (RBlX)
+ [ST] S
+11/09/2021 11/12/2021 $1,001 - $15,000 g
+fedcbF
+IlINg  S TATuS : New JT
+Roblox Corporation Class A (RBlX)
+ [ST] P
+11/19/2021 11/23/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New Roblox Corporation Class A
+(RBlX)
+ [ST] P
+11/02/2021 11/04/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New S
+uBHOldINg  O F : Schwab IRA Roblox Corporation Class A
+S 11/09/2021 11/12/2021 $15,001 - g
+fedcbFiling Id #20020002
+
+(RBlX)
+ [ST] $50,000 g
+fedcbF
+IlINg  S TATuS : New S
+uBHOldINg  O F : Schwab IRA * For the complete list of asset type abbreviations, pl
+ease visit https://fd.house.gov/reference/ asset-type-codes.aspx. A
+SSeT  C lASS  D eTAIlS Schwab IRA
+I
+NITIAl  P ublIC  O fferINGS n
+mlkj Yes n mlkji NoC
+erTIfICATION  AND  S IGNATure g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge and be
+lief. Further, I CERTIFY that I have disclosed all transactions as required by the STOCK Act.Digitally Signed: 
+Hon. James E Hon Banks , 12/13/2021 ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?

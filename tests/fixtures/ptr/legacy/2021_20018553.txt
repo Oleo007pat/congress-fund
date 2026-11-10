@@ -1,0 +1,80 @@
+P
+erIODIC  T rANSACTION  r ePOrT Clerk of the House of Re
+presentatives • legislative Resource Center • 135 Cannon Building • Washington, DC 20515f
+Iler  I NfOrmATION Name:
+Hon. Tom Malinowski Status:
+Member State/District:
+NJ07 T
+rANSACTIONS ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?
+C3.ai, Inc. Class A (AI)
+ [ST] P 03/04/2021 04/01/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : covered short CareDx, Inc. (CDNA)
+ [ST] P 03/02/2021 04/01/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : covered short CM life Sciences, Inc. - unit
+(CMlFu)
+ [ST] P
+03/05/2021 04/01/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New CM life Sciences, Inc. - unit
+(CMlFu)
+ [ST] P
+03/08/2021 04/01/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New DoorDash, Inc. Class A (DASH)
+[ST]
+S
+03/02/2021 04/01/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : short sale DoorDash, Inc. Class A (DASH)
+[ST]
+S
+03/11/2021 03/11/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : short sale Filing ID #20018553
+
+Everbridge, Inc. (EVBg)
+ [ST] P 03/12/2021 04/01/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New Hologic, Inc. (HOlX)
+ [ST] S 03/12/2021 04/01/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : short sale Quidel Corporation (QDEl)
+ [ST] S 03/14/2021 03/14/2021 $1,001 - $15,000 g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : short sale Quidel Corporation (QDEl)
+ [ST] S 03/03/2021 03/03/2021 $15,001 - $50,000
+g
+fedcF
+IlINg  S TATuS : New D
+ESCRIPTION : short sale * For the complete list of asset type abbreviations, pl
+ease visit https://fd.house.gov/reference/ asset-type-codes.aspx. I
+NITIAl  P ublIC  O fferINGS n
+mlkj Yes n mlkji NoC
+erTIfICATION  AND  S IGNATure g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge and be
+lief. Further, I CERTIFY that I have disclosed all transactions as required by the STOCK Act.Digitally Signed: 
+Hon. Tom Malinowski , 04/10/2021 ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?

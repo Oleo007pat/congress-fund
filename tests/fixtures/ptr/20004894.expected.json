@@ -1,0 +1,52 @@
+{
+ "doc_id": "20004894",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 2,
+ "member": "Brad Ashford",
+ "state_dst": "NE02",
+ "signed_date": "2016-04-12",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 3,
+ "trades": [
+  {
+   "owner": "spouse",
+   "asset": "3M Company (MMM)",
+   "ticker": "MMM",
+   "type": "sell",
+   "transaction_date": "2016-03-29",
+   "notification_date": "2016-03-29",
+   "amount_low": 15001,
+   "amount_high": 50000,
+   "sub_holding": "Ann Ashford Stock Account",
+   "description": "",
+   "include_v1": true
+  },
+  {
+   "owner": "spouse",
+   "asset": "Apache Corporation (APA)",
+   "ticker": "APA",
+   "type": "sell",
+   "transaction_date": "2016-03-29",
+   "notification_date": "2016-03-29",
+   "amount_low": 15001,
+   "amount_high": 50000,
+   "sub_holding": "Ann Ashford Stock Account",
+   "description": "",
+   "include_v1": true
+  },
+  {
+   "owner": "joint",
+   "asset": "Apache Corporation (APA)",
+   "ticker": "APA",
+   "type": "sell",
+   "transaction_date": "2016-03-28",
+   "notification_date": "2016-03-28",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Eleanor and Brad Joint Account",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+                                                                                                                    Filing ID #20005183
+                       PerioDic tranSaction rePort
+
+
+
+         Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515
+
+
+filer information
+name:              Hon. Justin Amash
+Status:            Member
+State/District:    MI03
+
+
+tranSactionS
+
+iD        owner     asset                                     transaction     Date         notification     amount
+                                                              type                         Date
+
+                    CVSL Inc. (CVSL)                          S               11/10/2015   04/30/2016       $1,001 - $15,000
+
+                    FILING STATUS: New
+                    SUBHoLDING oF: Standard Bear, LLC
+
+
+aSSet claSS DetailS
+
+     Standard Bear, LLC
+     LoCATIoN: Grand Rapids, MI, US
+
+
+initial Public offeringS
+
+nmlkj Yes nmlkji No
+
+certification anD Signature
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Justin Amash , 05/16/2016

@@ -1,0 +1,49 @@
+                                                                                                                        Filing ID #20005897
+                        PerioDic tranSaction rePort
+
+
+
+         Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515
+
+
+filer information
+name:              Hon. Lou Barletta
+Status:            Member
+State/District:    PA11
+
+
+tranSactionS
+
+iD        owner     asset                                       transaction      Date          notification     amount
+                                                                type                           Date
+
+                    LB, LLC- Edgewood in the Pines golf         s                07/1/2016     07/1/2016        $1,001 - $15,000
+                    Course
+
+                    FILINg sTATUs: New
+                    DEsCRIPTIoN: sold share of ownership
+
+          JT        sPDR Dow Jones Industrial Average           s                08/30/2016    08/30/2016       $15,001 - $50,000
+                    ETF (DIA)
+
+                    FILINg sTATUs: New
+                    sUBHoLDINg oF: LPL 3847-6317
+
+
+aSSet claSS DetailS
+
+     LPL 3847-6317 (owner: JT)
+     LoCATIoN: Us
+     DEsCRIPTIoN: New Joint Account held at LPL Financial
+
+
+initial Public offeringS
+
+nmlkj Yes nmlkji No
+
+certification anD Signature
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Lou Barletta , 09/16/2016

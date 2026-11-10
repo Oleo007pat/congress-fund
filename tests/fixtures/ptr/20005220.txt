@@ -1,0 +1,128 @@
+P
+erioDic  t ranSaction  r ePort Clerk of the House of Re
+presentatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515f
+iler  i nformation name:
+Hon. Lou Barletta Status:
+Member State/District:
+PA11 t
+ranSactionS iD
+owner asset transaction type
+Date
+notification Date
+amount
+AllianceBernstein
+ Short Durationgovernment Bond
+E
+03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance AllianceBernstein
+ Short Durationgovernment Bond
+E
+03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance SP
+AllianceBernstein  Short Durationgovernment Bond
+E
+03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance SP
+AXA 2000 Managed Volatility E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance AXA 2000 Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalalance AXA 2000 Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 Filing ID #20005220
+
+F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance AXA 400 Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance AXA 400 Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance SP
+AXA 400 Managed Volatility E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance SP
+AXA 500 Managed Volatility E 03/7/2016 03/7/2016 $15,001 - $50,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance AXA 500 Managed Volatility
+E 03/7/2016 03/7/2016 $15,001 - $50,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance AXA 500 Managed Volatility
+E 03/7/2016 03/7/2016 $15,001 - $50,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance AXA International Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance AXA International Managed Volatility
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance SP
+AXA International Managed Volatility E 03/7/2016 03/7/2016 $1,001 - $15,000 iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance Core Bond Index
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance Core Bond Index
+E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052431 D
+ESCRIPTION : Annuity Auto Rebalance SP
+Core Bond Index E 03/7/2016 03/7/2016 $1,001 - $15,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance Intermediate government Bond
+E 03/7/2016 03/7/2016 $15,001 - $50,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance Intermediate government Bond
+E 03/7/2016 03/7/2016 $50,001 - $100,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone IRA 314052432 D
+ESCRIPTION : Annuity Auto Rebalance SP
+Intermediate government Bond E 03/7/2016 03/7/2016 $50,001 - $100,000 F
+ILINg  S TATuS : New S
+uBHOLDINg  O F : AXA Retirement Cornerstone 314052430 D
+ESCRIPTION : Annuity Auto Rebalance a
+SSet  c laSS  D etailS AXA Retirement Cornersto
+ne 314052430 (Owner: SP)AXA Retirement Cornersto
+ne 314052431AXA Retirement Cornersto
+ne IRA 314052432i
+nitial  P ublic  o fferingS n
+mlkj Yes n mlkji NoiD
+owner asset transaction type
+Date
+notification Date
+amount
+
+n
+mlkj Yes n mlkji Noc
+ertification  anD  S ignature g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge a
+nd belief.Digitally Signed: 
+Hon. Lou Barletta , 05/23/2016 

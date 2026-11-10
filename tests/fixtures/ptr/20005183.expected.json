@@ -1,0 +1,26 @@
+{
+ "doc_id": "20005183",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Justin Amash",
+ "state_dst": "MI03",
+ "signed_date": "2016-05-16",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 1,
+ "trades": [
+  {
+   "owner": "self",
+   "asset": "CVSL Inc. (CVSL)",
+   "ticker": "CVSL",
+   "type": "sell",
+   "transaction_date": "2015-11-10",
+   "notification_date": "2016-04-30",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Standard Bear, LLC",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

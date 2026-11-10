@@ -1,0 +1,26 @@
+{
+ "doc_id": "20005532",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Brian Babin",
+ "state_dst": "TX36",
+ "signed_date": "2016-07-14",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 1,
+ "trades": [
+  {
+   "owner": "self",
+   "asset": "Fortress Transportation and Infrastructure Investors LLC Common Shares (FTAI)",
+   "ticker": "FTAI",
+   "type": "buy",
+   "transaction_date": "2016-06-28",
+   "notification_date": "2016-06-28",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "UBS SEP-IRA",
+   "description": "",
+   "include_v1": true
+  }
+ ]
+}

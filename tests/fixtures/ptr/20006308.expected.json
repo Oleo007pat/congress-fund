@@ -1,0 +1,39 @@
+{
+ "doc_id": "20006308",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Brad Ashford",
+ "state_dst": "NE02",
+ "signed_date": "2016-12-05",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 2,
+ "trades": [
+  {
+   "owner": "spouse",
+   "asset": "Medtronic plc. Ordinary Shares (MDT)",
+   "ticker": "MDT",
+   "type": "sell",
+   "transaction_date": "2016-11-28",
+   "notification_date": "2016-11-28",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Ann Ashford Stock Account",
+   "description": "Sold 100 shares of Medtronic at $74.445 per share for a total of $7,434.34.",
+   "include_v1": true
+  },
+  {
+   "owner": "spouse",
+   "asset": "Pfizer, Inc. (PFE)",
+   "ticker": "PFE",
+   "type": "sell",
+   "transaction_date": "2016-11-28",
+   "notification_date": "2016-11-28",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Ann Ashford Stock Account",
+   "description": "Sold 100 shares of Pfizer at $31.58 per share for a total of $3147.94.",
+   "include_v1": true
+  }
+ ]
+}

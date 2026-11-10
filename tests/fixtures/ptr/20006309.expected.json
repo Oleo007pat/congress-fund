@@ -1,0 +1,26 @@
+{
+ "doc_id": "20006309",
+ "year": 2016,
+ "template": "t2016",
+ "pdf_pages": 1,
+ "member": "Brad Ashford",
+ "state_dst": "NE02",
+ "signed_date": "2016-12-05",
+ "checked": "Hver side af PDF'en er set som billede (Read-værktøjet) og handlerne skrevet ned ud fra billedet (ejer, aktiv, ticker, type, begge datoer, beløbsinterval, subholding, beskrivelse). Ikke kopieret fra parserens output. Asset/description sammenlignes uden hensyn til store/små bogstaver (tekstlaget har små-versaler-støj, fx 'Hd' for 'HD').",
+ "n_trades": 1,
+ "trades": [
+  {
+   "owner": "self",
+   "asset": "Mesabi Trust (MSB)",
+   "ticker": "MSB",
+   "type": "buy",
+   "transaction_date": "2016-11-22",
+   "notification_date": "2016-11-22",
+   "amount_low": 1001,
+   "amount_high": 15000,
+   "sub_holding": "Brad Ashford Retirement Account > Brad Ashford SEP IRA Retirement Account",
+   "description": "Bought 350 Mesabi Trust in IRA account $10.5389 per share.",
+   "include_v1": true
+  }
+ ]
+}

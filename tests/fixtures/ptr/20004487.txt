@@ -1,0 +1,187 @@
+P
+erioDic  t ranSaction  r ePort Clerk of the House of Re
+presentatives • Legislative Resource Center • 135 Cannon Building • Washington, dC 20515f
+iler  i nformation name:
+Hon. Lou Barletta Status:
+Member State/District:
+PA11 t
+ranSactionS iD
+owner asset transaction type
+Date
+notification Date
+amount
+JT
+Apple Inc. (AAPL) S 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 JT
+Colgate-Palmolive Company (CL) S 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 SP
+First Trust Exchange-Tr aded Fund VIFirst Trust NASdAQ Technology
+dividend Index Fund (TdIV)
+S
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 First Trust Exchange-Tr
+aded Fund VIFirst Trust NASdAQ Technology
+dividend Index Fund (TdIV)
+S
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+Home depot, Inc. (Hd) S 01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 PowerShares Buyback Achievers (PKW)
+S 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 PowerShares QQQ Trust, Series 1 (QQQ)
+P 01/29/2016 01/29/2016 $1,001 - $15,000 Filing Id #20004487
+
+F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+RevenueShares Large C ap (RWL)S 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 RevenueShares Large C
+ap (RWL)S 01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+RevenueShares Ultra div idend Fund(RdIV)
+S
+01/15/2016 01/15/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 SP
+SPdR dow Jones Industrial AverageETF (dIA)
+S
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 SPdR dow Jones Industrial 
+AverageETF (dIA)
+S
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+SPdR S&P dividend ETF (SdY) P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 JT
+SPdR Select Sector Fund - Health C are(XLV)
+S
+01/7/2016 01/7/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 SP
+Vanguard Extended Market ETF - dNQ (VXF)
+S
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 SP
+Vanguard Financials ETF - dNQ (VFH) S 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 JT
+Vanguard Financials ETF - dNQ (VFH) S 01/29/2016 01/29/2016 $1,001 - $15,000 iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 JT
+Vanguard High dividend Yield ETF - dNQ (VYM)
+P
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 SP
+Vanguard Intermed iate-Term CorporateBond ETF (VCIT)
+P
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 JT
+Vanguard Intermed iate-Term CorporateBond ETF (VCIT)
+P
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 Vanguard Intermed
+iate-Term CorporateBond ETF (VCIT)
+P
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 Vanguard Mega 
+Cap growth ETF (MgK)P 01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+Vanguard Mega Cap growth ETF (MgK)P 01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 SP
+Vanguard Mega Cap growth ETF (MgK)P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 JT
+Vanguard Mega Cap growth ETF (MgK)P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 JT
+Vanguard Mid-Cap ETF - dNQ (VO) P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 Vanguard Mid-Cap ETF - dNQ (VO)
+P 01/29/2016 01/29/2016 $1,001 - $15,000 iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 Vanguard Short-Term Corporate Bo
+ndETF (VCSH)
+P
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+Vanguard Short-Term Corporate Bo ndETF (VCSH)
+P
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 SP
+Vanguard Short-Term Corporate Bo ndETF (VCSH)
+P
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 JT
+Vanguard Small-Cap ETF - dNQ (VB)P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 9039 Vanguard Small-Cap ETF 
+- dNQ (VB)P 01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 SP
+Western Asset High Yield defined Opportunity Fund Inc. (HYI)
+S
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 5494 WisdomTree dividend Ex-Financials
+Fund (dTN)
+S
+01/29/2016 01/29/2016 $15,001 - $50,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise IRA 3851 JT
+WisdomTree dividend Ex-Financials Fund (dTN)
+S
+01/29/2016 01/29/2016 $1,001 - $15,000 F
+ILINg  S TATUS : New S
+UBHOLdINg  O F : American Enterprise 7802 a
+SSet  c laSS  D etailS American Enterprise 7802
+ (Owner: JT)L
+OCATION : US iD
+owner asset transaction type
+Date
+notification Date
+amount
+
+American Enterprise 9039
+ (Owner: JT)L
+OCATION : US American Enterprise IRA 
+3851American Enterprise IRA 5
+494 (Owner: SP)i
+nitial  P ublic  o fferingS n
+mlkj Yes n mlkji Noc
+ertification  anD  S ignature g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge a
+nd belief.Digitally Signed: 
+Hon. Lou Barletta , 02/1/2016 
