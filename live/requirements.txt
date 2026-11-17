@@ -1,0 +1,5 @@
+requests==2.34.2
+pypdf==6.17.0
+python-dotenv==1.2.3
+pandas==3.0.5
+numpy==2.5.3

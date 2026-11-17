@@ -1,0 +1,45 @@
+{
+  "name": "v1_hold6m_amount_x10",
+  "locked": true,
+  "locked_note": "Pre-registered v1 configuration (src/backtest/config.py, results/recommendation.json): exit hold_6m, weighting amount, X = 10 %. Change this file only as a deliberate, documented research decision; the runner records the hash of this file and shows on the site if it changed after the start date.",
+  "eligibility": {
+    "version": "v1",
+    "implemented_by": "src.backtest.engine.select_buy_signals + ingestion.parse_house_ptr.include_decision/finalize_trades (not configurable here)",
+    "asset_types": ["stock", "etf"],
+    "owners": "all",
+    "excluded": ["short_related", "option_like", "non_discretionary", "duplicates", "date_suspect"],
+    "skip_rule": "skip ONLY when the price has risen more than skip_rise_pct since the member's trade-date close"
+  },
+  "exit": {
+    "rule": "hold_6m",
+    "options": ["member_sells", "hold_3m", "hold_6m", "hold_12m"]
+  },
+  "weighting": "amount",
+  "skip_rise_pct": 10.0,
+  "entry": {
+    "max_entry_lag_days": 7
+  },
+  "sizing": {
+    "base_pct_of_equity": 1.0,
+    "clip_min": 0.25,
+    "clip_max": 10.0,
+    "median_midpoint_usd": 8000.5,
+    "median_midpoint_source": "median of amount_weight() over the 19,413 kept v1 buys (select_buy_signals drop_reason empty) in data/processed/trades.csv, 2016-2026; the standard House range USD 1,001-15,000 has midpoint 8,000.5",
+    "max_position_pct_of_equity": 10.0
+  },
+  "orders": {
+    "mode": "auto",
+    "mode_options": ["auto", "whole_shares", "notional"],
+    "gap_buffer_pct": 2.0
+  },
+  "member_filter": {
+    "enabled": false,
+    "rule": "score_gt_0",
+    "rule_options": ["score_gt_0", "top_percentile"],
+    "trailing_window_days": 730,
+    "min_completed_trades": 5,
+    "shrinkage_k": 10,
+    "top_percentile": 20,
+    "on_insufficient_history": "skip"
+  }
+}

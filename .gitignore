@@ -20,3 +20,9 @@ data/interim/
 data/prices/
 !results/*.csv
 !data/processed/trades.csv
+
+# Live paper fund: the workflow commits state, logs and the site JSON back to the repo
+!data/live/*.csv
+data/live/cache/
+data/live/dryrun/
+docs/data/live_dryrun.json
