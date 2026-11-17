@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Congress Fund Backtest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Et datadrevet forskningsprojekt: kan man tjene penge ved at kopiere amerikanske kongresmedlemmers offentliggjorte aktiekøb?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column on "form paper", with full-width data bands; a PTR record line is the signature element. */
+:root{
+  --paper:#F3F5F8; --sheet:#FFFFFF; --ink:#14213A; --muted:#566278; --rule:#D5DBE5;
+  --accent:#B7791F; --accent-soft:#F6E7C9; --oos:#2F5D8A; --oos-soft:#DCE7F2;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --step--1:.8125rem; --step0:1rem; --step1:1.25rem; --step2:1.6rem; --step3:2.4rem; --step4:clamp(2.3rem,6vw,3.9rem);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1420; --sheet:#151D2C; --ink:#E4E9F2; --muted:#98A3B8; --rule:#2A3549;
+  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1420; --sheet:#151D2C; --ink:#E4E9F2; --muted:#98A3B8; --rule:#2A3549;
+  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40; color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--step0);line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.prose{max-width:66ch}
+h1,h2,h3{font-family:var(--display);font-stretch:85%;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:var(--step4);font-weight:800;letter-spacing:-.01em}
+h2{font-size:var(--step3);font-weight:750}
+h3{font-size:var(--step1);font-weight:700;font-stretch:90%}
+p{margin:0}
+a{color:inherit;text-decoration-color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.label{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* Header */
+header{padding-block:40px 8px}
+.topline{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:12px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-block:40px 48px}
+.hero .lede{font-size:var(--step1);color:var(--muted);max-width:58ch}
+.hero mark{background:linear-gradient(transparent 58%,var(--accent-soft) 58%);color:inherit;padding:0 2px}
+
+/* PTR record: the signature element */
+.record{margin:0;min-width:0;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.record-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:10px 16px;border-bottom:1px dashed var(--rule)}
+.record-line{overflow-x:auto;padding:14px 16px;font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.record-line span{padding:1px 3px;border-radius:2px}
+.hl{background:var(--accent-soft)}
+.record-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--rule)}
+.record-fields div{padding:10px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.record-fields b{display:block;font-family:var(--mono);font-weight:500;font-size:.95rem;overflow-wrap:anywhere}
+.record-note{padding:10px 16px;font-size:var(--step--1);color:var(--muted)}
+
+/* Figures */
+.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.figures div{background:var(--paper);padding:18px 16px;display:grid;gap:4px;align-content:start}
+.figures b{font-family:var(--display);font-stretch:80%;font-size:2.1rem;font-weight:750;line-height:1}
+.figures span{font-size:var(--step--1);color:var(--muted)}
+
+section{padding-block:56px;border-top:1px solid var(--rule)}
+.sec-head{display:grid;gap:10px;margin-bottom:28px}
+
+/* Timeline */
+.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:8px}
+.tl-step{position:relative;padding:18px 14px 0 0;border-top:3px solid var(--rule)}
+.tl-step::before{content:"";position:absolute;top:-8px;left:0;width:13px;height:13px;border-radius:50%;background:var(--paper);border:3px solid var(--muted)}
+.tl-step.key{border-top-color:var(--accent)}
+.tl-step.key::before{border-color:var(--accent);background:var(--accent)}
+.tl-step h3{font-size:1.05rem;margin-bottom:4px}
+.tl-step p{font-size:.92rem;color:var(--muted)}
+.tl-gap{font-family:var(--mono);font-size:var(--step--1);color:var(--accent);margin-top:8px}
+@media (max-width:720px){.timeline{grid-template-columns:1fr;gap:18px}.tl-step{border-top:0;border-left:3px solid var(--rule);padding:0 0 0 18px}.tl-step.key{border-left-color:var(--accent)}.tl-step::before{top:2px;left:-8px}}
+
+/* Pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:16px;counter-reset:p}
+.stage{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:8px;align-content:start;counter-increment:p}
+.stage .label::before{content:"Trin " counter(p) " · "}
+.stage p{font-size:.95rem;color:var(--muted)}
+.stage .tech{font-family:var(--mono);font-size:.78rem;color:var(--ink)}
+.status{justify-self:start;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.status.done{color:var(--oos)}
+.status.run{color:var(--accent)}
+
+/* Rules */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:0 40px}
+.rule{display:grid;grid-template-columns:9.5rem 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.rule dt{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.rule dd{margin:0;min-width:0}
+@media (max-width:480px){.rule{grid-template-columns:1fr;gap:2px}}
+
+/* Chart */
+.chart-box{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px 16px 10px}
+.chart-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:var(--step--1);color:var(--muted);margin-bottom:6px}
+.chart-legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.chart-scroll{overflow-x:auto}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+svg .val{fill:var(--ink);font-size:10.5px}
+.two{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:start}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+.table-scroll{overflow-x:auto}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--mono);font-weight:500;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+td.r,th.r{text-align:right}
+
+/* Gaps */
+.gaps{display:grid;gap:0}
+.gap{display:grid;grid-template-columns:7rem 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.sev{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;padding-top:3px}
+.sev.high{color:var(--accent)}
+.gap p{color:var(--muted);font-size:.95rem;margin-top:4px}
+@media (max-width:480px){.gap{grid-template-columns:1fr;gap:2px}}
+
+/* Results pending */
+.pending{background:var(--sheet);border:1px dashed var(--accent);border-radius:4px;padding:24px;display:grid;gap:14px}
+.pending ul{margin:0;padding-left:1.2em;color:var(--muted);columns:2 220px;column-gap:32px}
+
+.verdict{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:stretch;margin-bottom:28px}
+.alpha{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:20px;display:grid;gap:6px;align-content:start}
+.alpha b{font-family:var(--display);font-stretch:80%;font-size:3rem;font-weight:800;line-height:1}
+.alpha span:not(.label){color:var(--muted);font-size:var(--step--1)}
+.alpha p{font-size:.92rem;color:var(--muted);margin-top:8px}
+table.cmp td:first-child{color:var(--muted)}
+table.cmp td.r,table.cmp th.r{white-space:nowrap}
+.fig{margin:0 0 24px;display:grid;gap:8px}
+.fig-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline}
+.fig figcaption{font-size:var(--step--1);color:var(--muted)}
+.chart-legend i.shade{background:var(--oos-soft);border:1px solid var(--rule)}
+.chart-legend i.dash{height:0;border-top:2px dashed var(--muted);border-radius:0;vertical-align:3px}
+.review{display:grid;gap:14px;margin-top:8px}
+.review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
+.review-grid div{border-top:2px solid var(--oos);padding-top:12px;display:grid;gap:6px}
+.review-grid p{color:var(--muted);font-size:.95rem}
+@media (max-width:820px){.verdict{grid-template-columns:minmax(0,1fr)}}
+footer{border-top:1px solid var(--rule);padding-block:28px 48px;color:var(--muted);font-size:var(--step--1);display:grid;gap:8px}
+@media (prefers-reduced-motion:no-preference){.hl{transition:background .2s}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="topline">
+    <span class="label">Forskningsprojekt · Backtest v1 · Kontrolleret</span>
+    <span class="label num">Data til 16. nov. 2026</span>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Kan man tjene penge på at kopiere kongresmedlemmers aktiekøb?</h1>
+  <p class="lede">Medlemmer af det amerikanske Repræsentanternes Hus skal indberette deres aktiehandler, men først op til 45 dage senere. Projektet bygger hele kæden fra rå PDF-indberetninger til en backtest, der kun handler på det, man <mark>faktisk kunne vide den dag</mark>. Svaret er nej: strategien fulgte markedet med lidt mere risiko.</p>
+
+  <figure class="record" aria-label="Eksempel på en indberetningslinje og de felter, parseren udleder">
+    <div class="record-head"><span class="label">Periodic Transaction Report · én linje</span><span class="label">Eksempel i PTR-format</span></div>
+    <div class="record-line"><span class="hl">SP</span> &nbsp;Example Corp. Common Stock (<span class="hl">EXMP</span>) [<span class="hl">ST</span>] &nbsp;<span class="hl">P</span> &nbsp;<span class="hl">01/14/2025</span> &nbsp;02/03/2025 &nbsp;<span class="hl">$1,001 - $15,000</span></div>
+    <div class="record-fields">
+      <div><span class="label">Ejer</span><b>spouse</b></div>
+      <div><span class="label">Ticker</span><b>EXMP</b></div>
+      <div><span class="label">Type</span><b>aktie (ST)</b></div>
+      <div><span class="label">Handel</span><b>køb (P)</b></div>
+      <div><span class="label">Handelsdato</span><b class="num">2025-01-14</b></div>
+      <div><span class="label">Beløb</span><b class="num">1.001–15.000 $</b></div>
+    </div>
+    <p class="record-note">Linjen er et konstrueret eksempel, der viser formatet. Parseren læser tre forskellige skabeloner fra 2016 til i dag og er kontrolleret mod 26 manuelt aflæste indberetninger.</p>
+  </figure>
+
+  <div class="figures">
+    <div><b class="num">7.004</b><span>indberetninger hentet fra House Clerk, 2016–2026</span></div>
+    <div><b class="num">41.998</b><span>aktie- og ETF-handler klar til backtest</span></div>
+    <div><b class="num">20.567</b><span>køb fra 193 medlemmer</span></div>
+    <div><b class="num">94,8 %</b><span>af købene har en kurs på indgangsdagen</span></div>
+  </div>
+</div>
+
+<section aria-labelledby="h-time">
+  <div class="sec-head prose">
+    <span class="label">Hvornår kan man handle?</span>
+    <h2 id="h-time">Strategien må aldrig kende handelsdatoen før offentligheden</h2>
+    <p>Den største fejlkilde i den slags analyser er at handle på medlemmets handelsdato. Den er først kendt, når indberetningen bliver offentlig. Backtesten køber derfor tidligst ved åbningen dagen efter indleveringen.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-step"><h3>Medlemmet handler</h3><p>Handelsdatoen står i indberetningen, men er ukendt for alle andre.</p></div>
+    <div class="tl-step"><h3>Indberetning</h3><p>Lovens frist (STOCK Act) er 45 dage. 19 % af købene kom senere.</p><p class="tl-gap num">median 28 dage · 90 % inden 226 dage</p></div>
+    <div class="tl-step key"><h3>Offentlig</h3><p>Indleveringsdatoen fra Husets eget indeks. Først nu er handlen kendt.</p></div>
+    <div class="tl-step key"><h3>Vi køber</h3><p>Ved åbningskursen næste handelsdag, med 0,1 % i handelsomkostning.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-pipe">
+  <div class="sec-head prose">
+    <span class="label">Sådan er det bygget</span>
+    <h2 id="h-pipe">Fra PDF til backtest i fem trin</h2>
+    <p>Hvert trin er et selvstændigt Python-modul med egne tests. Alle data kommer fra offentlige, gratis kilder.</p>
+  </div>
+  <div class="pipeline">
+    <article class="stage"><span class="label">Indsamling</span><h3>Hent indberetninger</h3><p>Husets årlige indeks og alle PTR-PDF'er fra 2016. Kørslen kan genoptages og fejlede 0 af 7.004 gange.</p><span class="tech">requests · XML · 19 tests</span><span class="status done">Færdig</span></article>
+    <article class="stage"><span class="label">Parsing</span><h3>Læs PDF'erne</h3><p>Tre skabeloner, sideskift midt i handler, små bogstaver i tickere og ændringsindberetninger. Dubletter og slettede handler markeres.</p><span class="tech">pypdf · regex · 46 tests</span><span class="status done">Færdig</span></article>
+    <article class="stage"><span class="label">Kurser</span><h3>Kobl tickere til kurser</h3><p>Daglige kurser justeret for splits og udbytte. Tickerskift findes via historik, og afnoterede aktier beholdes.</p><span class="tech">Alpaca SIP · 12 tests</span><span class="status done">Færdig</span></article>
+    <article class="stage"><span class="label">Backtest</span><h3>Simulér strategien</h3><p>136 kombinationer af tærskel, exit og vægtning. Valgt på 2016–2021 og testet uændret på 2022–2026.</p><span class="tech">pandas · numpy · 42 tests</span><span class="status done">Færdig</span></article>
+    <article class="stage"><span class="label">Kontrol</span><h3>Uafhængig fejljagt</h3><p>En separat gennemgang fandt to alvorlige fejl i første runde. De blev rettet, og anden runde godkendte resultatet.</p><span class="tech">Newey-West · stikprøver</span><span class="status done">2 runder</span></article>
+  </div>
+</section>
+
+<section aria-labelledby="h-rules">
+  <div class="sec-head prose">
+    <span class="label">Regler, låst før resultaterne</span>
+    <h2 id="h-rules">Hvad backtesten tester</h2>
+    <p>Reglerne blev skrevet ned, før nogen resultater blev set. Ved tvivl vælges den mest konservative fortolkning, og den noteres.</p>
+  </div>
+  <dl class="rules">
+    <div class="rule"><dt>Signal</dt><dd>Hvert køb af aktie eller ETF, også ægtefællers og børns. Ingen optioner, obligationer eller krypto.</dd></div>
+    <div class="rule"><dt>Spring over</dt><dd>Kun hvis kursen er steget mere end X % siden medlemmets handel. Et fald fører aldrig til, at et køb springes over.</dd></div>
+    <div class="rule"><dt>Tærskel X</dt><dd class="num">0, 2, 4 … 30 % og "ingen tærskel"</dd></div>
+    <div class="rule"><dt>Exit</dt><dd>Når medlemmet sælger, eller efter faste 3, 6 eller 12 måneder</dd></div>
+    <div class="rule"><dt>Vægtning</dt><dd>Lige vægt pr. handel, eller efter midten af det indberettede beløbsinterval</dd></div>
+    <div class="rule"><dt>Benchmark</dt><dd>S&amp;P 500 (SPY inkl. udbytte) i samme periode</dd></div>
+    <div class="rule"><dt>Overfitting</dt><dd>X vælges kun på 2016–2021 og testes uændret på 2022–i dag</dd></div>
+    <div class="rule"><dt>Omkostninger</dt><dd class="num">0,1 % ved køb og ved salg</dd></div>
+  </dl>
+</section>
+
+<section aria-labelledby="h-data">
+  <div class="sec-head prose">
+    <span class="label">Datagrundlaget</span>
+    <h2 id="h-data">Køb pr. år, delt i kalibrering og test</h2>
+  </div>
+  <div class="two">
+    <figure class="chart-box" style="margin:0">
+      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Kalibrering 2016–2021 · 12.176 køb</span><span><i style="background:var(--oos)"></i>Test 2022–2026 · 8.391 køb</span></div>
+      <div class="chart-scroll"><svg id="buys" viewBox="0 0 640 270" role="img" aria-label="Søjlediagram over antal køb pr. indleveringsår 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
+      <p class="label" style="margin-top:6px">2026 dækker 1. jan.–16. nov.</p>
+    </figure>
+    <div>
+      <h3 style="margin-bottom:10px">Andel af købene med kurs</h3>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Tidspunkt</th><th class="r">Dækning</th></tr></thead>
+        <tbody class="num">
+          <tr><td>Indgang (dagen efter indlevering)</td><td class="r">94,8 %</td></tr>
+          <tr><td>+3 måneder</td><td class="r">94,4 %</td></tr>
+          <tr><td>+6 måneder</td><td class="r">93,9 %</td></tr>
+          <tr><td>+12 måneder</td><td class="r">92,6 %</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:14px;color:var(--muted);font-size:.93rem">2.848 af 3.418 tickere er koblet til kursdata. De fleste af resten er OTC-papirer og afnoterede selskaber, som det gratis kursfeed ikke dækker.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-res">
+  <div class="sec-head prose">
+    <span class="label">Resultat · testperioden 2022–2026</span>
+    <h2 id="h-res">Strategien slår ikke markedet</h2>
+    <p>Reglen blev valgt på 2016–2021 efter et kriterium, der var skrevet ned på forhånd: hold hvert køb i 6 måneder, vægt efter det indberettede beløb, og spring købet over, hvis kursen allerede er steget mere end 10 %. Fra 3. januar 2022 gav den samme afkast som S&amp;P 500, men med større udsving.</p>
+  </div>
+  <div class="verdict">
+    <div class="table-scroll"><table class="cmp">
+      <thead><tr><th>3. jan. 2022 – 16. nov. 2026</th><th class="r">Strategi</th><th class="r">S&amp;P 500</th></tr></thead>
+      <tbody class="num">
+        <tr><td>Samlet afkast</td><td class="r">+63,9 %</td><td class="r">+66,0 %</td></tr>
+        <tr><td>Årligt afkast (CAGR)</td><td class="r">10,7 %</td><td class="r">11,0 %</td></tr>
+        <tr><td>Volatilitet</td><td class="r">22,9 %</td><td class="r">17,4 %</td></tr>
+        <tr><td>Sharpe (rf = 0)</td><td class="r">0,56</td><td class="r">0,69</td></tr>
+        <tr><td>Største fald</td><td class="r">−22,4 %</td><td class="r">−24,5 %</td></tr>
+      </tbody>
+    </table></div>
+    <div class="alpha">
+      <span class="label">Merafkast i forhold til markedet</span>
+      <b class="num">−0,3 %</b>
+      <span>om året · t = −0,06 (Newey-West) · beta 1,10</span>
+      <p>Et t-tal tæt på nul betyder, at der ikke er noget at skelne fra tilfældighed.</p>
+    </div>
+  </div>
+
+  <figure class="chart-box fig">
+    <div class="fig-head"><h3>Formue for 1 krone investeret i 2016</h3>
+      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Strategi</span><span><i style="background:var(--muted)"></i>S&amp;P 500 (SPY)</span><span><i class="shade"></i>Testperiode</span></div></div>
+    <div class="chart-scroll"><svg id="equity" viewBox="0 0 680 300" role="img" aria-label="Formuekurve for strategien og S&amp;P 500 fra 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
+    <figcaption>Forspringet blev skabt i 2020, altså i kalibreringsperioden. I testperioden steg strategien en smule mindre end markedet.</figcaption>
+  </figure>
+
+  <div class="two">
+    <figure class="chart-box fig">
+      <h3>Merafkast pr. år</h3>
+      <div class="chart-scroll"><svg id="yearly" viewBox="0 0 420 250" role="img" aria-label="Søjler med strategiens merafkast i forhold til SPY pr. år 2016 til 2026" style="width:100%;min-width:360px;height:auto"></svg></div>
+      <figcaption>Kun 2020, 2021 og 2022 var positive. Procentpoint i forhold til SPY.</figcaption>
+    </figure>
+    <figure class="chart-box fig">
+      <h3>Sharpe som funktion af tærsklen X</h3>
+      <div class="chart-legend"><span><i style="background:var(--accent)"></i>2016–2021</span><span><i style="background:var(--oos)"></i>2022–2026</span><span><i class="dash"></i>SPY</span></div>
+      <div class="chart-scroll"><svg id="xchart" viewBox="0 0 420 250" role="img" aria-label="Sharpe-ratio for hver tærskel X i begge perioder" style="width:100%;min-width:360px;height:auto"></svg></div>
+      <figcaption>Over 4 % ligger kurverne fladt. At springe køb over efter en stigning tilføjer ikke noget pålideligt.</figcaption>
+    </figure>
+  </div>
+
+  <div class="review">
+    <h3>Hvad den uafhængige kontrol fandt</h3>
+    <div class="review-grid">
+      <div><span class="label">Runde 1 · 2 alvorlige fejl</span><p>Den første version viste +106 % mod markedets +66 %. Kontrollen viste, at tallet kom af, at testporteføljen startede tom og i 2022 næsten kun bestod af ét medlems energikøb. Målt som én sammenhængende portefølje forsvandt forspringet.</p></div>
+      <div><span class="label">Runde 2 · ingen alvorlige fejl</span><p>Alle 18.068 handler blev regnet om fra rådata uden afvigelser, og 10 tilfældige handler blev kontrolleret i hånden. Valget af regel er skrøbeligt: flere varianter scorer næsten ens.</p></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-gaps">
+  <div class="sec-head prose">
+    <span class="label">Begrænsninger</span>
+    <h2 id="h-gaps">Hvad data ikke kan sige</h2>
+    <p>Huller rapporteres som huller. Intet er udfyldt med skøn.</p>
+  </div>
+  <div class="gaps">
+    <div class="gap"><span class="sev high">Stor</span><div><h3>Scannede indberetninger mangler</h3><p>1.692 af 7.004 indberetninger (24 %) er scannet papir uden tekst. De rammer især 2016–2018 og nogle af de mest aktive handlere. En stikprøve læst af to uafhængige læsere stemte 254 af 254 handler, men resten er ikke med i v1.</p></div></div>
+    <div class="gap"><span class="sev high">Middel</span><div><h3>Survivorship bias</h3><p>5,2 % af købene har ingen kurs ved indgang, mest afnoterede selskaber. Det kan gøre resultatet for pænt. Antallet rapporteres i hver beregning.</p></div></div>
+    <div class="gap"><span class="sev">Lille</span><div><h3>Ændringsindberetninger uden original</h3><p>324 rækker kan ikke kobles til en original og kan derfor tælle dobbelt.</p></div></div>
+    <div class="gap"><span class="sev">Afgrænset</span><div><h3>Kun Repræsentanternes Hus</h3><p>Senatets database blokerer automatiske hentninger. Senatet tages op i en senere version med en anden datakilde.</p></div></div>
+  </div>
+</section>
+
+<footer>
+  <span>Kilder: U.S. House of Representatives, Office of the Clerk (Financial Disclosure Reports) · Alpaca Market Data (SIP).</span>
+  <span>Kode: <a href="https://github.com/Oleo007pat/congress-fund">github.com/Oleo007pat/congress-fund</a> · Python, pandas, pypdf.</span>
+  <span>Projektet er forskning og ikke investeringsrådgivning.</span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var data=[[2016,1370],[2017,1564],[2018,1745],[2019,2015],[2020,3049],[2021,2433],[2022,1347],[2023,1265],[2024,1072],[2025,3300],[2026,1407]];
+  var svg=document.getElementById('buys'); if(!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var L=52,R=628,T=22,B=232,max=3500;
+  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
+  function y(v){return B-(v/max)*(B-T);}
+  [0,1000,2000,3000].forEach(function(v){
+    el('line',{x1:L,x2:R,y1:y(v),y2:y(v),stroke:'var(--rule)','stroke-width':1});
+    el('text',{x:L-8,y:y(v)+4,'text-anchor':'end'},v.toLocaleString('da-DK'));
+  });
+  var slot=(R-L)/data.length,bw=slot*0.64;
+  data.forEach(function(d,i){
+    var x=L+i*slot+(slot-bw)/2, oos=d[0]>=2022;
+    el('rect',{x:x,y:y(d[1]),width:bw,height:B-y(d[1]),fill:oos?'var(--oos)':'var(--accent)',rx:2});
+    el('text',{x:x+bw/2,y:y(d[1])-6,'text-anchor':'middle','class':'val'},d[1].toLocaleString('da-DK'));
+    el('text',{x:x+bw/2,y:B+18,'text-anchor':'middle'},d[0]);
+  });
+  var split=L+6*slot;
+  el('line',{x1:split,x2:split,y1:T-10,y2:B,stroke:'var(--muted)','stroke-dasharray':'3 3'});
+})();
+</script>
+<script id="res-data" type="application/json">{"dates":["2016-01-08","2016-01-15","2016-01-22","2016-01-29","2016-02-05","2016-02-12","2016-02-19","2016-02-26","2016-03-04","2016-03-11","2016-03-18","2016-03-24","2016-04-01","2016-04-08","2016-04-15","2016-04-22","2016-04-29","2016-05-06","2016-05-13","2016-05-20","2016-05-27","2016-06-03","2016-06-10","2016-06-17","2016-06-24","2016-07-01","2016-07-08","2016-07-15","2016-07-22","2016-07-29","2016-08-05","2016-08-12","2016-08-19","2016-08-26","2016-09-02","2016-09-09","2016-09-16","2016-09-23","2016-09-30","2016-10-07","2016-10-14","2016-10-21","2016-10-28","2016-11-04","2016-11-11","2016-11-18","2016-11-25","2016-12-02","2016-12-09","2016-12-16","2016-12-23","2016-12-30","2017-01-06","2017-01-13","2017-01-20","2017-01-27","2017-02-03","2017-02-10","2017-02-17","2017-02-24","2017-03-03","2017-03-10","2017-03-17","2017-03-24","2017-03-31","2017-04-07","2017-04-13","2017-04-21","2017-04-28","2017-05-05","2017-05-12","2017-05-19","2017-05-26","2017-06-02","2017-06-09","2017-06-16","2017-06-23","2017-06-30","2017-07-07","2017-07-14","2017-07-21","2017-07-28","2017-08-04","2017-08-11","2017-08-18","2017-08-25","2017-09-01","2017-09-08","2017-09-15","2017-09-22","2017-09-29","2017-10-06","2017-10-13","2017-10-20","2017-10-27","2017-11-03","2017-11-10","2017-11-17","2017-11-24","2017-12-01","2017-12-08","2017-12-15","2017-12-22","2017-12-29","2018-01-05","2018-01-12","2018-01-19","2018-01-26","2018-02-02","2018-02-09","2018-02-16","2018-02-23","2018-03-02","2018-03-09","2018-03-16","2018-03-23","2018-03-29","2018-04-06","2018-04-13","2018-04-20","2018-04-27","2018-05-04","2018-05-11","2018-05-18","2018-05-25","2018-06-01","2018-06-08","2018-06-15","2018-06-22","2018-06-29","2018-07-06","2018-07-13","2018-07-20","2018-07-27","2018-08-03","2018-08-10","2018-08-17","2018-08-24","2018-08-31","2018-09-07","2018-09-14","2018-09-21","2018-09-28","2018-10-05","2018-10-12","2018-10-19","2018-10-26","2018-11-02","2018-11-09","2018-11-16","2018-11-23","2018-11-30","2018-12-07","2018-12-14","2018-12-21","2018-12-28","2019-01-04","2019-01-11","2019-01-18","2019-01-25","2019-02-01","2019-02-08","2019-02-15","2019-02-22","2019-03-01","2019-03-08","2019-03-15","2019-03-22","2019-03-29","2019-04-05","2019-04-12","2019-04-18","2019-04-26","2019-05-03","2019-05-10","2019-05-17","2019-05-24","2019-05-31","2019-06-07","2019-06-14","2019-06-21","2019-06-28","2019-07-05","2019-07-12","2019-07-19","2019-07-26","2019-08-02","2019-08-09","2019-08-16","2019-08-23","2019-08-30","2019-09-06","2019-09-13","2019-09-20","2019-09-27","2019-10-04","2019-10-11","2019-10-18","2019-10-25","2019-11-01","2019-11-08","2019-11-15","2019-11-22","2019-11-29","2019-12-06","2019-12-13","2019-12-20","2019-12-27","2020-01-03","2020-01-10","2020-01-17","2020-01-24","2020-01-31","2020-02-07","2020-02-14","2020-02-21","2020-02-28","2020-03-06","2020-03-13","2020-03-20","2020-03-27","2020-04-03","2020-04-09","2020-04-17","2020-04-24","2020-05-01","2020-05-08","2020-05-15","2020-05-22","2020-05-29","2020-06-05","2020-06-12","2020-06-19","2020-06-26","2020-07-02","2020-07-10","2020-07-17","2020-07-24","2020-07-31","2020-08-07","2020-08-14","2020-08-21","2020-08-28","2020-09-04","2020-09-11","2020-09-18","2020-09-25","2020-10-02","2020-10-09","2020-10-16","2020-10-23","2020-10-30","2020-11-06","2020-11-13","2020-11-20","2020-11-27","2020-12-04","2020-12-11","2020-12-18","2020-12-24","2020-12-31","2021-01-08","2021-01-15","2021-01-22","2021-01-29","2021-02-05","2021-02-12","2021-02-19","2021-02-26","2021-03-05","2021-03-12","2021-03-19","2021-03-26","2021-04-01","2021-04-09","2021-04-16","2021-04-23","2021-04-30","2021-05-07","2021-05-14","2021-05-21","2021-05-28","2021-06-04","2021-06-11","2021-06-18","2021-06-25","2021-07-02","2021-07-09","2021-07-16","2021-07-23","2021-07-30","2021-08-06","2021-08-13","2021-08-20","2021-08-27","2021-09-03","2021-09-10","2021-09-17","2021-09-24","2021-10-01","2021-10-08","2021-10-15","2021-10-22","2021-10-29","2021-11-05","2021-11-12","2021-11-19","2021-11-26","2021-12-03","2021-12-10","2021-12-17","2021-12-23","2021-12-31","2022-01-07","2022-01-14","2022-01-21","2022-01-28","2022-02-04","2022-02-11","2022-02-18","2022-02-25","2022-03-04","2022-03-11","2022-03-18","2022-03-25","2022-04-01","2022-04-08","2022-04-14","2022-04-22","2022-04-29","2022-05-06","2022-05-13","2022-05-20","2022-05-27","2022-06-03","2022-06-10","2022-06-17","2022-06-24","2022-07-01","2022-07-08","2022-07-15","2022-07-22","2022-07-29","2022-08-05","2022-08-12","2022-08-19","2022-08-26","2022-09-02","2022-09-09","2022-09-16","2022-09-23","2022-09-30","2022-10-07","2022-10-14","2022-10-21","2022-10-28","2022-11-04","2022-11-11","2022-11-18","2022-11-25","2022-12-02","2022-12-09","2022-12-16","2022-12-23","2022-12-30","2023-01-06","2023-01-13","2023-01-20","2023-01-27","2023-02-03","2023-02-10","2023-02-17","2023-02-24","2023-03-03","2023-03-10","2023-03-17","2023-03-24","2023-03-31","2023-04-06","2023-04-14","2023-04-21","2023-04-28","2023-05-05","2023-05-12","2023-05-19","2023-05-26","2023-06-02","2023-06-09","2023-06-16","2023-06-23","2023-06-30","2023-07-07","2023-07-14","2023-07-21","2023-07-28","2023-08-04","2023-08-11","2023-08-18","2023-08-25","2023-09-01","2023-09-08","2023-09-15","2023-09-22","2023-09-29","2023-10-06","2023-10-13","2023-10-20","2023-10-27","2023-11-03","2023-11-10","2023-11-17","2023-11-24","2023-12-01","2023-12-08","2023-12-15","2023-12-22","2023-12-29","2024-01-05","2024-01-12","2024-01-19","2024-01-26","2024-02-02","2024-02-09","2024-02-16","2024-02-23","2024-03-01","2024-03-08","2024-03-15","2024-03-22","2024-03-28","2024-04-05","2024-04-12","2024-04-19","2024-04-26","2024-05-03","2024-05-10","2024-05-17","2024-05-24","2024-05-31","2024-06-07","2024-06-14","2024-06-21","2024-06-28","2024-07-05","2024-07-12","2024-07-19","2024-07-26","2024-08-02","2024-08-09","2024-08-16","2024-08-23","2024-08-30","2024-09-06","2024-09-13","2024-09-20","2024-09-27","2024-10-04","2024-10-11","2024-10-18","2024-10-25","2024-11-01","2024-11-08","2024-11-15","2024-11-22","2024-11-29","2024-12-06","2024-12-13","2024-12-20","2024-12-27","2025-01-03","2025-01-10","2025-01-17","2025-01-24","2025-01-31","2025-02-07","2025-02-14","2025-02-21","2025-02-28","2025-03-07","2025-03-14","2025-03-21","2025-03-28","2025-04-04","2025-04-11","2025-04-17","2025-04-25","2025-05-02","2025-05-09","2025-05-16","2025-05-23","2025-05-30","2025-06-06","2025-06-13","2025-06-20","2025-06-27","2025-07-03","2025-07-11","2025-07-18","2025-07-25","2025-08-01","2025-08-08","2025-08-15","2025-08-22","2025-08-29","2025-09-05","2025-09-12","2025-09-19","2025-09-26","2025-10-03","2025-10-10","2025-10-17","2025-10-24","2025-10-31","2025-11-07","2025-11-14","2025-11-21","2025-11-28","2025-12-05","2025-12-12","2025-12-19","2025-12-26","2026-01-02","2026-01-09","2026-01-16","2026-01-23","2026-01-30","2026-02-06","2026-02-13","2026-02-20","2026-02-27","2026-03-06","2026-03-13","2026-03-20","2026-03-27","2026-04-02","2026-04-10","2026-04-17","2026-04-24","2026-05-01","2026-05-08","2026-05-15","2026-05-22","2026-05-29","2026-06-05","2026-06-12","2026-06-18","2026-06-26","2026-07-02","2026-07-10","2026-07-17","2026-07-24","2026-07-31","2026-08-07","2026-08-14","2026-08-21","2026-08-28","2026-09-04","2026-09-11","2026-09-18","2026-09-25","2026-10-02","2026-10-09","2026-10-16","2026-10-23","2026-10-30","2026-11-06","2026-11-13","2026-11-16"],"s":[0.9569,0.9277,0.9233,0.911,0.8882,0.8767,0.91,0.9271,0.9602,0.9691,0.9808,0.9672,0.9782,0.9723,0.9904,1.0076,0.9913,0.9764,0.9648,0.9699,0.9896,0.9976,0.9933,0.9863,0.9715,1.0035,1.0128,1.0273,1.0342,1.0318,1.0346,1.0406,1.0433,1.0332,1.0414,1.0167,1.0197,1.0359,1.0373,1.0226,1.0129,1.0225,1.013,0.99,1.0287,1.0399,1.053,1.0441,1.0773,1.0736,1.0776,1.0675,1.085,1.0771,1.0783,1.0847,1.0878,1.0977,1.1135,1.1176,1.1262,1.1199,1.1235,1.1083,1.1235,1.1186,1.1097,1.1171,1.1342,1.135,1.1302,1.1337,1.143,1.1506,1.1451,1.1446,1.149,1.1516,1.151,1.166,1.17,1.1753,1.1788,1.1577,1.1487,1.1576,1.173,1.1626,1.1823,1.1812,1.1898,1.2032,1.2115,1.2141,1.2204,1.2247,1.2199,1.226,1.2382,1.2498,1.249,1.2606,1.2736,1.2741,1.3068,1.3258,1.336,1.3631,1.305,1.239,1.2979,1.2967,1.2707,1.3132,1.2994,1.2326,1.2597,1.2455,1.2612,1.2664,1.2725,1.2761,1.3006,1.296,1.3022,1.3028,1.3257,1.3387,1.3338,1.3048,1.3266,1.3397,1.3358,1.3314,1.3415,1.3376,1.3418,1.3539,1.3652,1.3498,1.3583,1.3617,1.3572,1.3279,1.2866,1.2771,1.2409,1.2544,1.2745,1.262,1.2114,1.2847,1.2219,1.2217,1.1315,1.1603,1.1869,1.2173,1.2604,1.2552,1.2452,1.2597,1.2952,1.3223,1.3327,1.3039,1.3494,1.342,1.3582,1.3868,1.388,1.382,1.3885,1.3989,1.3494,1.3356,1.3161,1.2808,1.3249,1.33,1.3565,1.3636,1.3844,1.3893,1.369,1.3936,1.3499,1.3373,1.326,1.3016,1.3374,1.3621,1.389,1.3885,1.3608,1.3526,1.3554,1.3461,1.3748,1.4029,1.423,1.4451,1.4457,1.4631,1.4618,1.4799,1.5084,1.5202,1.518,1.5357,1.5859,1.5646,1.575,1.6673,1.6933,1.6563,1.4935,1.4805,1.3792,1.1934,1.3078,1.2991,1.423,1.515,1.4955,1.5146,1.5844,1.5324,1.6083,1.6615,1.7822,1.6848,1.72,1.6701,1.7285,1.7513,1.7806,1.7905,1.7993,1.8668,1.8809,1.8585,1.9134,1.8501,1.7948,1.8126,1.7653,1.8115,1.9045,1.897,1.9466,1.8101,1.8872,2.001,2.0742,2.1546,2.2509,2.2663,2.2573,2.2353,2.2279,2.3299,2.4137,2.4032,2.3412,2.475,2.5444,2.5199,2.4847,2.5776,2.6749,2.6339,2.607,2.637,2.6673,2.6762,2.7032,2.723,2.7933,2.7788,2.8035,2.8228,2.8724,2.9334,2.8257,2.8994,2.928,2.9153,2.8196,2.8565,2.8628,2.8475,2.8538,2.7763,2.8767,2.9055,2.8459,2.8433,2.8537,2.8219,2.8577,2.9297,2.9772,3.0309,3.0775,3.08,3.0581,2.9803,2.9165,3.0308,2.9359,3.0083,3.0422,2.9862,2.9945,2.8425,2.8952,2.9429,2.9123,2.8513,2.8839,2.8958,2.8251,2.9384,3.077,3.0865,3.0681,3.0964,3.0167,2.9322,3.0059,2.8932,2.8724,3.0799,3.0943,2.9816,2.5701,2.6724,2.6687,2.67,2.6412,2.7368,2.9352,2.9276,3.0845,3.0265,2.9597,2.8557,2.9552,2.8154,2.6366,2.5999,2.6599,2.618,2.7431,2.8519,2.8009,2.9617,2.9027,2.9528,2.9888,2.8908,2.8362,2.8152,2.8113,2.8603,2.9728,2.9629,3.0383,3.0832,3.0191,3.0695,2.993,3.0619,2.875,2.8851,2.9008,3.0138,2.9692,2.9943,2.9858,2.9922,2.9793,2.9533,2.992,2.9744,3.039,3.0787,3.1645,3.076,3.1667,3.1636,3.2426,3.2761,3.3174,3.2409,3.2084,3.1043,3.1237,3.193,3.1527,3.1778,3.0792,3.0692,3.0388,3.0554,2.9929,2.9079,3.0938,3.0442,3.1565,3.1782,3.2544,3.2639,3.3921,3.44,3.4671,3.4356,3.4566,3.4486,3.5069,3.5324,3.5721,3.596,3.6231,3.659,3.6595,3.6395,3.6943,3.7287,3.6763,3.595,3.5198,3.5822,3.6109,3.6932,3.7579,3.7167,3.695,3.7075,3.6808,3.722,3.7135,3.8069,3.8759,3.6752,3.6047,3.388,3.3434,3.8155,3.9297,3.7435,3.3787,3.7334,3.6899,3.8075,3.8659,4.061,4.1323,4.1647,4.0487,4.333,4.2009,4.2388,4.1849,4.2581,4.0978,4.063,4.1143,4.2386,4.0851,4.1801,4.2804,3.9922,3.974,4.0173,4.0027,3.9929,3.9184,3.8236,3.8533,3.8191,3.5095,3.6186,3.6027,3.7593,3.8619,3.8735,4.0496,3.9463,3.9955,4.0634,4.0408,4.0271,4.1457,4.2854,4.3079,4.351,4.4104,4.2974,4.4364,4.5113,4.5286,4.503,4.4901,4.5959,4.636,4.6278,4.7511,4.6308,4.6976,4.8007,4.924,4.7724,4.7606,4.6053,4.7504,4.7961,4.7218,4.7296,4.8279,4.7879,4.8823,4.9107,4.8982,4.8623,4.8336,4.8185,4.8798,4.8896,4.7782,4.6899,4.5934,4.5358,4.686,4.83,5.0418,5.0709,5.1291,5.1894,5.1335,5.2312,5.328,5.1937,5.3156,5.3438,5.3522,5.4072,5.3954,5.2871,5.2657,5.2963,5.5418,5.6013,5.5097,5.6172,5.917,6.033,5.9368,6.1787,6.16,6.0695,5.5017,5.291,5.2884,4.9604,5.1911,4.9863],"m":[0.9677,0.947,0.9606,0.9768,0.9477,0.941,0.9681,0.9837,1.0106,1.0223,1.0305,1.0242,1.0434,1.0311,1.0477,1.0537,1.0404,1.0373,1.0324,1.0361,1.0601,1.0603,1.0592,1.0467,1.0301,1.064,1.0778,1.0939,1.1011,1.1005,1.1058,1.1073,1.1077,1.1013,1.1068,1.081,1.0869,1.1004,1.1021,1.0954,1.0853,1.0896,1.0825,1.0624,1.1026,1.113,1.1285,1.1187,1.1539,1.1532,1.1565,1.1453,1.1644,1.1634,1.1618,1.1733,1.1752,1.1862,1.2043,1.2132,1.2217,1.2178,1.2202,1.2036,1.2129,1.2103,1.1969,1.2073,1.2254,1.2335,1.2302,1.2262,1.244,1.2564,1.2532,1.2548,1.2575,1.2504,1.252,1.2697,1.2764,1.2768,1.2794,1.2624,1.2552,1.2645,1.2815,1.275,1.2953,1.2964,1.3053,1.3223,1.3247,1.336,1.3392,1.3432,1.3414,1.3402,1.3532,1.3744,1.3797,1.3922,1.3973,1.3944,1.4282,1.4519,1.4647,1.4969,1.4392,1.3672,1.4269,1.4347,1.4056,1.4561,1.4382,1.3532,1.3816,1.362,1.3904,1.3985,1.3981,1.3946,1.4299,1.4231,1.4276,1.435,1.4592,1.4529,1.441,1.4231,1.4441,1.4662,1.467,1.4762,1.4875,1.4851,1.4948,1.5079,1.5224,1.508,1.5257,1.5386,1.5308,1.5163,1.4541,1.455,1.3973,1.4319,1.4636,1.4421,1.3873,1.4524,1.389,1.3728,1.275,1.3127,1.3374,1.3715,1.4118,1.4084,1.4312,1.4336,1.4699,1.4793,1.4859,1.4545,1.4974,1.4868,1.5034,1.5357,1.5442,1.5434,1.5617,1.5647,1.533,1.5219,1.506,1.4656,1.5306,1.5394,1.5724,1.5676,1.5952,1.608,1.5898,1.615,1.5651,1.5596,1.5446,1.5236,1.5641,1.5941,1.6098,1.6016,1.5873,1.5813,1.5918,1.6016,1.6205,1.645,1.6599,1.6753,1.6711,1.6889,1.6916,1.7048,1.7325,1.7432,1.741,1.7583,1.7927,1.7751,1.7373,1.7939,1.8229,1.8005,1.5996,1.606,1.4589,1.2459,1.3795,1.3466,1.5111,1.5563,1.5364,1.5361,1.5887,1.5549,1.6048,1.6537,1.7347,1.6531,1.6831,1.637,1.703,1.7328,1.7549,1.7506,1.7806,1.8251,1.8375,1.8517,1.9124,1.8676,1.8225,1.8116,1.8004,1.8286,1.899,1.9023,1.8929,1.7892,1.9179,1.9613,1.9462,1.992,2.0252,2.0053,2.0304,2.0298,2.0585,2.0972,2.0663,2.1056,2.0359,2.1321,2.1601,2.1454,2.0901,2.1097,2.1671,2.1498,2.1848,2.2107,2.2707,2.3026,2.2997,2.3028,2.3294,2.2988,2.29,2.3187,2.3311,2.3415,2.2971,2.3618,2.4012,2.4112,2.388,2.4357,2.4278,2.4498,2.4687,2.4546,2.4927,2.5084,2.4661,2.4516,2.4655,2.4118,2.4319,2.4764,2.5167,2.5507,2.6022,2.5952,2.6043,2.5491,2.5183,2.6145,2.5632,2.623,2.6472,2.5978,2.5902,2.4411,2.4633,2.5009,2.455,2.4202,2.4399,2.4088,2.3413,2.4853,2.531,2.5323,2.5023,2.4477,2.382,2.3035,2.2998,2.246,2.1784,2.3217,2.2953,2.1793,2.0543,2.1903,2.1407,2.1824,2.1625,2.2185,2.3134,2.3217,2.3982,2.3703,2.2758,2.2024,2.2831,2.1738,2.0746,2.0138,2.0455,2.0164,2.1103,2.1934,2.1219,2.2469,2.2329,2.2684,2.2942,2.2174,2.1709,2.1688,2.1661,2.1981,2.2571,2.2423,2.2978,2.3356,2.3112,2.3067,2.2451,2.2893,2.1858,2.2174,2.2501,2.3276,2.3265,2.3451,2.3436,2.3649,2.3461,2.3402,2.3801,2.3881,2.433,2.4443,2.5079,2.4722,2.5297,2.5027,2.5639,2.5805,2.6076,2.5499,2.5433,2.491,2.5108,2.5749,2.5425,2.5392,2.465,2.4481,2.4599,2.4712,2.4121,2.3519,2.4895,2.5234,2.5816,2.6075,2.6293,2.6355,2.6987,2.7236,2.7331,2.6906,2.741,2.774,2.8027,2.8426,2.882,2.8723,2.9202,2.949,2.9425,2.9407,3.0064,3.0171,2.9903,2.9466,2.8561,2.9316,2.9491,3.0042,3.0539,3.0538,3.0419,3.0802,3.1308,3.1509,3.1492,3.2095,3.2405,3.1768,3.1505,3.0837,3.0842,3.2076,3.2529,3.2618,3.1268,3.2522,3.2984,3.317,3.3258,3.3641,3.3932,3.3609,3.3145,3.4721,3.3999,3.4566,3.4974,3.5279,3.507,3.4428,3.4653,3.4475,3.3807,3.4803,3.5408,3.505,3.4988,3.5509,3.494,3.4604,3.3541,3.2777,3.2944,3.2459,2.9515,3.1189,3.075,3.2165,3.3107,3.2966,3.471,3.3828,3.4429,3.4999,3.4873,3.4817,3.6026,3.6637,3.6536,3.6768,3.7326,3.6424,3.7331,3.7697,3.7807,3.7791,3.792,3.8515,3.8992,3.8882,3.9316,3.8365,3.9033,3.9788,4.0071,3.9419,3.9476,3.8718,4.0148,4.0284,4.0053,4.0102,4.0675,4.0254,4.0897,4.0755,4.0612,4.0773,4.0694,4.017,4.0624,4.042,3.9619,3.9024,3.8322,3.7466,3.8751,4.0147,4.196,4.2184,4.2581,4.3583,4.3675,4.4057,4.4698,4.3579,4.3827,4.4236,4.3184,4.412,4.4722,4.4032,4.3773,4.4253,4.5807,4.599,4.536,4.5575,4.5625,4.5276,4.5234,4.5807,4.5706,4.6236,4.5326,4.5132,4.4879,4.3666,4.4799,4.3943],"oos":"2022-01-03","yearly":[[2016,-7.8,"in_sample"],[2017,-2.4,"in_sample"],[2018,-3.1,"in_sample"],[2019,-2.0,"in_sample"],[2020,28.8,"in_sample"],[2021,7.9,"in_sample"],[2022,10.6,"oos"],[2023,-2.8,"oos"],[2024,-8.1,"oos"],[2025,-0.1,"oos"],[2026,-4.7,"oos"]],"x_is":[["0",0.59],["2",0.733],["4",0.993],["6",1.008],["8",1.014],["10",1.015],["12",1.001],["14",0.993],["16",0.996],["18",0.992],["20",0.992],["22",0.996],["24",0.996],["26",0.996],["28",0.993],["30",0.995],["none",1.001]],"x_oos":[["0",0.492],["2",0.496],["4",0.492],["6",0.503],["8",0.545],["10",0.559],["12",0.554],["14",0.552],["16",0.549],["18",0.55],["20",0.552],["22",0.555],["24",0.562],["26",0.561],["28",0.559],["30",0.559],["none",0.562]],"spy_is":1.014,"spy_oos":0.688}</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('res-data').textContent), NS='http://www.w3.org/2000/svg';
+  function mk(svg,n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
+  function fmt(v,d){return v.toLocaleString('da-DK',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  // equity
+  var sv=document.getElementById('equity');
+  if(sv){var L=44,R=664,T=14,B=270,n=D.dates.length,max=6,min=0.5;
+    var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
+    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)}, Y=function(v){return B-(v-min)/(max-min)*(B-T)};
+    var xo=X(D.oos);mk(sv,'rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos-soft)'});
+    [1,2,3,4,5,6].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sv,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,0));});
+    for(var yr=2016;yr<=2026;yr+=2){var x=X(yr+'-01-04');mk(sv,'text',{x:x,y:B+18,'text-anchor':'middle'},yr);}
+    function path(arr){return arr.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v).toFixed(1)}).join('');}
+    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
+    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2});
+    mk(sv,'text',{x:xo+6,y:T+14},'Test fra 3. jan. 2022');
+    var ls=D.s[n-1],lm=D.m[n-1];
+    mk(sv,'circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk(sv,'circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--muted)'});
+    mk(sv,'text',{x:R-6,y:Y(ls)-8,'text-anchor':'end','class':'val'},fmt(ls,2));
+    mk(sv,'text',{x:R-6,y:Y(lm)+16,'text-anchor':'end','class':'val'},fmt(lm,2));
+  }
+  // yearly excess
+  var sy=document.getElementById('yearly');
+  if(sy){var L=36,R=412,T=14,B=212,lo=-10,hi=30,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    [-10,0,10,20,30].forEach(function(v){mk(sy,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===0?'var(--muted)':'var(--rule)'});mk(sy,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(v>0?'+':'')+v);});
+    var slot=(R-L)/D.yearly.length,bw=slot*0.62;
+    D.yearly.forEach(function(r,i){var x=L+i*slot+(slot-bw)/2,v=r[1],y0=Y(0),y1=Y(v);
+      mk(sy,'rect',{x:x,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0)),fill:r[2]==='oos'?'var(--oos)':'var(--accent)',rx:1.5});
+      mk(sy,'text',{x:x+bw/2,y:v>=0?y1-5:y1+12,'text-anchor':'middle','class':'val'},(v>0?'+':'')+fmt(v,1));
+      mk(sy,'text',{x:x+bw/2,y:B+16,'text-anchor':'middle'},"'"+String(r[0]).slice(2));});
+  }
+  // sharpe vs X
+  var sx=document.getElementById('xchart');
+  if(sx){var L=36,R=392,T=14,B=212,lo=0.4,hi=1.1,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    var labs=D.x_is.map(function(p){return p[0]}),slot=(R-L-24)/(labs.length-1),Xp=function(i){return L+8+i*slot+(i===labs.length-1?12:0)};
+    [0.4,0.6,0.8,1.0].forEach(function(v){mk(sx,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sx,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},fmt(v,1));});
+    [[D.spy_is,'var(--accent)'],[D.spy_oos,'var(--oos)']].forEach(function(r){mk(sx,'line',{x1:L,x2:R,y1:Y(r[0]),y2:Y(r[0]),stroke:r[1],'stroke-dasharray':'4 4','stroke-width':1.2,opacity:.8});});
+    [[D.x_is,'var(--accent)'],[D.x_oos,'var(--oos)']].forEach(function(r){
+      var pts=r[0].slice(0,-1).map(function(p,i){return (i?'L':'M')+Xp(i).toFixed(1)+' '+Y(p[1]).toFixed(1)}).join('');
+      mk(sx,'path',{d:pts,fill:'none',stroke:r[1],'stroke-width':2});
+      var last=r[0][r[0].length-1];mk(sx,'circle',{cx:Xp(labs.length-1),cy:Y(last[1]),r:4,fill:r[1]});});
+    labs.forEach(function(l,i){if(l==='none'||(+l)%10===0)mk(sx,'text',{x:Xp(i),y:B+16,'text-anchor':'middle'},l==='none'?'ingen':l+' %');});
+    var ci=labs.indexOf('10');mk(sx,'line',{x1:Xp(ci),x2:Xp(ci),y1:T,y2:B,stroke:'var(--muted)','stroke-dasharray':'2 3'});
+    mk(sx,'text',{x:Xp(ci)+4,y:T+10},'valgt');
+  }
+})();
+</script>
+
+</body>
+</html>

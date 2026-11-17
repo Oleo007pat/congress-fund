@@ -36,10 +36,10 @@ Kalibrering (2016-2021): 12.176 køb. Test (2022-i dag): 8.391 køb.
 Holdt ude af v1 (9.793 handler), største årsager:
 - ingen ticker (fonde, obligationer, private selskaber og lignende): 7.677
 - optioner og warrants: 906
-- mistænkelig dato (fx handelsdato efter indlevering eller over 3 år før): 371
-- obligations-, krypto- og andre aktivkoder: 264+
+- mistænkelig dato (fx handelsdato efter indlevering eller over 3 år før): 323 (371 markeret i alt)
+- andre aktivkoder i indberetningen, fx virksomhedsobligationer og "andet": 264
 - tvivl om aktivtype, holdt ude efter den konservative regel: 139
-- dubletter fra ændringsindberetninger: 514, og handler slettet af senere indberetning: 33
+- dubletter fra ændringsindberetninger (514 markeret) og handler slettet af en senere indberetning (33)
 
 Beløb: alle handler har et læst beløbsinterval. 457 er præcise beløb, 15 er intervaller, der var delt af et sideskift.
 
