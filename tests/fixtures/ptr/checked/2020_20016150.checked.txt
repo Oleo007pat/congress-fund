@@ -1,0 +1,5 @@
+# member=Cheri Bustos | state=IL17 | signed=2020-03-07 | template=old_2021 | pages=2
+self|Comcast Corporation - Class A (CMCSA)|CMCSA|ST|sell|2020-02-25|2020-03-02|15001-50000|Wells Fargo IRA # 1||New
+self|Target Corporation (TGT)|TGT|ST|sell|2020-02-25|2020-03-02|15001-50000|Wells Fargo IRA # 1||New
+self|Target Corporation (TGT)|TGT|ST|buy|2020-02-10|2020-03-02|15001-50000|Wells Fargo IRA # 1||New
+self|Walt Disney Company (DIS)|DIS|ST|sell|2020-02-10|2020-03-02|15001-50000|Wells Fargo IRA # 1||New

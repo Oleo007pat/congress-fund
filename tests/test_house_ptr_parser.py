@@ -11,6 +11,11 @@ Fixtures (tests/fixtures/ptr/):
   legacy/{år}_{doc}.txt / .expected.json             9 tekster fra data/legacy_text med specialtilfælde (NUL-tegn,
         sideskift, små bogstaver i ticker, short/option, DC-ejer, exchange). Forventede handler er skrevet ud fra at læse
         teksten (PDF'erne findes ikke for 2021-2026).
+  checked/{år}_{doc}.checked.txt (+ .txt / .layout.txt)   26 indberetninger fra 2016-2025 (t2016, old_2021, new_2022), hvor
+        hver handel er aflæst fra PDF-siden (billede) i runde 2 og skrevet ned i et kompakt format (se checked/README.txt),
+        uden at kopiere parserens output. CheckedAgainstPdfTests sammenligner ALLE felter; KNOWN_PARSER_DEVIATIONS i testen
+        lister de få steder, hvor parseren (bevidst uændret) afviger fra PDF'en.
+  fixtures/regression_changes_2021_2026.json         de felter, der ændres ift. den oprindelige parser, og hvorfor.
   pdf/                                               3 rigtige PDF'er til test af parse_house_ptr.py (inkl. en scannet).
   house_ptr_parser_v0_original.py                    parseren FØR t2016 blev tilføjet (til regressionstest).
 """
@@ -237,9 +242,9 @@ class LegacyCaseTests(unittest.TestCase):
             self.assertEqual(got["partial"], want["partial"], where)
             self.assertEqual(got["transaction_date"], want["transaction_date"], where)
             self.assertEqual(got["notification_date"], want["notification_date"], where)
-            self.assertEqual(None if got["amount_low"] is None else int(got["amount_low"]), want["amount_low"], where)
-            if not want.get("known_parser_defect_amount_high"):
-                self.assertEqual(None if got["amount_high"] is None else int(got["amount_high"]), want["amount_high"], where)
+            self.assertEqual(None if got["amount_low"] is None else float(got["amount_low"]), want["amount_low"], where)
+            self.assertEqual(None if got["amount_high"] is None else float(got["amount_high"]), want["amount_high"], where)
+            self.assertEqual(got["amount_flag"], want.get("amount_flag", ""), where + " amount_flag")
             if exp["template"] == "old_2021":
                 # Kendt begrænsning i den ældre skabelon (uændret i denne runde): subholding/beskrivelse flyder sammen
                 # med starten af NÆSTE handels aktienavn (og omvendt kan 'asset' få forrige handels subholding/beskrivelse
@@ -299,45 +304,368 @@ class LegacyCaseTests(unittest.TestCase):
     def test_page_break_in_the_middle_of_a_trade(self):
         res = self.run_case("2021_20020002")
         last = res["trades"][-1]
-        # Ticker og beløbets nedre grænse findes trods sideskiftet. KENDT FEJL I DEN ÆLDRE SKABELON (ikke rettet i runde 1,
-        # fordi 2021-2026 skal være uændret): beløbets øvre grænse ($50,000 efter sideskiftet) findes ikke. PDF/tekst siger
-        # 15001-50000. Når fejlen rettes, skal denne test opdateres til 50000.0.
-        self.assertEqual((last["ticker"], last["amount_low"]), ("RBLX", 15001.0))
-        self.assertIsNone(last["amount_high"])
-        # parse_house_ptr.py markerer den slags med en advarsel i stedet for at gætte
-        self.assertTrue(any("øvre grænse" in w for w in ph.amount_warnings(res["trades"])))
+        # Beløbet "$15,001 -" står på side 1 og "$50,000" på side 2 (kontrolleret mod PDF-siderne). Runde 1 gav
+        # amount_high = None; fra runde 2 hentes den øvre grænse og kontrolleres mod Husets standardinterval.
+        self.assertEqual((last["ticker"], last["amount_low"], last["amount_high"], last["amount_flag"]),
+                         ("RBLX", 15001.0, 50000.0, "repaired_split"))
+        self.assertEqual(ph.amount_warnings(res["trades"]), [])
+
+    def test_page_break_amount_is_not_guessed(self):
+        """Passer den fundne øvre grænse ikke til standardintervallet, bliver amount_high tom og beløbet markeret."""
+        low, high, flag, _ = hp._parse_amount(hp.AMOUNT_RE.search("$15,001 -"), " Filing Id #1 (X) [ST] $99,000 ")
+        self.assertEqual((low, high, flag), (15001.0, None, "incomplete_high"))
+        low, high, flag, _ = hp._parse_amount(hp.AMOUNT_RE.search("$15,001 -"), "")
+        self.assertEqual((low, high, flag), (15001.0, None, "incomplete_high"))
+        trades = [{"amount_flag": "incomplete_high"}]
+        self.assertTrue(any("øvre grænse" in w for w in ph.amount_warnings(trades)))
 
     def test_owner_dc_and_exchange(self):
         res = self.run_case("2026_20033804")
         self.assertEqual({t["owner"] for t in res["trades"]}, {"dependent child"})
         self.assertEqual({ph.trade_type(t) for t in res["trades"]}, {"exchange"})
 
-    def test_exact_amount_has_no_upper_bound(self):
+    def test_exact_amount_is_kept_with_decimals_and_marked(self):
         res = self.run_case("2024_20024375")
-        self.assertEqual((res["trades"][0]["amount_low"], res["trades"][0]["amount_high"]), (360.0, None))
+        t = res["trades"][0]
+        self.assertEqual((t["amount_low"], t["amount_high"], t["amount_flag"]), (360.0, 360.0, "exact"))
+        m = hp.AMOUNT_RE.search("$268.95 g")
+        self.assertEqual(hp._parse_amount(m)[:3], (268.95, 268.95, "exact"))
+        self.assertEqual(hp._parse_amount(hp.AMOUNT_RE.search("$.01"))[:3], (0.01, 0.01, "exact"))
+
+    def test_over_amount_is_open_interval(self):
+        self.assertEqual(hp._parse_amount(hp.AMOUNT_RE.search("Spouse/DC Over $1,000,000"))[:3],
+                         (1000000.0, None, "open_over"))
+        self.assertEqual(hp._parse_amount(hp.AMOUNT_RE.search("Over $50,000,000"))[:3], (50000000.0, None, "open_over"))
 
 
 @unittest.skipUnless(LEGACY_TEXT.is_dir(), "data/legacy_text mangler")
 class RegressionAgainstOriginalParser(unittest.TestCase):
-    """Den nye parser skal give præcis samme resultat som den oprindelige på alle tekster fra 2021-2026."""
+    """
+    Den nye parser skal give præcis samme resultat som den ORIGINALE på alle tekster fra 2021-2026, bortset fra de
+    forskelle, der er listet i fixtures/regression_changes_2021_2026.json (hver med en årsag, som testen kontrollerer):
+      exact          præcist beløb ("$360.00"): low = high = beløbet (før: low uden decimaler, high tom)
+      repaired_split beløb delt af sideskift: øvre grænse hentet, kun hvis den passer til Husets standardinterval
+      extra_trade    handel, der før gik tabt, fordi typekoden var klistret til aktienavnet (9 filer, 1 handel hver)
+    """
+    KEYS = ["owner", "asset", "ticker", "asset_type", "side", "partial", "transaction_date", "notification_date",
+            "amount_low", "amount_high", "sub_holding", "description", "option_like", "short_related", "is_stock"]
 
-    def test_identical_on_all_legacy_texts(self):
+    def diffs(self):
         spec = importlib.util.spec_from_file_location("orig_parser", FIX / "house_ptr_parser_v0_original.py")
         orig = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(orig)
-        n = n_trades = 0
+        fields, extra, n, n_trades = [], [], 0, 0
         for path in sorted(LEGACY_TEXT.glob("*/*.txt")):
-            text = path.read_text(encoding="utf-8")
+            text = path.read_text(encoding="utf-8", errors="surrogateescape")
             old, new = orig.parse_ptr_text(text), hp.parse_ptr_text(text)
+            rel = f"{path.parent.name}/{path.stem}"
             n += 1
             n_trades += len(old["trades"])
             self.assertEqual(new["header"], old["header"], path)
-            self.assertEqual(new["warnings"], old["warnings"], path)
-            self.assertEqual(len(new["trades"]), len(old["trades"]), path)
-            for o, nw in zip(old["trades"], new["trades"]):
-                self.assertEqual({k: nw[k] for k in o}, o, path)      # alle gamle felter uændrede (nye felter er tilføjet)
+            if len(new["trades"]) == len(old["trades"]):
+                self.assertEqual(new["warnings"], old["warnings"], path)
+                for i, (o, nw) in enumerate(zip(old["trades"], new["trades"])):
+                    for k in self.KEYS:
+                        if o[k] != nw[k]:
+                            fields.append({"path": rel, "trade": i, "field": k, "old": o[k], "new": nw[k],
+                                           "why": nw["amount_flag"]})
+            else:
+                proj = lambda t: tuple(repr(t[k]) for k in self.KEYS)       # noqa: E731
+                import collections
+                co, cn = collections.Counter(map(proj, old["trades"])), collections.Counter(map(proj, new["trades"]))
+                added, removed = cn - co, co - cn
+                extra.append({"path": rel, "old_n": len(old["trades"]), "new_n": len(new["trades"]),
+                              "old_warnings": old["warnings"], "new_warnings": new["warnings"],
+                              "neighbours_with_changed_asset_or_sub_or_description": sum(removed.values()),
+                              "added_trades": [[t["ticker"], t["transaction_date"], t["side"], t["amount_low"],
+                                                t["amount_high"]] for t in new["trades"] if proj(t) in added]})
+        return fields, extra, n, n_trades
+
+    def test_only_the_documented_differences(self):
+        fields, extra, n, n_trades = self.diffs()
         self.assertGreater(n, 3000)
         self.assertGreater(n_trades, 27000)
+        doc = load_json(FIX / "regression_changes_2021_2026.json")
+        self.assertEqual(fields, doc["field_changes"])
+        self.assertEqual(extra, doc["extra_trade_docs"])
+
+    def test_every_difference_has_its_reason(self):
+        doc = load_json(FIX / "regression_changes_2021_2026.json")
+        by = {"exact": 0, "repaired_split": 0}
+        for c in doc["field_changes"]:
+            self.assertIn(c["why"], by, c)
+            by[c["why"]] += 1
+            if c["why"] == "exact":
+                if c["field"] == "amount_high":
+                    self.assertIsNotNone(c["new"])
+                    self.assertTrue(c["old"] is None or c["old"] == int(c["new"]), c)
+                else:
+                    self.assertEqual(c["field"], "amount_low", c)
+                    self.assertEqual(int(c["new"]), int(c["old"]), c)           # decimaler tilføjet, hele dollars uændret
+            else:
+                self.assertEqual(c["field"], "amount_high", c)
+                self.assertIsNone(c["old"], c)
+        for c in doc["field_changes"]:
+            if c["why"] == "repaired_split":
+                lows = [d for d in doc["field_changes"] if d["path"] == c["path"] and d["trade"] == c["trade"]]
+                self.assertEqual(len(lows), 1, "kun amount_high ændres ved sideskift-reparation")
+                self.assertIn(c["new"], hp.STANDARD_RANGES.values(), c)
+        self.assertEqual(by, {"exact": 182, "repaired_split": 32})
+        self.assertEqual(len(doc["extra_trade_docs"]), 9)
+        for e in doc["extra_trade_docs"]:
+            self.assertEqual(e["new_n"], e["old_n"] + 1, e)
+            self.assertTrue(any("markører" in w for w in e["old_warnings"]), e)    # fejlen blev før meldt som advarsel
+            self.assertEqual(e["new_warnings"], [], e)
+            self.assertTrue(e["added_trades"], e)
+
+
+CHECKED = PTR / "checked"
+
+
+def read_checked(path: Path) -> tuple[dict, list[dict]]:
+    """Læser en .checked.txt (se checked/README.txt): ({header-nøgler}, [handler])."""
+    meta, trades = {}, []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("# "):
+            for part in line[2:].split(" | "):
+                k, _, v = part.partition("=")
+                meta[k.strip()] = v.strip()
+            continue
+        if not line.strip() or line.startswith("#"):
+            continue
+        f = line.split("|")
+        assert len(f) == 11, (path.name, line)
+        owner, asset, ticker, code, typ, tdate, ndate, amount, sub, desc, status = f
+        low, _, high = amount.partition("-")
+        exact = "-" not in amount
+        trades.append({"owner": owner, "asset": asset, "ticker": ticker, "code": code, "type": typ, "tdate": tdate,
+                       "ndate": ndate, "low": float(low), "high": float(low) if exact else (float(high) if high else None),
+                       "open": (not exact) and not high, "exact": exact, "sub": sub, "desc": desc, "status": status})
+    return meta, trades
+
+
+# Steder, hvor parseren er uenig med PDF'en (checked-filen er PDF'en). Dem rettes ikke i runde 2, fordi reglen er, at
+# 2021-2026 skal være uændret ift. den oprindelige parser; de står her med PARSERENS nuværende værdi, så testen fejler,
+# hvis de ændres (så er fixturen/afvigelsen til at tage stilling til). (doc, handelsnr, felt) -> parserens værdi.
+KNOWN_PARSER_DEVIATIONS = {
+    # new_2022, ren tekst: en beskrivelse over to linjer ("...dated" / "2/9/2022.") - anden linje havner i NÆSTE handels aktienavn,
+    # og dermed mister næste handel sin ejerkode (JT står midt i aktienavnet).
+    ("2024_20024581", 2, "description"): "Vested shares sold to separate trust not for the benefit of filer or spouse pursuant to forward contract dated",
+    ("2024_20024581", 3, "owner"): "self",
+    ("2024_20024581", 3, "asset"): "2/9/2022. JT Seattle WA MN LT PW 3.55% PWR Util Due 05/01/45",
+    # PDF: "Trimer Capital Partners I LP (GLAS) - Core"; (GLAS) er et fondsfamilie-navn, ikke en børsticker. Parserens regel
+    # (parentes med store bogstaver) tager det som ticker; typen er HN, så handlen er ikke med i v1 uanset.
+    ("2025_20032187", 4, "ticker"): "GLAS",
+    ("2025_20032187", 5, "ticker"): "GLAS",
+}
+
+
+def checked_docs() -> list[str]:
+    return sorted(p.name[:-len(".checked.txt")] for p in CHECKED.glob("*.checked.txt"))
+
+
+class CheckedAgainstPdfTests(unittest.TestCase):
+    """
+    Indberetninger fra 2016-2026, hvor hver handel er aflæst direkte fra PDF-siden (billede) i runde 2 og skrevet ned i
+    checked/*.checked.txt uden at kopiere parserens output. Dækker t2016 (2016-2018), old_2021 (2018-2022, inkl. 5 af de
+    filer, der før gav markør-mismatch) og new_2022 (2022-2025) samt åbne ("Over") og præcise beløb.
+    """
+
+    def test_coverage_across_years_and_templates(self):
+        docs = checked_docs()
+        self.assertGreaterEqual(len(docs), 20)
+        by_year, templates = {}, set()
+        for d in docs:
+            meta, _ = read_checked(CHECKED / f"{d}.checked.txt")
+            by_year.setdefault(d[:4], []).append(d)
+            templates.add((d[:4], meta["template"]))
+        for y in ("2017", "2018", "2019", "2020"):
+            self.assertGreaterEqual(len(by_year[y]), 2, y)
+        self.assertIn(("2018", "t2016"), templates)
+        self.assertIn(("2018", "old_2021"), templates)
+        mismatch = [d for d in docs if "markoer-mismatch" in read_checked(CHECKED / f"{d}.checked.txt")[0].get("note", "")]
+        self.assertGreaterEqual(len(mismatch), 3)
+
+    def test_every_checked_document(self):
+        for d in checked_docs():
+            with self.subTest(doc=d):
+                meta, want = read_checked(CHECKED / f"{d}.checked.txt")
+                plain = (CHECKED / f"{d}.txt").read_text(encoding="utf-8")
+                lay_path = CHECKED / f"{d}.layout.txt"
+                layout = lay_path.read_text(encoding="utf-8") if lay_path.is_file() else None
+                res = hp.parse_ptr_text(plain, layout)
+                self.assertEqual(res["template"], meta["template"])
+                if meta.get("source") != "plain":
+                    self.assertEqual(res["header"]["signed_date"], meta["signed"])
+                    self.assertEqual(res["header"]["state_dst"], meta["state"])
+                self.assertEqual(res["header"]["member"], meta["member"])
+                self.assertEqual(len(res["trades"]), len(want), "antal handler")
+                for i, (got, w) in enumerate(zip(res["trades"], want), 1):
+                    where = f"{d} handel {i} ({w['asset']})"
+                    pdf = {
+                        "owner": w["owner"], "asset": w["asset"], "ticker": w["ticker"].upper(),
+                        "asset_type": w["code"] or got["asset_type"], "type": w["type"], "transaction_date": w["tdate"],
+                        "notification_date": w["ndate"], "amount_low": w["low"], "amount_high": w["high"],
+                        "amount_flag": "open_over" if w["open"] else ("exact" if w["exact"] else ""),
+                        "sub_holding": w["sub"], "description": w["desc"], "filing_status": w["status"],
+                    }
+                    parsed = dict(got, type=ph.trade_type(got))
+                    for field, want_val in pdf.items():
+                        have = parsed[field]
+                        if field in ("asset", "sub_holding", "description"):
+                            have, want_val = norm(have), norm(want_val)
+                        key = (d, i, field)
+                        if key in KNOWN_PARSER_DEVIATIONS:
+                            known = KNOWN_PARSER_DEVIATIONS[key]
+                            known = norm(known) if field in ("asset", "sub_holding", "description") else known
+                            self.assertNotEqual(have, want_val, where + f" {field}: afvigelsen er rettet, fjern den fra listen")
+                            self.assertEqual(have, known, where + f" {field}")
+                        else:
+                            self.assertEqual(have, want_val, where + f" {field}")
+
+    def test_old_2021_layout_fixes_owner_and_text_that_plain_text_gets_wrong(self):
+        """20015042 (Pelosi): ejerkoden SP er i almindelig tekst klistret til forrige handels beskrivelse ("...$1600.sP")."""
+        plain = (CHECKED / "2020_20015042.txt").read_text(encoding="utf-8")
+        layout = (CHECKED / "2020_20015042.layout.txt").read_text(encoding="utf-8")
+        self.assertEqual({t["owner"] for t in hp.parse_ptr_text(plain)["trades"]}, {"self"})          # almindelig tekst: forkert
+        res = hp.parse_ptr_text(plain, layout)
+        self.assertEqual(res["parse_source"], "layout")
+        self.assertEqual({t["owner"] for t in res["trades"]}, {"spouse"})                              # PDF: SP
+        self.assertTrue(all(t["option_like"] for t in res["trades"]))                                 # 'call options' i beskrivelsen
+
+    def test_t2016_without_layout_text_uses_plain_text_and_says_so(self):
+        """20005968 (PDF fra anden producent, tomt layout-udtræk): 1 handel fra almindelig tekst + advarsel, aldrig stille 0 handler."""
+        plain = (CHECKED / "2020_20005968.txt").read_text(encoding="utf-8")
+        for layout in (None, "", "  \n"):
+            res = hp.parse_ptr_text(plain, layout)
+            self.assertEqual(len(res["trades"]), 1)
+            self.assertEqual(res["parse_source"], "plain")
+            self.assertTrue(any("layout-tekst mangler" in w for w in res["warnings"]))
+
+    def test_unusable_layout_falls_back_to_plain_text(self):
+        """Layout uden tabelhoved bruges ikke; så læses almindelig tekst (parse_source er ikke 'layout')."""
+        plain = (CHECKED / "2018_20009624.txt").read_text(encoding="utf-8")
+        res = hp.parse_ptr_text(plain, "intet der ligner en tabel\n")
+        self.assertEqual(len(res["trades"]), 5)
+        self.assertNotEqual(res.get("parse_source"), "layout")
+
+    def test_legacy_old_2021_fixtures_with_layout_are_exact(self):
+        """De fire old_2021-filer fra data/legacy_text er også tjekket mod PDF; med layout er asset/subholding/beskrivelse præcise."""
+        for key in ("2021_20018553", "2021_20019877", "2021_20020002", "2022_20020733"):
+            with self.subTest(key=key):
+                exp = load_json(PTR / "legacy" / f"{key}.expected.json")
+                plain = (PTR / "legacy" / f"{key}.txt").read_text(encoding="utf-8")
+                layout = (PTR / "legacy" / f"{key}.layout.txt").read_text(encoding="utf-8")
+                res = hp.parse_ptr_text(plain, layout)
+                self.assertEqual(res["parse_source"], "layout")
+                self.assertEqual(len(res["trades"]), len(exp["trades"]))
+                for got, w in zip(res["trades"], exp["trades"]):
+                    self.assertEqual(norm(got["asset"]), norm(w["asset"]))
+                    self.assertEqual(norm(got["sub_holding"]), norm(w["sub_holding"]))
+                    self.assertEqual(norm(got["description"]), norm(w["description"]))
+                    self.assertEqual(got["owner"], w["owner"])
+                    self.assertEqual((got["amount_low"], got["amount_high"]), (float(w["amount_low"]), float(w["amount_high"])))
+                    self.assertEqual((got["option_like"], got["short_related"]), (w["option_like"], w["short_related"]))
+                    self.assertEqual(ph.include_decision(got)[0], w["include_v1"])
+
+
+class Round2RuleTests(unittest.TestCase):
+    """Regler fra runde 2: LOCATION/COMMENTS, datomistanke, dubletter/sletninger, navne uden accenter."""
+
+    def test_location_and_comments_are_read_and_lose_no_trade(self):
+        d = PTR / "20004420"
+        plain = d.with_suffix(".txt").read_text(encoding="utf-8")
+        lay = (PTR / "20004420.layout.txt").read_text(encoding="utf-8")
+        marker = "                    SUBHOLDINg OF: Brad and Ann Ashford Joint Account\n"
+        self.assertIn(marker, lay)
+        res = hp.parse_ptr_text(plain, lay.replace(marker, marker + "                    LOCATION: Omaha, NE, US\n"
+                                                   "                    COMMENTS: Shares were\n                    sold in two lots\n"))
+        self.assertEqual(res["warnings"], [])
+        self.assertEqual(len(res["trades"]), 1)
+        t = res["trades"][0]
+        self.assertEqual((t["location"], t["comments"]), ("Omaha, NE, US", "Shares were sold in two lots"))
+        self.assertEqual(t["sub_holding"], "Brad and Ann Ashford Joint Account")      # underskriften skylles ikke ind i subholding
+
+    def test_date_suspect_reasons(self):
+        f = hp.date_suspect_reason
+        self.assertEqual(f("2018-03-01", "2018-04-01"), "")
+        self.assertEqual(f("2018-04-01", "2018-04-01"), "")                           # samme dag er ok
+        self.assertEqual(f("2018-04-02", "2018-04-01"), "efter_filing_date")
+        self.assertEqual(f("2014-04-01", "2018-04-01"), "over_3_aar_foer_filing_date")
+        self.assertEqual(f("2015-04-01", "2018-04-01"), "")                           # præcis 3 år er ikke mistænkt
+        self.assertEqual(f("2081-01-01", "2018-04-01"), "efter_filing_date")
+        self.assertEqual(f("1918-01-01", "2018-04-01"), "umuligt_aar")
+        self.assertEqual(f("", "2018-04-01"), "ugyldig_dato")
+        self.assertEqual(f("2018-03-01", ""), "filing_date_mangler")
+
+    @staticmethod
+    def row(doc, year="2020", filing="2020-05-01", ticker="AAA", ttype="buy", tdate="2020-04-01", low="1001.0", high="15000.0",
+            status="New", include=True, reason="kode ST", member="José Sánchez", owner="self"):
+        return {"year": year, "doc_id": doc, "member": member, "ticker": ticker, "asset": ticker + " Inc", "type": ttype,
+                "transaction_date": tdate, "amount_low": low, "amount_high": high, "filing_status": status,
+                "filing_date": filing, "include_v1": include, "include_reason": reason, "owner": owner}
+
+    def test_duplicates_are_marked_in_the_later_filing_only(self):
+        r = self.row
+        rows = [r("200", filing="2020-05-01"), r("201", filing="2020-06-01", status="Amended", member="Jose Sanchez"),
+                r("202", filing="2020-06-02", ticker="BBB"),
+                r("203", filing="2020-06-03", tdate="2020-04-02")]        # anden dato: ingen dublet
+        n = ph.finalize_trades(rows)
+        self.assertEqual([x["duplicate_of"] for x in rows], ["", "200", "", ""])      # accenter ændrer ikke medlemmet
+        self.assertEqual([x["include_v1"] for x in rows], [True, False, True, True])
+        self.assertTrue(rows[1]["include_reason"].startswith("dublet af 200"))
+        self.assertIn("kode ST", rows[1]["include_reason"])                              # grundreglen bevares
+        self.assertEqual(n["duplicate"], 1)
+
+    def test_identical_rows_in_the_same_filing_are_not_duplicates(self):
+        rows = [self.row("300"), self.row("300")]
+        ph.finalize_trades(rows)
+        self.assertEqual([x["duplicate_of"] for x in rows], ["", ""])
+        self.assertEqual([x["include_v1"] for x in rows], [True, True])
+
+    def test_later_filing_with_more_identical_rows_marks_only_the_surplus_as_duplicates(self):
+        rows = [self.row("400")] + [self.row("401", filing="2020-06-01") for _ in range(2)]
+        ph.finalize_trades(rows)
+        self.assertEqual([x["duplicate_of"] for x in rows], ["", "400", ""])
+
+    def test_different_amount_is_not_a_duplicate(self):
+        rows = [self.row("500"), self.row("501", filing="2020-06-01", low="15001.0", high="50000.0", status="Amended")]
+        n = ph.finalize_trades(rows)
+        self.assertEqual([x["duplicate_of"] for x in rows], ["", ""])
+        self.assertEqual(n["amended_not_dup"], 1)
+
+    def test_deleted_rows_and_the_trade_they_delete_are_excluded(self):
+        rows = [self.row("600"), self.row("601", filing="2020-06-01", status="Deleted")]
+        n = ph.finalize_trades(rows)
+        self.assertEqual(rows[0]["deleted_by"], "601")
+        self.assertEqual([x["include_v1"] for x in rows], [False, False])
+        self.assertEqual((n["deleted_by"], n["deleted_rows"]), (1, 1))
+
+    def test_date_suspect_rows_are_excluded_but_counted_and_the_date_is_kept(self):
+        rows = [self.row("700", tdate="2021-01-01"), self.row("701", tdate="2020-04-01", ticker="CCC")]
+        n = ph.finalize_trades(rows)
+        self.assertEqual(rows[0]["date_suspect"], "efter_filing_date")
+        self.assertEqual(rows[0]["transaction_date"], "2021-01-01")                    # datoen rettes ikke
+        self.assertFalse(rows[0]["include_v1"])
+        self.assertTrue(rows[1]["include_v1"])
+        self.assertEqual(n["date_suspect"], 1)
+
+    def test_rows_that_were_never_included_stay_excluded_with_their_own_reason(self):
+        rows = [self.row("800", include=False, reason="aktivtype ?", tdate="2021-01-01")]
+        ph.finalize_trades(rows)
+        self.assertFalse(rows[0]["include_v1"])
+        self.assertEqual(rows[0]["include_reason"], "aktivtype ?")
+
+    def test_finalize_is_idempotent(self):
+        rows = [self.row("900"), self.row("901", filing="2020-06-01"), self.row("902", tdate="2021-01-01", ticker="DDD")]
+        ph.finalize_trades(rows)
+        once = [dict(x) for x in rows]
+        ph.finalize_trades(rows)
+        self.assertEqual(rows, once)
+
+    def test_fold_removes_accents_and_case(self):
+        self.assertEqual(ph.fold("José SÁNCHEZ"), ph.fold("jose sanchez"))
+        self.assertEqual(ph.fold("Nydia M. Velázquez"), "nydia m. velazquez")
 
 
 class ParseHousePtrScriptTests(unittest.TestCase):
@@ -413,7 +741,7 @@ class ParseHousePtrScriptTests(unittest.TestCase):
         cache = self.tmp / "data" / "interim" / "text" / "2016" / "20004419.txt"
         before = cache.stat().st_mtime_ns
         rc, out = self.run_main("2016")
-        self.assertIn("0 nye, 3 fra cache", out)
+        self.assertIn("0 nye, 0 med layout efterhentet, 3 fra cache", out)
         self.assertEqual(cache.stat().st_mtime_ns, before)
         # 4) et andet år bevarer rækkerne for 2016
         rc, out = self.run_main("2017")

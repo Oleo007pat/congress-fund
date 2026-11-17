@@ -1,0 +1,3 @@
+# member=Lloyd K. Smucker | state=PA11 | signed=2019-04-11 | template=old_2021 | pages=1 | note=foerste raekke: beskeddato 04/09/2018 staar saadan i PDF'en (aar 2018, foer handelsdatoen)
+self|Apple Inc. (AAPL)|AAPL|ST|partial_sale|2019-04-05|2018-04-09|1001-15000|TDAMERITRADE IRA||New
+self|Apple Inc. (AAPL)|AAPL|ST|partial_sale|2019-03-18|2019-04-09|1001-15000|TDAMERITRADE IRA||New

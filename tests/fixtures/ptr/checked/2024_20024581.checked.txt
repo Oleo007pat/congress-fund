@@ -1,0 +1,4 @@
+# member=Suzan K. DelBene | state=WA01 | signed=2024-03-08 | template=new_2022 | pages=1 | note=obligationer [GS] uden ticker; beskrivelse med 'forward contract'
+joint|Austin Tex Indpt SCH Dist Unltd Tax Ref 5.00% Due Aug 1, 2028||GS|buy|2024-02-21|2024-02-21|500001-1000000|||New
+spouse|Microsoft Corporation - Common Stock (MSFT)|MSFT|ST|sell|2024-02-29|2024-02-29|100001-250000||Vested shares sold to separate trust not for the benefit of filer or spouse pursuant to forward contract dated 2/9/2022.|New
+joint|Seattle WA MN LT PW 3.55% PWR Util Due 05/01/45||GS|buy|2024-02-21|2024-02-21|15001-50000|||New

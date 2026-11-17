@@ -1,0 +1,9 @@
+# member=Kevin Yoder | state=KS03 | signed=2018-05-09 | template=old_2021 | pages=2 | note=markoer-mismatch foer rettelsen (4 handler, 8 markoerer)
+self|Energy Transfer Partners, L.P. Common Units representing limited partner interests (ETP)|ETP|ST|sell|2018-04-11|2018-04-11|1001-15000|||New
+self|EQT Midstream Partners, LP Common Units representing Limited Partner Interests (EQM)|EQM|ST|sell|2018-04-11|2018-04-11|1001-15000|||New
+self|Kinder Morgan, Inc. (KMI)|KMI|ST|buy|2018-04-11|2018-04-11|1001-15000|||New
+self|Magellan Midstream Partners L.P. Limited Partnership (MMP)|MMP|ST|buy|2018-04-11|2018-04-11|1001-15000|||New
+self|ONEOK, Inc. (OKE)|OKE|ST|buy|2018-04-11|2018-04-11|1001-15000|||New
+self|Spectra Energy Partners, LP Common Units representing Limited Partner Interests (SEP)|SEP|ST|sell|2018-04-11|2018-04-11|1001-15000|||New
+self|Tallgrass Energy Partners, LP Common Units representing limited partner interests (TEP)|TEP|ST|sell|2018-04-11|2018-04-11|1001-15000|||New
+self|Targa Resources, Inc. (TRGP)|TRGP|ST|buy|2018-04-11|2018-04-11|1001-15000|||New

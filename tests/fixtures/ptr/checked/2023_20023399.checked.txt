@@ -1,0 +1,4 @@
+# member=Pete Sessions | state=TX17 | signed=2023-08-17 | template=new_2022 | pages=2 | note=to praecise beloeb ($155.92, $163.20); obligation [GS] uden ticker
+spouse|Ares Capital Corporation - Closed End Fund (ARCC)|ARCC|ST|buy|2023-08-15|2023-08-17|155.92|IRA One|8 shares|New
+spouse|Kyndryl Holdings, Inc. (KD)|KD|ST|sell|2023-07-28|2023-08-02|163.20|Trust One|7 shares|New
+spouse|US Treasury BILL 01/11/2024 5.472%||GS|buy|2023-07-28|2023-07-28|15001-50000|Trust One|US Treasury BILL 01/11/2024 5.472% $25k|New

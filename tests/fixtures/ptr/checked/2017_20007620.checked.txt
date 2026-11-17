@@ -1,0 +1,8 @@
+# member=Carlos Curbelo | state=FL26 | signed=2017-07-13 | template=t2016 | pages=2 | note=sidste handel deles af sideskift (Filing Status og Subholding paa side 2)
+spouse|Energy Transfer Partners, L.P. Common Units representing limited partner interests (ETP)|ETP||sell|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|Facebook, Inc. - Class A (FB)|FB||buy|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|iShares U.S. Real Estate ETF (IYR)|IYR||buy|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|Kinder Morgan, Inc. (KMI)|KMI||sell|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|O'Reilly Automotive, Inc. (ORLY)|ORLY||buy|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|ROBO Global Robotics and Automation Index ETF (ROBO)|ROBO||buy|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New
+spouse|T. Rowe Price Group, Inc. (TROW)|TROW||sell|2017-07-10|2017-07-10|1001-15000|UBS Brokerage Account||New

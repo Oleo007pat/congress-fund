@@ -1,0 +1,4 @@
+# member=Mo Brooks | state=AL05 | signed=2019-05-20 | template=old_2021 | pages=1 | note=markoer-mismatch foer rettelsen (1 handel, 3 markoerer); en kommunal obligation [GS] uden ticker
+self|General Dynamics Corporation (GD)|GD|ST|sell|2019-05-02|2019-05-02|1001-15000|||New
+self|Homewood Ala City Brd Ed Spl||GS|sell|2019-04-02|2019-04-02|1001-15000|||New
+self|Lee Enterprises, Incorporated (LEE)|LEE|ST|buy|2019-04-11|2019-04-11|15001-50000|||New

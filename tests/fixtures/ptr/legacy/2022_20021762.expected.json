@@ -6,7 +6,7 @@
  "member": "Tom Rice",
  "state_dst": "SC07",
  "signed_date": "2022-09-28",
- "checked": "Forventede handler er skrevet ned ved at læse tekstfilen (PDF'en findes ikke for 2021-2026). Ikke kopieret fra parserens output.",
+ "checked": "Alle felter (ejer, aktiv, ticker, kode, type, datoer, beloeb, subholding, beskrivelse) kontrolleret mod PDF-siden/siderne som billede i runde 2; ingen afvigelser fundet. Teksten er fra data/legacy_text. Ikke kopieret fra parserens output.",
  "trades": [
   {
    "owner": "self",

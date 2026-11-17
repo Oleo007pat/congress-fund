@@ -1,0 +1,9 @@
+# member=Earl Blumenauer | state=OR03 | signed=2020-06-03 | template=old_2021 | pages=2 | note=markoer-mismatch foer rettelsen (6 handler, 8 markoerer); obligationer [CS]/[GS] uden ticker
+spouse|Amgen Inc. (AMGN)|AMGN|ST|buy|2020-05-01|2020-06-03|1001-15000||Part of my spouse's retirement portfolio.|New
+spouse|BlackRock, Inc. (BLK)|BLK|ST|buy|2020-05-12|2020-06-03|1001-15000||Part of my spouse's retirement portfolio.|New
+spouse|CVS Health Corporation (CVS)|CVS|ST|buy|2020-05-08|2020-06-03|1001-15000||Part of my spouse's retirement portfolio.|New
+spouse|Flex Ltd. - Ordinary Shares (FLEX)|FLEX|ST|partial_sale|2020-05-05|2020-06-03|1001-15000||Part of my spouse's retirement portfolio.|New
+spouse|The Procter & Gambl 3%30 DUE 03/25/30||CS|buy|2020-05-12|2020-06-03|15001-50000||Part of my spouse's retirement portfolio.|New
+spouse|US Treasury BILL20||GS|sell|2020-05-07|2020-06-03|50001-100000||Full Redemption. Part of my spouse's retirement portfolio.|New
+spouse|US Treasury BILL20 DUE 11/05/20||GS|buy|2020-05-15|2020-06-03|15001-50000||Part of my spouse's retirement portfolio.|New
+spouse|Vodafone Group Plc - American Depositary Shares each representing ten Ordinary Shares (VOD)|VOD|ST|buy|2020-05-13|2020-06-03|1001-15000||Part of my spouse's retirement portfolio.|New

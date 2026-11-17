@@ -1,0 +1,5 @@
+# member=Debbie Dingell | state=MI12 | signed=2016-12-15 | template=t2016 | pages=2 | note=ejer-kolonnen er tom for to raekker; Asset Class Details har samme kontonavn med forskellige ejere
+spouse|Alphabet Inc. - Class C Capital Stock (GOOG)|GOOG||buy|2016-12-05|2016-12-12|1001-15000|Morgan Stanley Smith Barney Brokerage Account||New
+joint|Novartis AG (NVS)|NVS||buy|2016-12-05|2016-12-12|1001-15000|Morgan Stanley Smith Barney LLC Brokerage Account||New
+self|Unilever PLC (UL)|UL||buy|2016-12-06|2016-12-12|1001-15000|Morgan Stanley Smith Barney LLC Brokerage Account||New
+self|UnitedHealth Group Incorporated Common Stock (UNH)|UNH||buy|2016-12-05|2016-12-12|15001-50000|Morgan Stanley Smith Barney LLC Brokerage Account||New

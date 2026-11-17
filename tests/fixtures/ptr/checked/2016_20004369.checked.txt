@@ -1,0 +1,8 @@
+# member=Alan S. Lowenthal | state=CA47 | signed=2016-01-10 | template=t2016 | pages=2 | note=handel 2 har tastefejl i PDF'en: handelsdato 01/29/2016 efter underskrift 01/10/2016, beskeddato 01/5/2016
+spouse|Chipotle Mexican Grill, Inc. (CMG)|CMG||sell|2016-01-06|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA||New
+spouse|Crown Castle Intl Corp|||sell|2016-01-29|2016-01-05|15001-50000|Neuberger Berman - Traditional IRA|Provider of wireless infrastructure|New
+spouse|Paypal Holdings Inccom|||sell|2016-01-07|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA|Online financial services|New
+spouse|Paypal Holdings Inccom|||sell|2016-01-07|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA|Online financial services|New
+spouse|PayPal Holdings, Inc. (PYPL)|PYPL||sell|2016-01-07|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA||New
+spouse|Union Pacific Corporation (UNP)|UNP||sell|2016-01-07|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA||New
+spouse|Zimmer Holdings INCSR|||buy|2016-01-07|2016-01-10|1001-15000|Neuberger Berman - Traditional IRA|Medical technology and devices|New

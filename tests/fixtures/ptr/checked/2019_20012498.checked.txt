@@ -1,0 +1,11 @@
+# member=Lois Frankel | state=FL21 | signed=2019-10-24 | template=old_2021 | pages=2 | note=markoer-mismatch foer rettelsen (5 handler, 10 markoerer); handel 1-6 paa side 1, 7-10 paa side 2
+self|Cigna Corporation (CI)|CI|ST|buy|2019-10-02|2019-10-02|1001-15000|Morgan Stanley IRA - X141||New
+self|Franklin Resources, Inc. (BEN)|BEN|ST|sell|2019-09-25|2019-09-25|1001-15000|Morgan Stanley IRA - X142||New
+self|Franklin Resources, Inc. (BEN)|BEN|ST|partial_sale|2019-09-24|2019-09-24|1001-15000|Morgan Stanley IRA - X142||New
+self|Gartner, Inc. (IT)|IT|ST|buy|2019-09-23|2019-09-23|1001-15000|Morgan Stanley IRA - X142||New
+self|McKesson Corporation (MCK)|MCK|ST|sell|2019-09-24|2019-09-24|1001-15000|Morgan Stanley IRA - X142||New
+self|McKesson Corporation (MCK)|MCK|ST|buy|2019-09-25|2019-09-25|1001-15000|Morgan Stanley IRA - X141||New
+self|PBF Energy Inc. Class A (PBF)|PBF|ST|buy|2019-09-24|2019-09-24|1001-15000|Morgan Stanley IRA - X142||New
+self|PBF Energy Inc. Class A (PBF)|PBF|ST|buy|2019-09-25|2019-09-25|1001-15000|Morgan Stanley IRA - X142||New
+self|Xcel Energy Inc. (XEL)|XEL|ST|sell|2019-10-02|2019-10-02|1001-15000|Morgan Stanley IRA - X141||New
+self|Xcel Energy Inc. (XEL)|XEL|ST|partial_sale|2019-09-25|2019-09-25|1001-15000|Morgan Stanley IRA - X141||New

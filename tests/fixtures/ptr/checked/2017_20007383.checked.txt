@@ -1,0 +1,2 @@
+# member=Earl Blumenauer | state=OR03 | signed=2017-06-01 | template=t2016 | pages=1
+spouse|Northwest Natural Gas Company (NWN)|NWN||buy|2017-05-16|2017-06-01|1001-15000||Dividend reinvestment|New

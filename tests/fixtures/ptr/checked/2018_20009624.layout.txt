@@ -1,0 +1,68 @@
+                                                                                                                             Filing ID #20009624
+                         PerioDic tranSaction rePort
+
+
+
+         Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515
+
+
+filer information
+name:               Hon. Carlos Curbelo
+Status:             Member
+State/District:     FL26
+
+
+tranSactionS
+
+iD        owner      asset                                   transaction       Date          notification      amount               cap.
+                                                             type                            Date                                   gains >
+                                                                                                                                    $200?
+
+                     Bank of america Corporation             s (partial)       04/26/2018    05/19/2018        $1,001 - $15,000          gfedc
+                     (BaC) [sT]
+
+                     FILINg sTaTUs: New
+                     sUBHoLDINg oF: Fidelity Investments Brokerage account
+
+                     Bank of america Corporation             s (partial)       05/28/2018    05/19/2018        $1,001 - $15,000          gfedc
+                     (BaC) [sT]
+
+                     FILINg sTaTUs: New
+                     sUBHoLDINg oF: Fidelity Investments Brokerage account
+
+                     general Electric Company (gE)           P                 03/23/2018    05/19/2018        $1,001 - $15,000          gfedc
+                     [sT]
+
+                     FILINg sTaTUs: New
+                     sUBHoLDINg oF: Fidelity Investments Brokerage account
+
+                     general Electric Company (gE)           P                 03/28/2018    05/19/2018        $1,001 - $15,000          gfedc
+                     [sT]
+
+                     FILINg sTaTUs: New
+                     sUBHoLDINg oF: Fidelity Investments Brokerage account
+
+
+                     Herc Holdings Inc. (HRI) [sT]           s (partial)       03/29/2018    05/19/2018        $1,001 - $15,000          gfedc
+
+                     FILINg sTaTUs: New
+                     sUBHoLDINg oF: Fidelity Investments Brokerage account
+
+ * For the complete list of asset type abbreviations, please visit https://fd.house.gov/reference/asset-type-codes.aspx.
+
+aSSet claSS DetailS
+     Fidelity Investments Brokerage account (100% Interest)
+     LoCaTIoN: Miami, FL, Us
+     DEsCRIPTIoN: stock account
+
+
+initial Public offeringS
+
+ nmlkj Yes nmlkji No
+
+certification anD Signature
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Carlos Curbelo , 05/23/2018

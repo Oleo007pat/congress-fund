@@ -1,0 +1,37 @@
+P
+erioDic  t ranSaction  r ePort Clerk of the House of Re
+presentatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515f
+iler  i nformation name:
+Hon. Carlos Curbelo Status:
+Member State/District:
+FL26 t
+ranSactionS iD
+owner asset transaction type
+Date
+notification Date
+amount
+Exxon Mobil Corporation (XoM)
+P 02/8/2018 03/7/2018 $1,001 - $15,000 F
+ILINg  s TaTUs : New s
+UBHoLDINg  o F : Fidelity Investments Brokerage account First solar, Inc. (FsLR)
+P 02/13/2018 03/7/2018 $1,001 - $15,000 F
+ILINg  s TaTUs : New s
+UBHoLDINg  o F : Fidelity Investments Brokerage account general Electric Company (gE)
+P 02/8/2018 03/7/2018 $1,001 - $15,000 F
+ILINg  s TaTUs : New s
+UBHoLDINg  o F : Fidelity Investments Brokerage account general Electric Company (gE)
+P 03/23/2018 03/23/2018 $1,001 - $15,000 F
+ILINg  s TaTUs : New s
+UBHoLDINg  o F : Fidelity Investments Brokerage account a
+SSet  c laSS  D etailS Fidelity Investments Brokerage ac
+count (100% Interest)L
+oCaTIoN : Miami, FL, Us D
+EsCRIPTIoN : stock account i
+nitial  P ublic  o fferingS n
+mlkj Yes n mlkji NoFiling ID #20009192
+
+c
+ertification  anD  S ignature g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge a
+nd belief.Digitally Signed: 
+Hon. Carlos Curbelo , 03/27/2018 

@@ -1,0 +1,5 @@
+# member=Debbie Dingell | state=MI12 | signed=2016-07-11 | template=t2016 | pages=2 | note=samme kontonavn staar to gange i Asset Class Details (egen konto og JT-konto); raekker uden ejer er medlemmets egen
+spouse|Carnival Corporation (CCL)|CCL||buy|2016-07-06|2016-07-11|15001-50000|Morgan Stanley Smith Barney LLC IRA||New
+joint|Crown Castle International Corp. (CCI)|CCI||sell|2016-06-27|2016-07-05|15001-50000|Morgan Stanley Smith Barney LLC Brokerage Account||New
+self|Honeywell International Inc. (HON)|HON||buy|2016-07-06|2016-07-11|1001-15000|Morgan Stanley Smith Barney LLC Brokerage Account||New
+self|Spirit Realty Capital, Inc. (SRC)|SRC||sell|2016-07-06|2016-07-11|1001-15000|Morgan Stanley Smith Barney LLC Brokerage Account||New

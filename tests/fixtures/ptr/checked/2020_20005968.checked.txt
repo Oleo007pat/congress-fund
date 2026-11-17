@@ -1,0 +1,2 @@
+# member=James French Hill | state=AR02 | signed=2020-01-15 | template=t2016 | pages=1 | source=plain | note=PDF fra anden producent: pypdf's layout-udtraek er tomt, tekstlaget har NBSP og beskadigede etiketter. Foerste kolonne har [ST]-kode. Kun tabelraekken verificeres (subholding "J French Hill - Revocable Trust" laeses ikke)
+self|Atlas Air Worldwide Holdings (AAWW)|AAWW|ST|buy|2019-12-19|2019-12-19|15001-50000|||

@@ -1,0 +1,83 @@
+P
+erIODIC  T rANSACTION  r ePOrT Clerk of the House of Re
+presentatives • Legislative Resource Center • 135 Cannon building • Washington, DC 20515f
+Iler  I NfOrmATION Name:
+Hon. Lois Frankel Status:
+Member State/District:
+FL21 T
+rANSACTIONS ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?
+Cigna Corporation (CI)
+ [sT] P 10/02/2019 10/02/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X141 Franklin Resources, Inc. (bEN)
+[sT]
+s
+09/25/2019 09/25/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 Franklin Resources, Inc. (bEN)
+[sT]
+s (partial)
+09/24/2019 09/24/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 Gartner, Inc. (IT)
+ [sT] P 09/23/2019 09/23/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 McKesson Corporation (MCK)
+ [sT] s 09/24/2019 09/24/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 McKesson Corporation (MCK)
+ [sT] P 09/25/2019 09/25/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X141 Filing ID #20012498
+
+PbF Energy Inc. Class A (PbF)
+[sT]
+P
+09/24/2019 09/24/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 PbF Energy Inc. Class A (PbF)
+[sT]
+P
+09/25/2019 09/25/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X142 Xcel Energy Inc. (XEL)
+ [sT] s 10/02/2019 10/02/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X141 Xcel Energy Inc. (XEL)
+ [sT] s (partial) 09/25/2019 09/25/2019 $1,001 - $15,000 g
+fedcF
+ILING  s TATus : New s
+ubHoLDING  o F : Morgan stanley IRA - X141 * For the complete list of asset type abbreviations, pl
+ease visit https://fd.house.gov/reference/ asset-type-codes.aspx. A
+SSeT  C lASS  D eTAIlS Morgan stanley IRA - X141
+D
+EsCRIPTIoN : Managed by MFs Investm ent MGMT Morgan stanley IRA - X142
+D
+EsCRIPTIoN : Managed by Anchor Capital Advisors LLC I
+NITIAl  P ublIC  O fferINGS n
+mlkj Yes n mlkji NoC
+erTIfICATION  AND  S IGNATure g
+fedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to thebest of my knowledge a
+nd belief.Digitally Signed: 
+Hon. Lois Frankel , 10/24/2019 ID
+Owner Asset Transaction Type
+Date
+Notification Date
+Amount
+Cap. Gains >
+$200?

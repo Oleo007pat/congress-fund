@@ -25,10 +25,17 @@ Håndterer tre skabeloner. Template-navnet står i hver handel (felt 'template')
             sammen, tickere kan blive splittet som "M DT", ejerkoden havner i slutningen af forrige
             handel). Den læses derfor fra pypdf's LAYOUT-tekst (extract_text(extraction_mode="layout"),
             kræver pypdf >= 4.0), hvor hver tabelrække er sin egen linje. Får parseren kun almindelig
-            tekst for en 2016-skabelon, giver den en advarsel og 0 handler (aldrig stille).
+            tekst for en 2016-skabelon, læses rækkerne (kun kernen) fra den almindelige tekst med en advarsel.
+            2018-2022 bruger t2016-skabelonen eller old_2021; 2017-2020 er set og tjekket mod PDF i runde 2.
+
+  old_2021 med layout-tekst læses også af layout-parseren (_parse_t2016 med template="old_2021"): almindelig tekst
+            klistrer ejerkoden til forrige handel og lader beskrivelsen flyde ind i næste aktienavn. Mangler layout-teksten,
+            bruges almindelig tekst (parse_source = "plain"); ejer, aktienavn, subholding og beskrivelse er så upålidelige.
+            Kendt, uændret fejl i new_2022 (ren tekst): en beskrivelse over to linjer flyder ind i næste handels aktienavn
+            (ejerkoden står så midt i navnet og ejer bliver "self"); se KNOWN_PARSER_DEVIATIONS i testen.
 
 Er teksten hverken de to første skabeloner eller t2016, er template = 'unknown', og der gives en
-tydelig advarsel i stedet for stille at returnere 0 handler. 2017-2020 er IKKE set endnu (runde 1).
+tydelig advarsel i stedet for stille at returnere 0 handler.
 
 Fremgangsmåde (new_2022 / old_2021): Hver handel afsluttes af en "filing status"-linje. Teksten deles
 ved dem, og i hver del findes den faste kerne "type dato dato" (fx "P 03/10/2020 04/01/2020").
@@ -57,12 +64,17 @@ STOCK_TYPES = {"ST", "ET"}          # aktier og ETF'er - det vi kan købe via Al
 SIDE = {"P": "buy", "S": "sell", "E": "exchange"}
 
 CORE_RE = re.compile(
-    r"(?<![A-Za-z])(?P<ttype>[PSE])(?:\s*\((?P<partial>partial)\))?\s+"
+    r"(?P<ttype>[PSEpse])(?:\s*\((?P<partial>partial)\))?\s+"
     r"(?P<tdate>\d{2}/\d{2}/\d{4})\s+(?P<ndate>\d{2}/\d{2}/\d{4})"
 )
 AMOUNT_RE = re.compile(
-    r"(?P<over>Over\s+)?\$(?P<low>[\d,]+)(?:\s*-\s*(?:\[[A-Za-z]{2}\]\s*)?(?:\$(?P<high>[\d,]+))?)?"
+    r"(?P<over>Over\s+)?\$(?P<low>[\d,]+(?:\.\d+)?|\.\d+)"
+    r"(?:(?P<dash>\s*-\s*)(?:\[[A-Za-z]{2}\]\s*)?(?:\$(?P<high>[\d,]+(?:\.\d+)?|\.\d+))?)?"
 )
+# Husets faste beloebsintervaller (nedre grænse -> øvre grænse). Bruges til at kontrollere/reparere beløb, der er delt af et
+# sideskift, uden at gætte: kun en øvre grænse, der PRÆCIS passer til den nedre, accepteres.
+STANDARD_RANGES = {1001: 15000, 15001: 50000, 50001: 100000, 100001: 250000, 250001: 500000, 500001: 1000000,
+                   1000001: 5000000, 5000001: 25000000, 25000001: 50000000}
 TAG_RE = re.compile(r"\[([A-Za-z]{2})\]")
 TICKER_RE = re.compile(r"\(\s*([A-Za-z][A-Za-z0-9.\-]{0,6})\s*\)")
 OWNER_RE = re.compile(r"(?:^|\s)(SP|JT|DC)\s+(?=\S)")
@@ -113,8 +125,21 @@ def parse_header(text: str) -> dict:
     }
 
 
-def _table_text(text: str) -> str:
-    """Skærer ned til transaktionstabellen, fjerner støj og markerer etiketter."""
+FS_VALUES = ("new", "amended", "deleted")
+
+
+def _fs_value(run: str) -> str:
+    """'NewD' (pypdf klistrer næste etiket på) -> 'New'. Ukendt værdi returneres som den er."""
+    low = run.lower()
+    for v in FS_VALUES:
+        if low.startswith(v):
+            return v.capitalize()
+    return run
+
+
+def _table_text(text: str, statuses: Optional[list] = None) -> str:
+    """Skærer ned til transaktionstabellen, fjerner støj og markerer etiketter. Er 'statuses' en liste, får den
+    værdien af hver 'Filing Status' i den rækkefølge, markørerne står i."""
     lines = [ln.strip() for ln in text.splitlines()]
     start = next((i for i, ln in enumerate(lines) if "$200?" in ln), None)
     if start is None:
@@ -129,6 +154,8 @@ def _table_text(text: str) -> str:
         ln = re.sub(r"Filing ID\s*#\s*\d+", " ", ln).strip()
         if ln and ln != "g":
             if NEW_FS.match(ln):
+                if statuses is not None:
+                    statuses.append(_fs_value(re.sub(r"^F\s*S\s*:\s*", "", ln)))
                 ln = "§FS§"
             elif NEW_SO.match(ln):
                 ln = "§SO:" + NEW_SO.sub("", ln) + "§"
@@ -141,7 +168,10 @@ def _table_text(text: str) -> str:
             break
     joined = " ".join(out)
     joined = HEADER_ROW.sub(" ", joined)
-    joined = OLD_FS.sub(" §FS§ ", joined)
+    if statuses is None:
+        joined = OLD_FS.sub(" §FS§ ", joined)
+    else:
+        joined = OLD_FS.sub(lambda m: statuses.append(_fs_value(m.group(0).split(":")[-1].strip())) or " §FS§ ", joined)
     joined = OLD_SO.sub(" §SO> ", joined)
     joined = OLD_D.sub(" §D> ", joined)
     return re.sub(r"\s+", " ", joined)
@@ -188,19 +218,42 @@ def _split_pre(pre: str) -> tuple[dict, str, str]:
     return trailer, owner, asset_text
 
 
-def _parse_amount(m: Optional[re.Match]) -> tuple[Optional[float], Optional[float]]:
+def _num(x: str) -> float:
+    return float(x.replace(",", ""))
+
+
+def _parse_amount(m: Optional[re.Match], rest: str = "") -> tuple[Optional[float], Optional[float], str, int]:
+    """
+    -> (low, high, amount_flag, forbrugt) hvor amount_flag er:
+      ''                normalt interval
+      'open_over'       "Over $1,000,000" / "Spouse/DC Over $1,000,000": åbent interval, high er tom
+      'exact'           præcist beløb ("$360.00"): low = high = beløbet
+      'repaired_split'  intervallet var delt af et sideskift/linjeskift; øvre grænse hentet fra 'rest' og kun accepteret,
+                        hvis den passer præcist til Husets standardinterval for den nedre grænse
+      'incomplete_high' intervallet er delt, og øvre grænse blev ikke fundet (high er tom; der gættes ikke)
+      'unreadable'      intet beløb fundet
+    'forbrugt' = antal tegn af 'rest', som hører til beløbet (ved repaired_split).
+    """
     if not m:
-        return None, None
-    low = float(m.group("low").replace(",", ""))
+        return None, None, "unreadable", 0
+    low = _num(m.group("low"))
     if m.group("over"):
-        return low, None
-    high = m.group("high")
-    return low, (float(high.replace(",", "")) if high else None)
+        return low, None, "open_over", 0
+    if m.group("high"):
+        return low, _num(m.group("high")), "", 0
+    std = STANDARD_RANGES.get(int(low)) if low == int(low) else None
+    if m.group("dash") or std is not None:
+        cand = re.search(r"\$\s*([\d,]+(?:\.\d+)?)", rest) if rest else None
+        if std is not None and cand and _num(cand.group(1)) == std:
+            return low, float(std), "repaired_split", cand.end()
+        return low, None, "incomplete_high", 0
+    return low, low, "exact", 0
 
 
 def _parse_legacy(text: str, header: dict) -> dict:
     """new_2022 og old_2021 (uændret logik fra før t2016 blev tilføjet). text er normaliseret."""
-    table = _table_text(text)
+    statuses: list[str] = []
+    table = _table_text(text, statuses)
     warnings: list[str] = []
     records: list[dict] = []
 
@@ -222,7 +275,8 @@ def _parse_legacy(text: str, header: dict) -> dict:
                     records[-1]["description"] = " ".join(trailer["description"])
 
             amount_m = AMOUNT_RE.search(post)
-            prev_end = core.end() + (amount_m.end() if amount_m else 0)
+            low, high, aflag, used = _parse_amount(amount_m, post[amount_m.end():].split("§")[0] if amount_m else "")
+            prev_end = core.end() + (amount_m.end() + used if amount_m else 0)
 
             tags = TAG_RE.findall(asset)
             tag = tags[-1] if tags else (TAG_RE.findall(post) or [""])[0]
@@ -230,18 +284,18 @@ def _parse_legacy(text: str, header: dict) -> dict:
             if not tickers:  # ved sideskift står tickeren efter kernen
                 before_tag = post.split("[")[0] if "[" in post else post
                 tickers = TICKER_RE.findall(before_tag)
-            low, high = _parse_amount(amount_m)
             records.append({
                 "owner": owner,
                 "asset": TAG_RE.sub("", asset).strip(),
                 "ticker": tickers[-1].upper() if tickers else "",
                 "asset_type": tag.upper(),
-                "side": SIDE[core.group("ttype")],
+                "side": SIDE[core.group("ttype").upper()],
                 "partial": bool(core.group("partial")),
                 "transaction_date": _iso(core.group("tdate")),
                 "notification_date": _iso(core.group("ndate")),
                 "amount_low": low,
                 "amount_high": high,
+                "amount_flag": aflag,
                 "sub_holding": "",
                 "description": "",
             })
@@ -274,6 +328,9 @@ def _parse_legacy(text: str, header: dict) -> dict:
         r["template"] = template
         r["asset_type_source"] = "code" if r["asset_type"] else "none"
         r["filing_status"] = ""
+    if records and len(statuses) == len(records):      # status kun, hvis hver markør har præcis én handel
+        for r, st in zip(records, statuses):
+            r["filing_status"] = st
 
     return {"header": header, "trades": records, "warnings": warnings, "template": template}
 
@@ -305,10 +362,26 @@ def detect_template(text: str, layout_text: Optional[str] = None) -> str:
 
 T16_HEADER_L1 = re.compile(r"owner\s+asset\s+transaction\s+date\s*notification\s+amount", re.I)
 T16_HEADER_L2 = re.compile(r"^\s*type\s+date\s*$", re.I)
+T16_HEADER_ANY = re.compile(r"\bowner\s+asset\s+transaction\b", re.I)    # første linje af tabelhovedet (også i almindelig tekst)
 # Sektionsoverskrifter sammenlignes uden mellemrum og uden store/små bogstaver (pypdf versioner indsætter
 # mellemrum midt i små-versal-ord: "a SSet   c laSS   DetailS")
-T16_END_WORDS = {"assetclassdetails", "initialpublicofferings", "initialpublicoffering", "certificationandsignature"}
-T16_DETAIL_END_WORDS = {"initialpublicofferings", "initialpublicoffering", "certificationandsignature"}
+# "comments" uden kolon er en rapport-overskrift (generelle kommentarer efter tabellen), ikke en kommentar til en handel
+T16_END_WORDS = {"assetclassdetails", "initialpublicofferings", "initialpublicoffering", "certificationandsignature",
+                 "comments", "comment"}
+T16_DETAIL_END_WORDS = {"initialpublicofferings", "initialpublicoffering", "certificationandsignature",
+                        "comments", "comment"}
+
+
+HEADER_WORDS = {"type", "date", "notification", "amount", "cap.", "cap", "gains", ">", "$200?", "gains>"}
+CHECKBOX_ONLY = re.compile(r"^\s*g?fedcb?\s*$")
+CHECKBOX_TAIL = re.compile(r"\s+g?fedcb?\s*$")
+
+
+def _is_header_cont(line: str) -> bool:
+    """Linje, der kun består af tabelhovedets ord (fortsættelse af hovedet i layout-teksten)."""
+    toks = CHECKBOX_TAIL.sub("", line.strip()).lower().split()
+    toks = [re.sub(r"^(\$200\?)g?fedcb?$", r"\1", t) for t in toks]      # "$200?gfedcb": kolonnenavn og checkbox klistret sammen
+    return bool(toks) and all(t in HEADER_WORDS for t in toks)
 
 
 def _compact(line: str) -> str:
@@ -320,38 +393,44 @@ T16_CORE = re.compile(
     r"^\s*(?:(?P<owner>SP|JT|DC)\s{2,})?(?P<asset>\S.*?)\s*(?P<ttype>[PSE])"
     r"(?:\s*\((?P<partial>partial)\))?\s+(?P<tdate>\d{1,2}/\d{1,2}/\d{4})\s+"
     r"(?P<ndate>\d{1,2}/\d{1,2}/\d{4})\s+(?P<amount>\S.*?)\s*$", re.I)
+T16_AMOUNT_OPEN = re.compile(r"(?:-|\bover)\s*$", re.I)          # beløb, der mangler sin sidste del
+T16_AMOUNT_FRAG = re.compile(r"^\s*(\$\s*[\d,]+(?:\.\d+)?)\s*$")
 TWO_DATES = re.compile(r"\d{1,2}/\d{1,2}/\d{4}\s+\d{1,2}/\d{1,2}/\d{4}")
 T16_FS = re.compile(r"^\s*filing\s*status\s*:\s*(.*?)\s*$", re.I)
 T16_SUB = re.compile(r"^\s*subholding\s*of\s*:\s*(.*?)\s*$", re.I)
 T16_DESC = re.compile(r"^\s*description\s*:\s*(.*?)\s*$", re.I)
+T16_LOC = re.compile(r"^\s*location\s*:\s*(.*?)\s*$", re.I)
+T16_COM = re.compile(r"^\s*comments?\s*:\s*(.*?)\s*$", re.I)
 T16_OTHER_LABEL = re.compile(r"^\s*[A-Za-z][A-Za-z ]{2,24}:(?:\s|$)")
 T16_DETAIL_OWNER = re.compile(r"\(\s*owner\s*:\s*(SP|JT|DC)\s*\)\s*$", re.I)
 T16_TICKER = re.compile(r"\(\s*([A-Za-z][A-Za-z0-9.\-]{0,6})\s*\)")
 T16_TICKER_OK = re.compile(r"^[A-Z]{1,5}(?:[.\-][A-Z])?$")
 
 
-def _t16_core_region(lines: list[str]) -> tuple[Optional[list[str]], list[str], list[str]]:
+def _t16_core_region(lines: list[str], template: str = "t2016") -> tuple[Optional[list[str]], list[str], list[str]]:
     """Returnerer (tabellinjer, detalje-linjer, advarsler). Tabellinjer er uden tabelhoveder og sidefødder."""
     warnings: list[str] = []
-    start = next((i for i, ln in enumerate(lines) if T16_HEADER_L1.search(ln)), None)
+    start = next((i for i, ln in enumerate(lines) if T16_HEADER_ANY.search(ln)), None)
     if start is None:
-        return None, [], ["2016-skabelon: tabelhoved ikke fundet i layout-teksten"]
+        return None, [], [f"{template}: tabelhoved ikke fundet i layout-teksten"]
     end = next((i for i in range(start + 1, len(lines)) if _compact(lines[i]) in T16_END_WORDS), None)
     if end is None:
-        warnings.append("2016-skabelon: ingen slutmarkør efter tabellen (Asset Class Details/IPO/Certification)")
+        warnings.append(f"{template}: ingen slutmarkør efter tabellen (Asset Class Details/IPO/Certification)")
         end = len(lines)
     body: list[str] = []
-    after_header = True                      # linjen efter første tabelhoved er "type  Date"
+    in_header = True                         # linjerne lige efter tabelhovedet ("type Date", "Gains >", "$200?") er hovedets
     for ln in lines[start + 1:end]:
-        if T16_HEADER_L1.search(ln):
-            after_header = True              # gentaget tabelhoved ved sideskift: dropper også "type  Date"
+        if T16_HEADER_ANY.search(ln):
+            in_header = True                 # gentaget tabelhoved ved sideskift
             continue
-        if after_header:
-            if not ln.strip():
+        if in_header:
+            if not ln.strip() or _is_header_cont(ln):
                 continue
-            after_header = False
-            if T16_HEADER_L2.match(ln):
-                continue
+            in_header = False
+        if re.match(r"^\s*\*\s*For the complete list of asset type", ln, re.I):
+            continue                         # fodnoten om aktivtype-koder (old_2021)
+        if CHECKBOX_ONLY.match(ln):
+            continue
         body.append(T16_FOOTER.sub("", ln).rstrip())
     details = lines[end + 1:]
     # detaljerne slutter ved IPO/Certification
@@ -362,16 +441,18 @@ def _t16_core_region(lines: list[str]) -> tuple[Optional[list[str]], list[str], 
     return body, details, warnings
 
 
-def _t16_accounts(details: list[str]) -> dict[str, str]:
-    """Asset Class Details -> {konto (små bogstaver): ejerkode eller 'self'}."""
-    out: dict[str, str] = {}
+def _t16_accounts(details: list[str]) -> dict[str, set[str]]:
+    """Asset Class Details -> {konto (små bogstaver): mængde af ejere}. Samme kontonavn kan stå flere gange med
+    forskellig ejer (fx medlemmets egen konto og en fælles konto med samme navn); så er alle ejere tilladt."""
+    out: dict[str, set[str]] = {}
     for ln in details:
         t = re.sub(r"\s+", " ", ln).strip()
         if not t or re.match(r"^(location|description)\s*:", t, re.I) or _compact(t) == "assetclassdetails":
             continue
         m = T16_DETAIL_OWNER.search(t)
         name = T16_DETAIL_OWNER.sub("", t).strip() if m else t
-        out[name.lower()] = OWNER_CODES[m.group(1).upper()] if m else "self"
+        name = re.sub(r"\s*\(\s*\d+\s*%\s*interest\s*\)\s*$", "", name, flags=re.I).strip()
+        out.setdefault(name.lower(), set()).add(OWNER_CODES[m.group(1).upper()] if m else "self")
     return out
 
 
@@ -445,18 +526,19 @@ CORP_NAME = re.compile(
 OTHER_NAME = re.compile(r"\b(preferred|pfd)\b", re.I)
 
 
-def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
+def _parse_t2016(text: str, layout_text: Optional[str], header: dict, template: str = "t2016", core_only: bool = False) -> dict:
+    """Layout-parser. template = t2016 (aktivtype udledes) eller old_2021 (aktivtype = kode [ST] i aktivteksten)."""
     warnings: list[str] = []
     records: list[dict] = []
     if not layout_text or not normalize(layout_text).strip():
-        return {"header": header, "trades": [], "template": "t2016", "warnings": [
+        return {"header": header, "trades": [], "template": template, "warnings": [
             "2016-skabelon genkendt, men layout-tekst mangler (kræver pypdf extract_text(extraction_mode='layout')); "
             "0 handler læst"]}
     lines = normalize(layout_text).splitlines()
-    body, details, w = _t16_core_region(lines)
+    body, details, w = _t16_core_region(lines, template)
     warnings += w
     if body is None:
-        return {"header": header, "trades": [], "template": "t2016", "warnings": warnings}
+        return {"header": header, "trades": [], "template": template, "warnings": warnings}
     accounts = _t16_accounts(details)
 
     cur: Optional[dict] = None
@@ -474,8 +556,9 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
                 "owner": OWNER_CODES.get((core.group("owner") or "").upper(), "self"),
                 "asset_parts": [core.group("asset")],
                 "ttype": core.group("ttype").upper(), "partial": bool(core.group("partial")),
-                "tdate": core.group("tdate"), "ndate": core.group("ndate"), "amount": core.group("amount"),
-                "filing_status": [], "sub_holding": [], "description": [],
+                "tdate": core.group("tdate"), "ndate": core.group("ndate"),
+                "amount": CHECKBOX_TAIL.sub("", core.group("amount")),
+                "filing_status": [], "sub_holding": [], "description": [], "location": [], "comments": [],
             }
             records.append(cur)
             field = "asset"
@@ -489,6 +572,22 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
         if cur is None:
             warnings.append(f"tekst før første handel ignoreret: {ln.strip()[:60]!r}")
             continue
+        if core_only:
+            continue                         # kun tabelrækken læses (resten af linjerne er ikke til at stole på)
+        if field == "asset" and T16_AMOUNT_OPEN.search(cur["amount"]):
+            # beløbet er delt over to linjer ("Spouse/DC Over" + "$1,000,000", eller "$5,000,001 -" + "$25,000,000")
+            frag = T16_AMOUNT_FRAG.match(ln)
+            if frag:
+                cur["amount"] += " " + frag.group(1)
+                blank_before = False
+                continue
+            parts = re.split(r"\s{2,}", ln.strip())
+            frag = T16_AMOUNT_FRAG.match(parts[-1]) if len(parts) > 1 else None
+            if frag:   # linjen er både en fortsættelse af aktivnavnet og sidste del af beløbet
+                cur["amount"] += " " + frag.group(1)
+                cur["asset_parts"].append(" ".join(parts[:-1]))
+                blank_before = False
+                continue
         m = T16_FS.match(ln)
         if m:
             cur["filing_status"].append(m.group(1)); field = "filing_status"; blank_before = False; continue
@@ -498,6 +597,12 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
         m = T16_DESC.match(ln)
         if m:
             cur["description"].append(m.group(1)); field = "description"; blank_before = False; continue
+        m = T16_LOC.match(ln)
+        if m:
+            cur["location"].append(m.group(1)); field = "location"; blank_before = False; continue
+        m = T16_COM.match(ln)
+        if m:
+            cur["comments"].append(m.group(1)); field = "comments"; blank_before = False; continue
         if field != "asset" and T16_OTHER_LABEL.match(ln):
             warnings.append(f"ukendt etiket under handel {len(records)}: {ln.strip()[:60]!r}")
             blank_before = False
@@ -508,43 +613,52 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
             cur["asset_parts" if field == "asset" else field].append(ln.strip())
         blank_before = False
 
-    if records and not any(r["filing_status"] for r in records):
+    if records and not core_only and not any(r["filing_status"] for r in records):
         warnings.append("ingen 'Filing Status'-linjer fundet; skabelonen afviger måske")
     out: list[dict] = []
     for i, c in enumerate(records, 1):
         asset = re.sub(r"\s+", " ", " ".join(c["asset_parts"])).strip()
         sub = re.sub(r"\s+", " ", " ".join(c["sub_holding"])).strip()
         desc = re.sub(r"\s+", " ", " ".join(c["description"])).strip()
-        status = re.sub(r"\s+", " ", " ".join(c["filing_status"])).strip()
-        if not c["filing_status"]:
+        status = _fs_value(re.sub(r"\s+", " ", " ".join(c["filing_status"])).strip())
+        location = re.sub(r"\s+", " ", " ".join(c["location"])).strip()
+        comments = re.sub(r"\s+", " ", " ".join(c["comments"])).strip()
+        if not c["filing_status"] and not core_only:
             warnings.append(f"handel {i} ({asset[:30]!r}) mangler 'Filing Status'")
-        cands = T16_TICKER.findall(asset)
-        ticker = ""
-        if cands:
-            t = cands[-1].upper()
-            if T16_TICKER_OK.match(t):
-                ticker = t
-            else:
-                warnings.append(f"handel {i}: '({cands[-1]})' ligner ikke en ticker og er ignoreret")
-        low, high = _parse_amount(AMOUNT_RE.search(c["amount"]))
+        code = ""
+        if template == "old_2021" or TAG_RE.search(asset):
+            tags = TAG_RE.findall(asset)
+            code = tags[-1].upper() if tags else ""
+            asset = re.sub(r"\s+", " ", TAG_RE.sub("", asset)).strip()
+            cands = TICKER_RE.findall(asset)
+            ticker = cands[-1].upper() if cands else ""
+        else:
+            cands = T16_TICKER.findall(asset)
+            ticker = ""
+            if cands:
+                t = cands[-1].upper()
+                if T16_TICKER_OK.match(t):
+                    ticker = t
+                else:
+                    warnings.append(f"handel {i}: '({cands[-1]})' ligner ikke en ticker og er ignoreret")
+        low, high, aflag, _ = _parse_amount(AMOUNT_RE.search(c["amount"]))
         if low is None:
             warnings.append(f"handel {i}: beløb kunne ikke læses: {c['amount']!r}")
         tdate, ndate = _iso(c["tdate"]), _iso(c["ndate"])
         if tdate is None or ndate is None:
             warnings.append(f"handel {i}: ugyldig dato {c['tdate']} / {c['ndate']}")
-        signed = header.get("signed_date")
-        if tdate and signed:
-            gap = (datetime.fromisoformat(signed) - datetime.fromisoformat(tdate)).days
-            if gap < 0:
-                warnings.append(f"handel {i}: handelsdato {tdate} er efter underskriftsdato {signed}")
-            elif gap > 800:
-                warnings.append(f"handel {i}: handelsdato {tdate} er mere end 800 dage før underskriftsdato {signed}")
         exp = accounts.get(sub.lower()) if sub else None
-        if exp is not None and exp != c["owner"]:
+        if exp is not None and c["owner"] not in exp:
             warnings.append(f"handel {i}: ejer '{c['owner']}' stemmer ikke med Asset Class Details "
-                            f"('{exp}' for konto {sub!r})")
-        atype, reason = infer_asset_type(asset, ticker, desc)
-        option_like = bool(OPTION_WORDS.search(desc)) or atype == "OP"
+                            f"({sorted(exp)} for konto {sub!r})")
+        if code:
+            atype, reason = code, "kode i PDF'en"
+        elif template == "old_2021":
+            atype, reason = "", "ingen kode i PDF'en"
+        else:
+            atype, reason = infer_asset_type(asset, ticker, desc)
+        # option/short-markeringen læser beskrivelse OG kommentar (konservativt: begge kan forklare en option/short-handel)
+        option_like = bool(OPTION_WORDS.search(desc + " " + comments)) or atype == "OP"
         out.append({
             "owner": c["owner"],
             "asset": asset,
@@ -556,6 +670,7 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
             "notification_date": ndate,
             "amount_low": low,
             "amount_high": high,
+            "amount_flag": aflag,
             "sub_holding": sub,
             "description": desc,
             "member": header["member"],
@@ -563,21 +678,59 @@ def _parse_t2016(text: str, layout_text: Optional[str], header: dict) -> dict:
             "filing_id": header["filing_id"],
             "filing_date": header["signed_date"],
             "option_like": option_like,
-            "short_related": bool(SHORT_WORDS.search(desc)),
+            "short_related": bool(SHORT_WORDS.search(desc + " " + comments)),
             "is_stock": atype in STOCK_TYPES and not option_like,
-            "template": "t2016",
-            "asset_type_source": "inferred" if atype else "none",
+            "location": location,
+            "comments": comments,
+            "template": template,
+            "asset_type_source": "code" if code else ("none" if not atype else "inferred"),
             "asset_type_reason": reason,
             "filing_status": status,
         })
     n_fs = sum(1 for c in records if c["filing_status"])
-    if n_fs != len(records):
+    if n_fs != len(records) and not core_only:
         warnings.append(f"{len(records)} handler fundet, men {n_fs} 'Filing Status'-linjer")
     if n_date_lines != len(records):
         warnings.append(f"{n_date_lines} linjer med to datoer, men {len(records)} handler læst")
     if not out:
-        warnings.append("ingen handler fundet i 2016-skabelonens tabel")
-    return {"header": header, "trades": out, "template": "t2016", "warnings": warnings}
+        warnings.append(f"ingen handler fundet i {template}-skabelonens tabel")
+    return {"header": header, "trades": out, "template": template, "warnings": warnings,
+            "structure_ok": bool(out) and n_fs == len(records) and n_date_lines == len(records)}
+
+
+DATE_MAX_BEFORE_DAYS = 3 * 365 + 1      # "mere end ca. 3 år før filing_date"
+YEAR_MIN, YEAR_MAX = 1990, 2100
+
+
+def date_suspect_reason(tdate: Optional[str], filing_date: Optional[str]) -> str:
+    """
+    Tom streng, hvis handelsdatoen er plausibel, ellers en kort årsag (første træf vinder):
+      ugyldig_dato                 handelsdatoen kunne ikke læses som dato (fx 02/30/2018) eller mangler
+      umuligt_aar                  årstallet er før 1990 eller efter 2100 (tastefejl)
+      filing_date_mangler          indekset har ingen filing_date at sammenligne med
+      efter_filing_date            handelsdatoen ligger EFTER indberetningsdatoen
+      over_3_aar_foer_filing_date  handelsdatoen ligger mere end 3 år før indberetningsdatoen
+    Datoer rettes aldrig ved at gætte.
+    """
+    if not tdate:
+        return "ugyldig_dato"
+    try:
+        t = datetime.fromisoformat(tdate)
+    except ValueError:
+        return "ugyldig_dato"
+    if not YEAR_MIN <= t.year <= YEAR_MAX:
+        return "umuligt_aar"
+    if not filing_date:
+        return "filing_date_mangler"
+    try:
+        gap = (datetime.fromisoformat(filing_date) - t).days
+    except ValueError:
+        return "filing_date_mangler"
+    if gap < 0:
+        return "efter_filing_date"
+    if gap > DATE_MAX_BEFORE_DAYS:
+        return "over_3_aar_foer_filing_date"
+    return ""
 
 
 def parse_ptr_text(text: str, layout_text: Optional[str] = None) -> dict:
@@ -590,7 +743,29 @@ def parse_ptr_text(text: str, layout_text: Optional[str] = None) -> dict:
     header = parse_header(text)
     template = detect_template(text, layout_text)
     if template == "t2016":
+        if layout_text and normalize(layout_text).strip():
+            return _parse_t2016(text, layout_text, header)
+        # Ingen layout-tekst (fx en PDF fra en anden producent, hvor pypdf's layout-udtræk er tomt): prøv den almindelige
+        # tekst, som i de PDF'er har én tabelrække pr. linje. Kun rækken læses; subholding/beskrivelse læses ikke.
+        fb = _parse_t2016(text, text.replace("\xa0", " ").replace("\xad", "-"), header, core_only=True)
+        if fb["trades"] and not any("linjer med to datoer" in w for w in fb["warnings"]):
+            fb["warnings"].insert(0, "layout-tekst mangler: tabelrækkerne er læst fra den almindelige tekst; "
+                                     "subholding, beskrivelse og Filing Status er ikke læst")
+            fb["parse_source"] = "plain"
+            return fb
         return _parse_t2016(text, layout_text, header)
+    if template == "old_2021" and layout_text and normalize(layout_text).strip() and T16_HEADER_L1.search(normalize(layout_text)):
+        lay = _parse_t2016(text, layout_text, header, "old_2021")
+        plain = _parse_legacy(text, header)
+        if lay.get("structure_ok"):
+            lay["parse_source"] = "layout"
+            lay["plain_n_trades"] = len(plain["trades"])
+            return lay
+        # layout-læsningen er ikke intern konsistent: brug den almindelige tekst og sig det
+        plain["warnings"].append("layout-tekst fandtes, men blev ikke brugt (" +
+                                 ("; ".join(lay["warnings"])[:150] or "0 handler i layout-teksten") + ")")
+        plain["parse_source"] = "plain"
+        return plain
     result = _parse_legacy(text, header)
     if template == "unknown":
         result["warnings"].append(

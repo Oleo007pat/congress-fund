@@ -1,0 +1,2 @@
+# member=Cheri Bustos | state=IL17 | signed=2018-11-03 | template=old_2021 | pages=1
+self|Berkshire Hathaway Inc. New (BRK.B)|BRK.B|ST|buy|2018-10-01|2018-11-01|15001-50000|Wells Fargo IRA # 2||New

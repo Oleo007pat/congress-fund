@@ -1,0 +1,2 @@
+# member=Pete Sessions | state=TX32 | signed=2017-05-01 | template=t2016 | pages=1
+spouse|American Express Company (AXP)|AXP||buy|2017-05-01|2017-05-01|1001-15000|||New

@@ -1,0 +1,3 @@
+# member=Scott H. Peters | state=CA52 | signed=2018-02-09 | template=t2016 | pages=1 | note=beloeb "Spouse/DC Over $1,000,000" (aabent interval); foerste raekke har dato 12/28/2017 (2017)
+spouse|East Bay Muni Util Dist, CA|||buy|2017-12-28|2018-01-31|500001-1000000|||New
+spouse|Los Angeles, CA, W Util Pwr|||sell|2018-01-18|2018-01-31|1000000-|||New

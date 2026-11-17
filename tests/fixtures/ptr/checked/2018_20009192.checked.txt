@@ -1,0 +1,5 @@
+# member=Carlos Curbelo | state=FL26 | signed=2018-03-27 | template=t2016 | pages=2
+self|Exxon Mobil Corporation (XOM)|XOM||buy|2018-02-08|2018-03-07|1001-15000|Fidelity Investments Brokerage Account||New
+self|First Solar, Inc. (FSLR)|FSLR||buy|2018-02-13|2018-03-07|1001-15000|Fidelity Investments Brokerage Account||New
+self|General Electric Company (GE)|GE||buy|2018-02-08|2018-03-07|1001-15000|Fidelity Investments Brokerage Account||New
+self|General Electric Company (GE)|GE||buy|2018-03-23|2018-03-23|1001-15000|Fidelity Investments Brokerage Account||New

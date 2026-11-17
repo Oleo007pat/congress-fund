@@ -1,0 +1,2 @@
+# member=Lloyd Doggett | state=TX35 | signed=2018-09-05 | template=old_2021 | pages=1
+self|Procter & Gamble Company (PG)|PG|ST|buy|2018-08-16|2018-09-03|1001-15000||Reinvested Shares|New

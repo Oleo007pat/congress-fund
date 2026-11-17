@@ -1,0 +1,79 @@
+                                                                                                                                 Filing ID #20004369
+                          PerIODIc TrANSAcTION rePOrT
+
+
+
+          Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, DC 20515
+
+
+fIler INfOrmATION
+Name:                Hon. Alan S. Lowenthal
+Status:              Member
+State/District:      CA47
+
+
+TrANSAcTIONS
+
+ID         Owner      Asset                                          Transaction        Date          Notification       Amount
+                                                                     Type                             Date
+
+           SP         Chipotle Mexican grill, Inc. (CMg)             S                  01/6/2016     01/10/2016         $1,001 - $15,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+
+
+           SP         Crown Castle Intl Corp                         S                  01/29/2016    01/5/2016          $15,001 - $50,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+                      DESCRIPTION: Provider of wireless infrastructure
+
+
+           SP         Paypal Holdings Inccom                         S                  01/7/2016     01/10/2016         $1,001 - $15,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+                      DESCRIPTION: Online financial services
+
+
+           SP         Paypal Holdings Inccom                         S                  01/7/2016     01/10/2016         $1,001 - $15,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+                      DESCRIPTION: Online financial services
+
+
+           SP         PayPal Holdings, Inc. (PYPL)                   S                  01/7/2016     01/10/2016         $1,001 - $15,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+
+           SP         union Pacific Corporation (uNP)                S                  01/7/2016     01/10/2016         $1,001 - $15,000
+
+                      FILINg STATuS: New
+                      SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+
+           SP         Zimmer Holdings INCSR                          P                  01/7/2016     01/10/2016         $1,001 - $15,000
+ID        Owner      Asset                                        Transaction       Date          Notification     Amount
+                                                                  Type                            Date
+                     FILINg STATuS: New
+                     SuBHOLDINg OF: Neuberger Berman - Traditional IRA
+                     DESCRIPTION: Medical technology and devices
+
+
+ASSeT clASS DeTAIlS
+
+     Neuberger Berman - Traditional IRA (Owner: SP)
+
+
+INITIAl PublIc OfferINgS
+
+ nmlkj Yes nmlkji No
+
+cerTIfIcATION AND SIgNATure
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Alan S. Lowenthal , 01/10/2016

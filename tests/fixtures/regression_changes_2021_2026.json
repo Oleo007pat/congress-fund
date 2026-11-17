@@ -1,0 +1,1946 @@
+{
+ "beskrivelse": "Alle forskelle mellem den ORIGINALE parser (tests/fixtures/house_ptr_parser_v0_original.py) og den nuværende på de 3.183 tekster i data/legacy_text (2021-2026). Intet andet end disse forskelle er tilladt. Årsager: exact = præcist beløb (low=high, decimaler bevares; før: nedre grænse uden decimaler, øvre tom); repaired_split = beløb delt af sideskift, øvre grænse hentet og kontrolleret mod Husets standardinterval; extra_trade = handel, der før gik tabt, fordi typekoden (P/S/E) var klistret til aktienavnet.",
+ "field_changes": [
+  {
+   "path": "2021/20017957",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 21.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20017999",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 268.0,
+   "new": 268.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20017999",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 268.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 669.0,
+   "new": 669.27,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 669.27,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 268.0,
+   "new": 268.96,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 268.96,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 134.0,
+   "new": 134.47,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 134.47,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 3,
+   "field": "amount_low",
+   "old": 45.0,
+   "new": 45.46,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018000",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 45.46,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 474.0,
+   "new": 474.06,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 474.06,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 35.0,
+   "new": 35.42,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 35.42,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 23.0,
+   "new": 23.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 23.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 36.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 11.0,
+   "new": 11.44,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018081",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 11.44,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018082",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 590.0,
+   "new": 590.26,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018082",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 590.26,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018082",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 598.0,
+   "new": 598.63,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018082",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 598.63,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018083",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 995.0,
+   "new": 995.52,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018083",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 995.52,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018129",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 90.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018130",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 90.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 598.0,
+   "new": 598.7,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 598.7,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 599.0,
+   "new": 599.34,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 599.34,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 754.0,
+   "new": 754.22,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 754.22,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 5,
+   "field": "amount_low",
+   "old": 754.0,
+   "new": 754.23,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018131",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 754.23,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 614.0,
+   "new": 614.78,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 614.78,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 23.0,
+   "new": 23.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 23.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 23.0,
+   "new": 23.97,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 23.97,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 3,
+   "field": "amount_low",
+   "old": 12.0,
+   "new": 12.03,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 12.03,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018132",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 60.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018154",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 120.0,
+   "new": 120.67,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018154",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 120.67,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 60.0,
+   "new": 60.33,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 60.33,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 30.0,
+   "new": 30.16,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 30.16,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 3,
+   "field": "amount_low",
+   "old": 430.0,
+   "new": 430.77,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 430.77,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 238.0,
+   "new": 238.02,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018155",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 238.02,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018185",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 860.0,
+   "new": 860.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018185",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 860.95,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018185",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 330.0,
+   "new": 330.51,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018185",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 330.51,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018186",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 624.0,
+   "new": 624.29,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018186",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 624.29,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018300",
+   "trade": 6,
+   "field": "amount_low",
+   "old": 914.0,
+   "new": 914.02,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018300",
+   "trade": 6,
+   "field": "amount_high",
+   "old": null,
+   "new": 914.02,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018335",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 962.0,
+   "new": 962.54,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018335",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 962.54,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018475",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 898.0,
+   "new": 898.16,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018475",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 898.16,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018597",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20018701",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 1.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018709",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20018760",
+   "trade": 77,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20018830",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 439.0,
+   "new": 439.25,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018830",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 439.25,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20018865",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20018933",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20019043",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20019144",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20019374",
+   "trade": 53,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20019762",
+   "trade": 13,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2021/20019917",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 897.0,
+   "why": "exact"
+  },
+  {
+   "path": "2021/20020002",
+   "trade": 6,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2022/20020875",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 4450.0,
+   "new": 4450.5,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20020875",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 4450.5,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20020875",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 4450.0,
+   "new": 4450.5,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20020875",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 4450.5,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20021837",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 1.0,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20021907",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 999.0,
+   "new": 999.64,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20021907",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 999.64,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 581.0,
+   "new": 581.86,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 581.86,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 651.0,
+   "new": 651.88,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 651.88,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 3,
+   "field": "amount_low",
+   "old": 902.0,
+   "new": 902.42,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 902.42,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 876.0,
+   "new": 876.76,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 876.76,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 5,
+   "field": "amount_low",
+   "old": 802.0,
+   "new": 802.14,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 802.14,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 6,
+   "field": "amount_low",
+   "old": 971.0,
+   "new": 971.25,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 6,
+   "field": "amount_high",
+   "old": null,
+   "new": 971.25,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 7,
+   "field": "amount_low",
+   "old": 971.0,
+   "new": 971.25,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 971.25,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 8,
+   "field": "amount_low",
+   "old": 819.0,
+   "new": 819.48,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 8,
+   "field": "amount_high",
+   "old": null,
+   "new": 819.48,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 10,
+   "field": "amount_low",
+   "old": 796.0,
+   "new": 796.67,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 10,
+   "field": "amount_high",
+   "old": null,
+   "new": 796.67,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 11,
+   "field": "amount_low",
+   "old": 496.0,
+   "new": 496.9,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 11,
+   "field": "amount_high",
+   "old": null,
+   "new": 496.9,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 13,
+   "field": "amount_low",
+   "old": 674.0,
+   "new": 674.96,
+   "why": "exact"
+  },
+  {
+   "path": "2022/20022151",
+   "trade": 13,
+   "field": "amount_high",
+   "old": null,
+   "new": 674.96,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022224",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 109.0,
+   "new": 109.03,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022224",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 109.03,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022260",
+   "trade": 10,
+   "field": "amount_high",
+   "old": null,
+   "new": 9.0,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022320",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 1.0,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022480",
+   "trade": 14,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2023/20022480",
+   "trade": 57,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2023/20022756",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2023/20022886",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 1280.0,
+   "new": 1280.03,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20022886",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 1280.03,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023211",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 424.0,
+   "new": 424.53,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023211",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 424.53,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023319",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 240.0,
+   "new": 240.8,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023319",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 240.8,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023399",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 155.0,
+   "new": 155.92,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023399",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 155.92,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023399",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 163.0,
+   "new": 163.2,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023399",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 163.2,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023404",
+   "trade": 326,
+   "field": "amount_high",
+   "old": null,
+   "new": 500000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 1000.0,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 314.0,
+   "new": 314.3,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 314.3,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 3,
+   "field": "amount_low",
+   "old": 189.0,
+   "new": 189.48,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 3,
+   "field": "amount_high",
+   "old": null,
+   "new": 189.48,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 6,
+   "field": "amount_low",
+   "old": 469.0,
+   "new": 469.21,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023552",
+   "trade": 6,
+   "field": "amount_high",
+   "old": null,
+   "new": 469.21,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023752",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 848.0,
+   "new": 848.75,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023752",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 848.75,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023819",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 569.0,
+   "new": 569.25,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023819",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 569.25,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023819",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 493.0,
+   "new": 493.91,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023819",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 493.91,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023822",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 836.0,
+   "new": 836.89,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023822",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 836.89,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023851",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 982.0,
+   "new": 982.18,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023851",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 982.18,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023922",
+   "trade": 7,
+   "field": "amount_low",
+   "old": 257.0,
+   "new": 257.49,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023922",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 257.49,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023922",
+   "trade": 11,
+   "field": "amount_low",
+   "old": 476.0,
+   "new": 476.63,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023922",
+   "trade": 11,
+   "field": "amount_high",
+   "old": null,
+   "new": 476.63,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20023987",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 1000000.0,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20024047",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 456.0,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20024175",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 982.0,
+   "new": 982.18,
+   "why": "exact"
+  },
+  {
+   "path": "2023/20024175",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 982.18,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024375",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 360.0,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024380",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 468.0,
+   "new": 468.43,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024380",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 468.43,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024472",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 833.0,
+   "new": 833.71,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024472",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 833.71,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024743",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 350.0,
+   "new": 350.78,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024743",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 350.78,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024743",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 172.0,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024743",
+   "trade": 2,
+   "field": "amount_low",
+   "old": 223.0,
+   "new": 223.6,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20024743",
+   "trade": 2,
+   "field": "amount_high",
+   "old": null,
+   "new": 223.6,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20025711",
+   "trade": 14,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2024/20025711",
+   "trade": 44,
+   "field": "amount_low",
+   "old": 447.0,
+   "new": 447.03,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20025711",
+   "trade": 44,
+   "field": "amount_high",
+   "old": null,
+   "new": 447.03,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20025799",
+   "trade": 24,
+   "field": "amount_low",
+   "old": 985.0,
+   "new": 985.47,
+   "why": "exact"
+  },
+  {
+   "path": "2024/20025799",
+   "trade": 24,
+   "field": "amount_high",
+   "old": null,
+   "new": 985.47,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20024346",
+   "trade": 22,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20027995",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 800.0,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20029070",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 500000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20029070",
+   "trade": 18,
+   "field": "amount_high",
+   "old": null,
+   "new": 500000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20029134",
+   "trade": 25,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20030236",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 823.0,
+   "new": 823.45,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20030236",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 823.45,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20030387",
+   "trade": 110,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20030541",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20030742",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 647.0,
+   "new": 647.63,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20030742",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 647.63,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20030826",
+   "trade": 18,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20031017",
+   "trade": 32,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20031020",
+   "trade": 25,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20032087",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 2761.0,
+   "new": 2761.57,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032087",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 2761.57,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032087",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 1118.0,
+   "new": 1118.07,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032087",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 1118.07,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032187",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 459.0,
+   "new": 459.77,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032187",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 459.77,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032230",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 1972.0,
+   "new": 1972.55,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20032230",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 1972.55,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20033320",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 2000.0,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20033370",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 224.0,
+   "why": "exact"
+  },
+  {
+   "path": "2025/20033564",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2025/20033581",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 1140.0,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20033725",
+   "trade": 14,
+   "field": "amount_high",
+   "old": null,
+   "new": 100000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20033725",
+   "trade": 15,
+   "field": "amount_high",
+   "old": null,
+   "new": 15.0,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20033983",
+   "trade": 86,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20034034",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 1,
+   "field": "amount_low",
+   "old": 318.0,
+   "new": 318.74,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 1,
+   "field": "amount_high",
+   "old": null,
+   "new": 318.74,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 4,
+   "field": "amount_low",
+   "old": 707.0,
+   "new": 707.21,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 4,
+   "field": "amount_high",
+   "old": null,
+   "new": 707.21,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 5,
+   "field": "amount_low",
+   "old": 584.0,
+   "new": 584.22,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034247",
+   "trade": 5,
+   "field": "amount_high",
+   "old": null,
+   "new": 584.22,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034660",
+   "trade": 7,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20034906",
+   "trade": 32,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20034999",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 2722.0,
+   "new": 2722.5,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20034999",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 2722.5,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20035390",
+   "trade": 33,
+   "field": "amount_high",
+   "old": null,
+   "new": 50000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20035491",
+   "trade": 24,
+   "field": "amount_high",
+   "old": null,
+   "new": 250000.0,
+   "why": "repaired_split"
+  },
+  {
+   "path": "2026/20035563",
+   "trade": 22,
+   "field": "amount_low",
+   "old": 344.0,
+   "new": 344.99,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20035563",
+   "trade": 22,
+   "field": "amount_high",
+   "old": null,
+   "new": 344.99,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20035734",
+   "trade": 0,
+   "field": "amount_low",
+   "old": 710.0,
+   "new": 710.52,
+   "why": "exact"
+  },
+  {
+   "path": "2026/20035734",
+   "trade": 0,
+   "field": "amount_high",
+   "old": null,
+   "new": 710.52,
+   "why": "exact"
+  }
+ ],
+ "extra_trade_docs": [
+  {
+   "path": "2021/20018065",
+   "old_n": 66,
+   "new_n": 67,
+   "old_warnings": [
+    "66 handler fundet, men 67 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 2,
+   "added_trades": [
+    [
+     "ENBL",
+     "2021-01-19",
+     "buy",
+     100001.0,
+     250000.0
+    ],
+    [
+     "ET",
+     "2021-01-15",
+     "buy",
+     100001.0,
+     250000.0
+    ],
+    [
+     "ET",
+     "2021-02-12",
+     "buy",
+     50001.0,
+     100000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20018306",
+   "old_n": 12,
+   "new_n": 13,
+   "old_warnings": [
+    "12 handler fundet, men 13 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 0,
+   "added_trades": [
+    [
+     "ILPT",
+     "2021-02-19",
+     "buy",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20018311",
+   "old_n": 201,
+   "new_n": 202,
+   "old_warnings": [
+    "201 handler fundet, men 202 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 1,
+   "added_trades": [
+    [
+     "BABA",
+     "2021-02-17",
+     "sell",
+     15001.0,
+     50000.0
+    ],
+    [
+     "ADS",
+     "2021-02-16",
+     "sell",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20018602",
+   "old_n": 10,
+   "new_n": 11,
+   "old_warnings": [
+    "10 handler fundet, men 11 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 1,
+   "added_trades": [
+    [
+     "ET",
+     "2021-04-15",
+     "sell",
+     250001.0,
+     500000.0
+    ],
+    [
+     "GLP",
+     "2021-04-15",
+     "buy",
+     100001.0,
+     250000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20019092",
+   "old_n": 77,
+   "new_n": 78,
+   "old_warnings": [
+    "77 handler fundet, men 78 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 1,
+   "added_trades": [
+    [
+     "BAC",
+     "2021-05-11",
+     "buy",
+     1001.0,
+     15000.0
+    ],
+    [
+     "BAC",
+     "2021-04-30",
+     "buy",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20019379",
+   "old_n": 452,
+   "new_n": 453,
+   "old_warnings": [
+    "452 handler fundet, men 453 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 2,
+   "added_trades": [
+    [
+     "NCLH",
+     "2021-02-10",
+     "sell",
+     15001.0,
+     50000.0
+    ],
+    [
+     "TXN",
+     "2019-03-05",
+     "buy",
+     1001.0,
+     15000.0
+    ],
+    [
+     "TXN",
+     "2019-04-08",
+     "sell",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20019582",
+   "old_n": 17,
+   "new_n": 18,
+   "old_warnings": [
+    "17 handler fundet, men 18 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 0,
+   "added_trades": [
+    [
+     "CRWD",
+     "2021-10-01",
+     "buy",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20019594",
+   "old_n": 30,
+   "new_n": 31,
+   "old_warnings": [
+    "30 handler fundet, men 31 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 1,
+   "added_trades": [
+    [
+     "DGRO",
+     "2021-09-30",
+     "buy",
+     1001.0,
+     15000.0
+    ],
+    [
+     "DGRO",
+     "2021-09-30",
+     "buy",
+     1001.0,
+     15000.0
+    ]
+   ]
+  },
+  {
+   "path": "2021/20019717",
+   "old_n": 7,
+   "new_n": 8,
+   "old_warnings": [
+    "7 handler fundet, men 8 'filing status'-markører"
+   ],
+   "new_warnings": [],
+   "neighbours_with_changed_asset_or_sub_or_description": 0,
+   "added_trades": [
+    [
+     "VIASP",
+     "2021-10-08",
+     "buy",
+     1001.0,
+     15000.0
+    ]
+   ]
+  }
+ ]
+}

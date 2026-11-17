@@ -1,0 +1,77 @@
+                                                                                                                              Filing Id #20007620
+                         PerIODIc TrANSAcTION rePOrT
+
+
+
+         Clerk of the House of Representatives • Legislative Resource Center • 135 Cannon Building • Washington, dC 20515
+
+
+fIler INfOrmATION
+Name:                Hon. Carlos Curbelo
+Status:              Member
+State/District:      FL26
+
+
+TrANSAcTIONS
+
+ID         Owner     Asset                                         Transaction       Date           Notification      Amount
+                                                                   Type                             Date
+
+           SP        Energy Transfer Partners, L.P. Common         S                 07/10/2017     07/10/2017        $1,001 - $15,000
+                     Units representing limited partner
+                     interests (ETP)
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+
+           SP        Facebook, Inc. - Class a (FB)                 P                 07/10/2017     07/10/2017        $1,001 - $15,000
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+           SP        iShares U.S. Real Estate ETF (IYR)            P                 07/10/2017     07/10/2017        $1,001 - $15,000
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+           SP        Kinder Morgan, Inc. (KMI)                     S                 07/10/2017     07/10/2017        $1,001 - $15,000
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+           SP        o'Reilly automotive, Inc. (oRLY)              P                 07/10/2017     07/10/2017        $1,001 - $15,000
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+
+           SP        RoBo global Robotics and automation           P                 07/10/2017     07/10/2017        $1,001 - $15,000
+                     Index ETF (RoBo)
+
+                     FILINg STaTUS: New
+                     SUBHoLdINg oF: UBS Brokerage account
+
+           SP        T. Rowe Price group, Inc. (TRoW)              S                 07/10/2017     07/10/2017        $1,001 - $15,000
+ID        Owner     Asset                                       Transaction       Date         Notification      Amount
+                                                                Type                           Date
+                    FILINg STaTUS: New
+                    SUBHoLdINg oF: UBS Brokerage account
+
+
+ASSeT clASS DeTAIlS
+
+     UBS Brokerage account (owner: SP)
+     LoCaTIoN: US
+
+
+INITIAl PublIc OfferINgS
+
+nmlkj Yes nmlkji No
+
+cerTIfIcATION AND SIgNATure
+
+gfedcb I CERTIFY that the statements I have made on the attached Periodic Transaction Report are true, complete, and correct to the
+best of my knowledge and belief.
+
+Digitally Signed: Hon. Carlos Curbelo , 07/13/2017

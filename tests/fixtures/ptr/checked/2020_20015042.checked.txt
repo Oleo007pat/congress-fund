@@ -1,0 +1,6 @@
+# member=Nancy Pelosi | state=CA12 | signed=2020-02-11 | template=old_2021 | pages=2 | note=markoer-mismatch foer rettelsen (3 handler, 5 markoerer); ejer SP (parserens almindelige tekst gav 'self'); beskrivelser naevner call options
+spouse|Amazon.com, Inc. (AMZN)|AMZN|ST|buy|2020-01-16|2020-01-16|1000001-5000000||Exercised 30 call options (3,000 shares) expiring 1/17/20 at a strike price of $1600.|New
+spouse|Amazon.com, Inc. (AMZN)|AMZN|ST|sell|2020-01-16|2020-01-16|250001-500000||Sold 20 call options with a strike price of $1,700 and an expiration date of 1/17/20.|New
+spouse|Amazon.com, Inc. (AMZN)|AMZN|ST|sell|2020-01-16|2020-01-16|250001-500000||Sold 20 call options with a strike price of $1,600 and an expiration date of 1/17/20.|New
+spouse|Facebook, Inc. - Class A (FB)|FB|ST|buy|2020-01-16|2020-01-16|250001-500000||Exercised 30 call options (3,000 shares) expiring 1/17/20 at a strike price of $140.|New
+spouse|Facebook, Inc. - Class A (FB)|FB|ST|buy|2020-01-16|2020-01-16|250001-500000||Exercised 20 call options (2,000 shares) expiring 1/17/20 at a strike price of $150.|New

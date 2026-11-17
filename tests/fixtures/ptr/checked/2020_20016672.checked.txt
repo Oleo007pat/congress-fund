@@ -1,0 +1,5 @@
+# member=Alan S. Lowenthal | state=CA47 | signed=2020-05-28 | template=old_2021 | pages=2 | note=haandtering af praecist beloeb: $612.16
+spouse|DraftKings Inc. - Class A (DKNG)|DKNG|ST|partial_sale|2020-05-18|2020-05-26|1001-15000|Neuberger Berman - Traditional IRA||New
+spouse|DraftKings Inc. - Class A (DKNG)|DKNG|ST|partial_sale|2020-05-18|2020-05-26|1001-15000|Neuberger Berman - Traditional IRA||New
+spouse|DraftKings Inc. - Class A (DKNG)|DKNG|ST|partial_sale|2020-05-20|2020-05-27|612.16|Neuberger Berman - Traditional IRA||New
+spouse|DraftKings Inc. - Class A (DKNG)|DKNG|ST|partial_sale|2020-05-20|2020-05-27|1001-15000|Neuberger Berman - Traditional IRA||New

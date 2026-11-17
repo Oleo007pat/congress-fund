@@ -1,0 +1,4 @@
+# member=Zoe Lofgren | state=CA19 | signed=2022-09-13 | template=new_2022 | pages=2
+spouse|Applied Materials, Inc. (AMAT)|AMAT|ST|sell|2022-08-25|2022-09-13|1001-15000|John Marshall Collins Rollover IRA||New
+spouse|Charles River Laboratories International, Inc. (CRL)|CRL|ST|sell|2022-08-25|2022-09-13|1001-15000|John Marshall Collins Rollover IRA||New
+spouse|Walt Disney Company (DIS)|DIS|ST|buy|2022-08-25|2022-09-13|1001-15000|John Marshall Collins Rollover IRA||New

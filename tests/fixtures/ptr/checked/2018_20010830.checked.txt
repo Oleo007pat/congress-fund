@@ -1,0 +1,3 @@
+# member=Paul Mitchell III | state=MI10 | signed=2018-12-12 | template=old_2021 | pages=1 | note=markoer-mismatch foer rettelsen (0 handler fundet, 2 markoerer): typekoden S er lille bogstav i teksten
+self|J.M. Smucker Company (SJM)|SJM|ST|sell|2018-12-12|2018-12-12|100001-250000|||New
+self|Stericycle, Inc. (SRCL)|SRCL|ST|sell|2018-12-12|2018-12-12|15001-50000|||New
