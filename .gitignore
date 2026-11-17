@@ -18,3 +18,5 @@ data/prices_cache/
 data/raw/
 data/interim/
 data/prices/
+!results/*.csv
+!data/processed/trades.csv

@@ -1,0 +1,717 @@
+{
+  "selection_criterion": "Among all 136 combinations of exit rule x weighting x X, choose the one with the highest annualised Sharpe ratio (rf=0, 252 days) of the calendar-time portfolio built from in-sample signals (filing_date 2016-01-01..2021-12-31), with every position force-closed at the close of the last trading day of 2021 so that no post-2021 price enters the choice; require n_trades >= 200; ties broken by the fixed grid order. Fixed in src/backtest/config.py before any result was computed.",
+  "selection_sample": "in_sample_cut2021",
+  "chosen": {
+    "exit_rule": "hold_6m",
+    "weighting": "amount",
+    "X_pct": "10"
+  },
+  "selection_sample_metrics": {
+    "n_signals": 11745,
+    "n_dropped_no_price": 768,
+    "n_dropped_ref_missing": 277,
+    "n_skips": 1981,
+    "n_trades": 8716,
+    "n_trades_active_in_window": null,
+    "n_delisted_exit": 75,
+    "n_open_at_end": 0,
+    "n_cut_2021_marked": 794,
+    "n_exit_after_gap": 1,
+    "period_start": "2016-01-06",
+    "period_end": "2021-12-31",
+    "total_return": 2.039147461742008,
+    "cagr": 0.20399360880334716,
+    "volatility": 0.20348941179370797,
+    "sharpe": 1.0147394067951625,
+    "max_drawdown": -0.3095554315328013,
+    "hit_rate": 0.6599357503441946,
+    "share_beat_spy": 0.45422212023864156,
+    "mean_trade_return": 0.08773247777836324,
+    "median_trade_return": 0.0686244939849957,
+    "mean_excess_vs_spy": -0.004552767295225181,
+    "mean_excess_vs_spy_completed": -0.004552767295225181,
+    "per_trade_universe": "all_trades_of_sample",
+    "spy_total_return": 1.6472474612506645,
+    "spy_cagr": 0.17655097485123838,
+    "spy_volatility": 0.17565113868345583,
+    "spy_sharpe": 1.0142235543497131,
+    "spy_max_drawdown": -0.33793888166449937
+  },
+  "selection_sharpe_minus_spy_sharpe": 0.0005158524454493829,
+  "in_sample_edge_statement": "In-sample shows NO meaningful edge over SPY: the chosen configuration's Sharpe equals SPY's to within 0.0005 and its alpha is not significant (see significance.csv).",
+  "n_selection_configs_with_sharpe_above_spy": 2,
+  "in_sample_full_hold_metrics__contains_post2021_prices_not_used_for_selection": {
+    "n_signals": 11745,
+    "n_dropped_no_price": 768,
+    "n_dropped_ref_missing": 277,
+    "n_skips": 1981,
+    "n_trades": 8719,
+    "n_trades_active_in_window": null,
+    "n_delisted_exit": 82,
+    "n_open_at_end": 0,
+    "n_cut_2021_marked": 0,
+    "n_exit_after_gap": 1,
+    "period_start": "2016-01-06",
+    "period_end": "2022-07-05",
+    "total_return": 1.477342340039653,
+    "cagr": 0.14985206733528633,
+    "volatility": 0.21074045569896713,
+    "sharpe": 0.769497508199649,
+    "max_drawdown": -0.3095554315328013,
+    "hit_rate": 0.6469778644339947,
+    "share_beat_spy": 0.4631265053331804,
+    "mean_trade_return": 0.08161939571504802,
+    "median_trade_return": 0.0684632015404365,
+    "mean_excess_vs_spy": -0.0030419936454097003,
+    "mean_excess_vs_spy_completed": -0.0030419936454097003,
+    "per_trade_universe": "all_trades_of_sample",
+    "spy_total_return": 1.1447235584060773,
+    "spy_cagr": 0.12461629607408531,
+    "spy_volatility": 0.1826961273857716,
+    "spy_sharpe": 0.735737579620243,
+    "spy_max_drawdown": -0.33793888166449937
+  },
+  "PRIMARY_oos_continuous_book": {
+    "n_signals": 19413,
+    "n_dropped_no_price": 1065,
+    "n_dropped_ref_missing": 280,
+    "n_skips": 3330,
+    "n_trades": 14738,
+    "n_trades_active_in_window": 6816.0,
+    "n_delisted_exit": 120,
+    "n_open_at_end": 483,
+    "n_cut_2021_marked": 0,
+    "n_exit_after_gap": 1,
+    "period_start": "2022-01-03",
+    "period_end": "2026-11-16",
+    "total_return": 0.6390348168487134,
+    "cagr": 0.10677036633268222,
+    "volatility": 0.2294624123763801,
+    "sharpe": 0.5587196863166036,
+    "max_drawdown": -0.223554578854677,
+    "hit_rate": 0.5969430137896661,
+    "share_beat_spy": 0.44725037381624855,
+    "mean_trade_return": 0.06823692068505204,
+    "median_trade_return": 0.04554326297443856,
+    "mean_excess_vs_spy": -0.010319004482227029,
+    "mean_excess_vs_spy_completed": -0.0124862501112707,
+    "per_trade_universe": "oos_filed_trades",
+    "spy_total_return": 0.6599367386768966,
+    "spy_cagr": 0.10965360324550821,
+    "spy_volatility": 0.1736512816171211,
+    "spy_sharpe": 0.6880473765793591,
+    "spy_max_drawdown": -0.24496487119437893
+  },
+  "PRIMARY_oos_significance": {
+    "config_name": "chosen",
+    "config": "exit=hold_6m;weighting=amount;X=10",
+    "measure": "PRIMARY_continuous_book_2022-01-03_to_end",
+    "period_start": "2022-01-03",
+    "period_end": "2026-11-16",
+    "n_days": 1223,
+    "alpha_daily": -1.2912859379651596e-05,
+    "alpha_annual": -0.0032540405636722024,
+    "alpha_t_nw": -0.05786424748312374,
+    "beta": 1.1002583521623082,
+    "beta_t_nw": 28.06315163738969,
+    "beta_minus_1_t_nw": 2.557186077357419,
+    "mean_excess_annual": 0.008724858308078568,
+    "mean_excess_t_nw": 0.15614812051888313,
+    "tracking_error": 0.12826416672646732,
+    "information_ratio": 0.06802257037762514,
+    "sharpe_strategy": 0.5587196863166036,
+    "sharpe_spy": 0.6880473765793592,
+    "sharpe_diff_memmel_z": -0.49209434869609947,
+    "corr_with_spy": 0.8326473647001267,
+    "nw_lags": 5
+  },
+  "SECONDARY_oos_signals_only_book": {
+    "n_signals": 7668,
+    "n_dropped_no_price": 297,
+    "n_dropped_ref_missing": 3,
+    "n_skips": 1349,
+    "n_trades": 6019,
+    "n_trades_active_in_window": null,
+    "n_delisted_exit": 38,
+    "n_open_at_end": 483,
+    "n_cut_2021_marked": 0,
+    "n_exit_after_gap": 0,
+    "period_start": "2022-01-03",
+    "period_end": "2026-11-16",
+    "total_return": 0.9545014831581171,
+    "cagr": 0.14750127370488775,
+    "volatility": 0.2308784282907022,
+    "sharpe": 0.7138796034886241,
+    "max_drawdown": -0.2235545788546761,
+    "hit_rate": 0.5969430137896661,
+    "share_beat_spy": 0.44725037381624855,
+    "mean_trade_return": 0.06823692068505204,
+    "median_trade_return": 0.04554326297443856,
+    "mean_excess_vs_spy": -0.010319004482227029,
+    "mean_excess_vs_spy_completed": -0.0124862501112707,
+    "per_trade_universe": "all_trades_of_sample",
+    "spy_total_return": 0.6552580363733953,
+    "spy_cagr": 0.10901073419392748,
+    "spy_volatility": 0.17363816043377506,
+    "spy_sharpe": 0.6847352680073829,
+    "spy_max_drawdown": -0.2449648711943797
+  },
+  "equal_weight_X_none": {
+    "selection": {
+      "n_signals": 11745,
+      "n_dropped_no_price": 768,
+      "n_dropped_ref_missing": 277,
+      "n_skips": 0,
+      "n_trades": 10697,
+      "n_trades_active_in_window": null,
+      "n_delisted_exit": 101,
+      "n_open_at_end": 0,
+      "n_cut_2021_marked": 1127,
+      "n_exit_after_gap": 2,
+      "period_start": "2016-01-06",
+      "period_end": "2021-12-31",
+      "total_return": 1.223377354176003,
+      "cagr": 0.14275869072381364,
+      "volatility": 0.1902893888502331,
+      "sharpe": 0.7973616505370024,
+      "max_drawdown": -0.3611870760493804,
+      "hit_rate": 0.6571936056838366,
+      "share_beat_spy": 0.4502196877629242,
+      "mean_trade_return": 0.09208230445755285,
+      "median_trade_return": 0.06875541908232585,
+      "mean_excess_vs_spy": -0.0033861550845359295,
+      "mean_excess_vs_spy_completed": -0.0033861550845359295,
+      "per_trade_universe": "all_trades_of_sample",
+      "spy_total_return": 1.6472474612506645,
+      "spy_cagr": 0.17655097485123838,
+      "spy_volatility": 0.17565113868345583,
+      "spy_sharpe": 1.0142235543497131,
+      "spy_max_drawdown": -0.33793888166449937
+    },
+    "PRIMARY_oos_continuous": {
+      "n_signals": 19413,
+      "n_dropped_no_price": 1065,
+      "n_dropped_ref_missing": 280,
+      "n_skips": 0,
+      "n_trades": 18068,
+      "n_trades_active_in_window": 8498.0,
+      "n_delisted_exit": 155,
+      "n_open_at_end": 567,
+      "n_cut_2021_marked": 0,
+      "n_exit_after_gap": 2,
+      "period_start": "2022-01-03",
+      "period_end": "2026-11-16",
+      "total_return": 0.5016706743277475,
+      "cagr": 0.08705845924375022,
+      "volatility": 0.17394213512585818,
+      "sharpe": 0.5685070971077617,
+      "max_drawdown": -0.2377050419399731,
+      "hit_rate": 0.5943268186753529,
+      "share_beat_spy": 0.44856134636264927,
+      "mean_trade_return": 0.07024139892275967,
+      "median_trade_return": 0.04466951692154808,
+      "mean_excess_vs_spy": -0.006529344972772905,
+      "mean_excess_vs_spy_completed": -0.00773339982907947,
+      "per_trade_universe": "oos_filed_trades",
+      "spy_total_return": 0.6599367386768966,
+      "spy_cagr": 0.10965360324550821,
+      "spy_volatility": 0.1736512816171211,
+      "spy_sharpe": 0.6880473765793591,
+      "spy_max_drawdown": -0.24496487119437893
+    },
+    "SECONDARY_oos_signals_only": {
+      "n_signals": 7668,
+      "n_dropped_no_price": 297,
+      "n_dropped_ref_missing": 3,
+      "n_skips": 0,
+      "n_trades": 7368,
+      "n_trades_active_in_window": null,
+      "n_delisted_exit": 43,
+      "n_open_at_end": 567,
+      "n_cut_2021_marked": 0,
+      "n_exit_after_gap": 0,
+      "period_start": "2022-01-03",
+      "period_end": "2026-11-16",
+      "total_return": 0.5570888827892779,
+      "cagr": 0.09517682316797371,
+      "volatility": 0.17261717437419327,
+      "sharpe": 0.6148122872875418,
+      "max_drawdown": -0.21164277936315068,
+      "hit_rate": 0.5943268186753529,
+      "share_beat_spy": 0.44856134636264927,
+      "mean_trade_return": 0.07024139892275967,
+      "median_trade_return": 0.04466951692154808,
+      "mean_excess_vs_spy": -0.006529344972772905,
+      "mean_excess_vs_spy_completed": -0.00773339982907947,
+      "per_trade_universe": "all_trades_of_sample",
+      "spy_total_return": 0.6552580363733953,
+      "spy_cagr": 0.10901073419392748,
+      "spy_volatility": 0.17363816043377506,
+      "spy_sharpe": 0.6847352680073829,
+      "spy_max_drawdown": -0.2449648711943797
+    }
+  },
+  "robustness_neighbouring_X": {
+    "in_sample_cut2021": {
+      "8": {
+        "sharpe": 1.0143222316152993,
+        "cagr": 0.20356117638765636,
+        "n_trades": 8205
+      },
+      "10": {
+        "sharpe": 1.0147394067951625,
+        "cagr": 0.20399360880334716,
+        "n_trades": 8716
+      },
+      "12": {
+        "sharpe": 1.0012813366921898,
+        "cagr": 0.20109623482041106,
+        "n_trades": 9083
+      },
+      "none": {
+        "sharpe": 1.0014540491201285,
+        "cagr": 0.2029540348511425,
+        "n_trades": 10697
+      }
+    },
+    "oos_continuous": {
+      "8": {
+        "sharpe": 0.5446640383873983,
+        "cagr": 0.10397505274359897,
+        "n_trades": 13913
+      },
+      "10": {
+        "sharpe": 0.5587196863166036,
+        "cagr": 0.10677036633268222,
+        "n_trades": 14738
+      },
+      "12": {
+        "sharpe": 0.5539254014837981,
+        "cagr": 0.1049209508341511,
+        "n_trades": 15360
+      },
+      "none": {
+        "sharpe": 0.5617377359806566,
+        "cagr": 0.10645322849486094,
+        "n_trades": 18068
+      }
+    }
+  },
+  "best_X_per_exit_and_weighting_in_selection_sample": [
+    {
+      "exit_rule": "hold_6m",
+      "weighting": "amount",
+      "X": "10",
+      "sharpe": 1.0147394067951625,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 8716
+    },
+    {
+      "exit_rule": "hold_3m",
+      "weighting": "amount",
+      "X": "30",
+      "sharpe": 0.9821697217766688,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 10197
+    },
+    {
+      "exit_rule": "hold_12m",
+      "weighting": "amount",
+      "X": "6",
+      "sharpe": 0.9466783660647128,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 7521
+    },
+    {
+      "exit_rule": "hold_12m",
+      "weighting": "equal",
+      "X": "10",
+      "sharpe": 0.8460841352792412,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 8716
+    },
+    {
+      "exit_rule": "member_sells",
+      "weighting": "equal",
+      "X": "10",
+      "sharpe": 0.8458997882181957,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 8716
+    },
+    {
+      "exit_rule": "hold_6m",
+      "weighting": "equal",
+      "X": "10",
+      "sharpe": 0.8094217694864111,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 8716
+    },
+    {
+      "exit_rule": "hold_3m",
+      "weighting": "equal",
+      "X": "none",
+      "sharpe": 0.7829628669944333,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 10697
+    },
+    {
+      "exit_rule": "member_sells",
+      "weighting": "amount",
+      "X": "10",
+      "sharpe": 0.7497237652057975,
+      "spy_sharpe": 1.0142235543497131,
+      "n_trades": 8716
+    }
+  ],
+  "selection_robustness": [
+    {
+      "variant": "pre-registered (baseline)",
+      "chosen_exit": "hold_6m",
+      "chosen_weighting": "amount",
+      "chosen_X": "10",
+      "selection_sharpe": 1.0147394067951625,
+      "selection_spy_sharpe": 1.0142235543497131,
+      "runner_up": "hold_6m/amount/8",
+      "runner_up_sharpe": 1.0143222316152993,
+      "same_as_baseline": true,
+      "oos_continuous_total_return": 0.6390348168487134,
+      "oos_continuous_sharpe": 0.5587196863166036,
+      "oos_spy_total_return": 0.6599367386768966,
+      "oos_spy_sharpe": 0.6880473765793591,
+      "note": ""
+    },
+    {
+      "variant": "excl in-sample top member by amount (Suzan K. DelBene)",
+      "chosen_exit": "hold_3m",
+      "chosen_weighting": "amount",
+      "chosen_X": "30",
+      "selection_sharpe": 0.8718640775166518,
+      "selection_spy_sharpe": 1.0142235543497131,
+      "runner_up": "hold_3m/amount/none",
+      "runner_up_sharpe": 0.8715961211251213,
+      "same_as_baseline": false,
+      "oos_continuous_total_return": 0.8829357733454097,
+      "oos_continuous_sharpe": 0.6506964392328709,
+      "oos_spy_total_return": 0.6599367386768966,
+      "oos_spy_sharpe": 0.6880473765793591,
+      "note": "same exclusion applied to the OOS book"
+    },
+    {
+      "variant": "excl in-sample top 1% trades by amount",
+      "chosen_exit": "member_sells",
+      "chosen_weighting": "equal",
+      "chosen_X": "10",
+      "selection_sharpe": 0.846527326513843,
+      "selection_spy_sharpe": 1.0142235543497131,
+      "runner_up": "member_sells/equal/6",
+      "runner_up_sharpe": 0.8447440411529413,
+      "same_as_baseline": false,
+      "oos_continuous_total_return": 0.6050951827171069,
+      "oos_continuous_sharpe": 0.6700141853296585,
+      "oos_spy_total_return": 0.6599367386768966,
+      "oos_spy_sharpe": 0.6880473765793591,
+      "note": "same exclusion applied to the OOS book"
+    },
+    {
+      "variant": "12-month warm-up (selection Sharpe from 2017-01-03)",
+      "chosen_exit": "hold_6m",
+      "chosen_weighting": "amount",
+      "chosen_X": "10",
+      "selection_sharpe": 1.086706140970666,
+      "selection_spy_sharpe": 1.0067737265274594,
+      "runner_up": "hold_6m/amount/8",
+      "runner_up_sharpe": 1.085990538418529,
+      "same_as_baseline": true,
+      "oos_continuous_total_return": 0.6390348168487134,
+      "oos_continuous_sharpe": 0.5587196863166036,
+      "oos_spy_total_return": 0.6599367386768966,
+      "oos_spy_sharpe": 0.6880473765793591,
+      "note": ""
+    }
+  ],
+  "notes": [
+    "PRIMARY OOS = one continuous book of all signals since 2016, configuration fixed in-sample, returns evaluated 2022-01-03..2026-11-16 (no information leaks: the configuration is fixed before 2022).",
+    "SECONDARY OOS = book of 2022+ signals only, starting empty on 2022-01-03 (warm-up artefact, see review F1).",
+    "pseudo-OOS: the 2021-2026 period had been examined in earlier exploratory backtests (README, backtest/) before this pre-registration; the pre-registration cannot be externally verified (see ASSUMPTIONS F8).",
+    "rf = 0 for all Sharpe ratios (no T-bill series in the inputs).",
+    "SPY adjustment=all treated as total return (approximation).",
+    "Skip-rule rise is a total-return rise on dividend-adjusted prices (no unadjusted prices available).",
+    "Delisted exits at the last close are optimistic for bankruptcies (e.g. SIVB 2023-03-09)."
+  ],
+  "data_counts": {
+    "buy_rows_include_v1": 20567,
+    "drop_reasons": {
+      "kept": 18068,
+      "no_symbol_mapping": 895,
+      "nondiscretionary_dividend_reinvestment": 638,
+      "ref_missing_txn_before_price_history": 269,
+      "nondiscretionary_third_party_managed": 265,
+      "exact_duplicate_row": 150,
+      "data_starts_after_entry": 84,
+      "data_ended_before_entry": 73,
+      "short_related_excluded": 67,
+      "nondiscretionary_transfer_distribution_corporate_action": 17,
+      "ref_missing_txn_before_symbol_data": 10,
+      "entry_in_data_gap": 10,
+      "nondiscretionary_vesting_compensation": 9,
+      "cross_doc_duplicate": 4,
+      "nondiscretionary_automatic_plan": 4,
+      "no_trade_on_entry_day": 3,
+      "ref_missing_ref_in_other_segment": 1
+    },
+    "drop_reasons_by_sample": {
+      "in_sample": {
+        "kept": 10700,
+        "no_symbol_mapping": 626,
+        "ref_missing_txn_before_price_history": 269,
+        "nondiscretionary_dividend_reinvestment": 252,
+        "exact_duplicate_row": 96,
+        "data_starts_after_entry": 82,
+        "short_related_excluded": 67,
+        "data_ended_before_entry": 51,
+        "nondiscretionary_transfer_distribution_corporate_action": 12,
+        "ref_missing_txn_before_symbol_data": 8,
+        "entry_in_data_gap": 6,
+        "no_trade_on_entry_day": 3,
+        "cross_doc_duplicate": 2,
+        "nondiscretionary_vesting_compensation": 2
+      },
+      "out_of_sample": {
+        "kept": 7368,
+        "nondiscretionary_dividend_reinvestment": 386,
+        "no_symbol_mapping": 269,
+        "nondiscretionary_third_party_managed": 265,
+        "exact_duplicate_row": 54,
+        "data_ended_before_entry": 22,
+        "nondiscretionary_vesting_compensation": 7,
+        "nondiscretionary_transfer_distribution_corporate_action": 5,
+        "entry_in_data_gap": 4,
+        "nondiscretionary_automatic_plan": 4,
+        "ref_missing_txn_before_symbol_data": 2,
+        "data_starts_after_entry": 2,
+        "cross_doc_duplicate": 2,
+        "ref_missing_ref_in_other_segment": 1
+      }
+    },
+    "nondiscretionary_by_category": {
+      "dividend_reinvestment": 638,
+      "third_party_managed": 265,
+      "transfer_distribution_corporate_action": 17,
+      "vesting_compensation": 9,
+      "automatic_plan": 4
+    },
+    "member_spellings_merged": 39,
+    "members_with_several_spellings": 17,
+    "entries_in_later_price_piece": 50,
+    "symbols_split_into_pieces": 88,
+    "long_gaps_kept_within_piece": 102,
+    "exits_after_gap_by_rule": {
+      "member_sells": 0,
+      "hold_3m": 2,
+      "hold_6m": 2,
+      "hold_12m": 4
+    },
+    "delisted_exits_by_rule": {
+      "member_sells": 550,
+      "hold_3m": 72,
+      "hold_6m": 155,
+      "hold_12m": 404
+    },
+    "delisted_exits_below_25pct_of_entry_by_rule": {
+      "member_sells": 41,
+      "hold_3m": 0,
+      "hold_6m": 2,
+      "hold_12m": 7
+    },
+    "probable_ticker_changes_treated_as_delisting": [
+      {
+        "symbol": "SQ",
+        "piece_end_date": "2025-01-17",
+        "probable_successor_same_returns": "XYZ"
+      },
+      {
+        "symbol": "HCN",
+        "piece_end_date": "2018-02-27",
+        "probable_successor_same_returns": "WELL"
+      },
+      {
+        "symbol": "COH",
+        "piece_end_date": "2017-10-30",
+        "probable_successor_same_returns": "TPR"
+      },
+      {
+        "symbol": "WYND",
+        "piece_end_date": "2021-02-16",
+        "probable_successor_same_returns": "TNL"
+      },
+      {
+        "symbol": "CTRP",
+        "piece_end_date": "2019-11-04",
+        "probable_successor_same_returns": "TCOM"
+      },
+      {
+        "symbol": "WRK",
+        "piece_end_date": "2024-07-05",
+        "probable_successor_same_returns": "SW"
+      },
+      {
+        "symbol": "HPT",
+        "piece_end_date": "2019-09-24",
+        "probable_successor_same_returns": "SVC"
+      },
+      {
+        "symbol": "SNE",
+        "piece_end_date": "2021-03-31",
+        "probable_successor_same_returns": "SONY"
+      },
+      {
+        "symbol": "DDR",
+        "piece_end_date": "2018-10-11",
+        "probable_successor_same_returns": "SITC"
+      },
+      {
+        "symbol": "UTX",
+        "piece_end_date": "2020-04-02",
+        "probable_successor_same_returns": "RTX"
+      },
+      {
+        "symbol": "NRZ",
+        "piece_end_date": "2022-08-01",
+        "probable_successor_same_returns": "RITM"
+      },
+      {
+        "symbol": "CDEV",
+        "piece_end_date": "2022-09-01",
+        "probable_successor_same_returns": "PR"
+      },
+      {
+        "symbol": "PSTG",
+        "piece_end_date": "2026-04-16",
+        "probable_successor_same_returns": "P"
+      },
+      {
+        "symbol": "RBS",
+        "piece_end_date": "2020-07-22",
+        "probable_successor_same_returns": "NWG"
+      },
+      {
+        "symbol": "MMC",
+        "piece_end_date": "2026-01-13",
+        "probable_successor_same_returns": "MRSH"
+      },
+      {
+        "symbol": "FB",
+        "piece_end_date": "2022-06-08",
+        "probable_successor_same_returns": "META"
+      },
+      {
+        "symbol": "DPS",
+        "piece_end_date": "2018-07-09",
+        "probable_successor_same_returns": "KDP"
+      },
+      {
+        "symbol": "SNHY",
+        "piece_end_date": "2019-06-14",
+        "probable_successor_same_returns": "HLIO"
+      },
+      {
+        "symbol": "TMK",
+        "piece_end_date": "2019-08-08",
+        "probable_successor_same_returns": "GL"
+      },
+      {
+        "symbol": "GPS",
+        "piece_end_date": "2024-08-21",
+        "probable_successor_same_returns": "GAP"
+      },
+      {
+        "symbol": "HCP",
+        "piece_end_date": "2019-11-04",
+        "probable_successor_same_returns": "DOC"
+      },
+      {
+        "symbol": "PEAK",
+        "piece_end_date": "2024-03-01",
+        "probable_successor_same_returns": "DOC"
+      },
+      {
+        "symbol": "DWAC",
+        "piece_end_date": "2024-03-25",
+        "probable_successor_same_returns": "DJT"
+      },
+      {
+        "symbol": "DWDP",
+        "piece_end_date": "2019-05-31",
+        "probable_successor_same_returns": "DD"
+      },
+      {
+        "symbol": "ERI",
+        "piece_end_date": "2020-07-20",
+        "probable_successor_same_returns": "CZR"
+      },
+      {
+        "symbol": "FLT",
+        "piece_end_date": "2024-03-22",
+        "probable_successor_same_returns": "CPAY"
+      },
+      {
+        "symbol": "ABC",
+        "piece_end_date": "2023-08-29",
+        "probable_successor_same_returns": "COR"
+      },
+      {
+        "symbol": "IIVI",
+        "piece_end_date": "2022-09-07",
+        "probable_successor_same_returns": "COHR"
+      },
+      {
+        "symbol": "PCLN",
+        "piece_end_date": "2018-02-26",
+        "probable_successor_same_returns": "BKNG"
+      },
+      {
+        "symbol": "BLL",
+        "piece_end_date": "2022-05-09",
+        "probable_successor_same_returns": "BALL"
+      },
+      {
+        "symbol": "BRKS",
+        "piece_end_date": "2021-11-30",
+        "probable_successor_same_returns": "AZTA"
+      },
+      {
+        "symbol": "AMEH",
+        "piece_end_date": "2024-02-23",
+        "probable_successor_same_returns": "ASTH"
+      },
+      {
+        "symbol": "CRY",
+        "piece_end_date": "2022-01-21",
+        "probable_successor_same_returns": "AORT"
+      },
+      {
+        "symbol": "AMGP",
+        "piece_end_date": "2019-03-12",
+        "probable_successor_same_returns": "AM"
+      }
+    ],
+    "known_artefact_one_day_moves_in_data": {
+      "DOW 2019-06-03": 1.4933035714285716,
+      "AZN 2026-02-02": 1.0309210526315788,
+      "NVS 2019-04-09": -0.824263716549559,
+      "DLPH 2017-12-05": -0.8194453486101165,
+      "DDR 2018-07-02": -0.9211048721002779,
+      "SRC 2018-06-01": -0.9127725856697819,
+      "RTX 2020-04-03": -0.7097361851427029,
+      "DD 2019-06-03": 0.17820658342792273
+    },
+    "amount_weight_share_of_top_1pct_eligible_signals": {
+      "in_sample": 0.30905621756186985,
+      "out_of_sample": 0.24893133350408647
+    },
+    "in_sample_top_member_by_amount": {
+      "member": "Suzan K. DelBene",
+      "weight_share": 0.1692563209338138
+    }
+  }
+}

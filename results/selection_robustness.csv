@@ -1,0 +1,5 @@
+variant,chosen_exit,chosen_weighting,chosen_X,selection_sharpe,selection_spy_sharpe,runner_up,runner_up_sharpe,same_as_baseline,oos_continuous_total_return,oos_continuous_sharpe,oos_spy_total_return,oos_spy_sharpe,note
+pre-registered (baseline),hold_6m,amount,10,1.0147394067951625,1.0142235543497131,hold_6m/amount/8,1.0143222316152993,True,0.6390348168487134,0.5587196863166036,0.6599367386768966,0.6880473765793591,
+excl in-sample top member by amount (Suzan K. DelBene),hold_3m,amount,30,0.8718640775166518,1.0142235543497131,hold_3m/amount/none,0.8715961211251213,False,0.8829357733454097,0.6506964392328709,0.6599367386768966,0.6880473765793591,same exclusion applied to the OOS book
+excl in-sample top 1% trades by amount,member_sells,equal,10,0.846527326513843,1.0142235543497131,member_sells/equal/6,0.8447440411529413,False,0.6050951827171069,0.6700141853296585,0.6599367386768966,0.6880473765793591,same exclusion applied to the OOS book
+12-month warm-up (selection Sharpe from 2017-01-03),hold_6m,amount,10,1.086706140970666,1.0067737265274594,hold_6m/amount/8,1.085990538418529,True,0.6390348168487134,0.5587196863166036,0.6599367386768966,0.6880473765793591,

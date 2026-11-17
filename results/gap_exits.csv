@@ -1,0 +1,9 @@
+rule,row_id,sample,price_symbol,planned_exit,exit_date,delay_tdays
+hold_3m,26822,in_sample,NVVE,2021-08-19,2021-09-01,9
+hold_3m,26824,in_sample,NVVE,2021-08-19,2021-09-01,9
+hold_6m,26822,in_sample,NVVE,2021-11-19,2021-11-22,1
+hold_6m,26824,in_sample,NVVE,2021-11-19,2021-11-22,1
+hold_12m,10236,in_sample,RCON,2019-08-07,2019-08-12,3
+hold_12m,19487,in_sample,IDA,2021-04-17,2021-04-20,1
+hold_12m,26822,in_sample,NVVE,2022-05-19,2022-06-06,11
+hold_12m,26824,in_sample,NVVE,2022-05-19,2022-06-06,11
