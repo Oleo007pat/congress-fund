@@ -3,454 +3,522 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
-<title>Congress Fund Backtest</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Et datadrevet forskningsprojekt: kan man tjene penge ved at kopiere amerikanske kongresmedlemmers offentliggjorte aktiekøb?">
+<title>Congress Fund</title>
+<meta name="description" content="En regelbaseret papirfond, der følger amerikanske kongresmedlemmers offentliggjorte aktiekøb. Ærlige resultater, åben kode og en live portefølje.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Congress Fund">
+<meta property="og:description" content="En regelbaseret papirfond, der følger amerikanske kongresmedlemmers offentliggjorte aktiekøb. Ærlige resultater, åben kode og en live portefølje.">
+<meta property="og:url" content="https://oleo007pat.github.io/congress-fund/">
+<meta property="og:image" content="https://oleo007pat.github.io/congress-fund/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect x='1' y='1' width='26' height='26' rx='4' fill='%2314213A'/%3E%3Cpath d='M6 11.5 14 6l8 5.5z' fill='%23B7791F'/%3E%3Cpath d='M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one reading column on "form paper", with full-width data bands; a PTR record line is the signature element. */
+:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Layout: asset-manager front page; a fact-sheet card beside the hero, full-width bands for numbers, a single reading column for prose. */
 :root{
   --paper:#F3F5F8; --sheet:#FFFFFF; --ink:#14213A; --muted:#566278; --rule:#D5DBE5;
+  --band:#14213A; --band-ink:#EEF2F8; --band-muted:#A9B4C8; --band-rule:#2B3A57;
   --accent:#B7791F; --accent-soft:#F6E7C9; --oos:#2F5D8A; --oos-soft:#DCE7F2;
+  --good:#2F7D5B; --warn:#B7791F; --bad:#B4483C;
   --display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-  --step--1:.8125rem; --step0:1rem; --step1:1.25rem; --step2:1.6rem; --step3:2.4rem; --step4:clamp(2.3rem,6vw,3.9rem);
+  --step--1:.8125rem; --step0:1rem; --step1:1.2rem; --step2:1.6rem; --step3:clamp(1.8rem,3.6vw,2.4rem); --step4:clamp(2.4rem,6.4vw,4.4rem);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0E1420; --sheet:#151D2C; --ink:#E4E9F2; --muted:#98A3B8; --rule:#2A3549;
-  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40; color-scheme:dark}}
+  --band:#0A0F18; --band-ink:#E4E9F2; --band-muted:#98A3B8; --band-rule:#243049;
+  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40;
+  --good:#5DB58D; --warn:#E0A845; --bad:#E07A6C; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0E1420; --sheet:#151D2C; --ink:#E4E9F2; --muted:#98A3B8; --rule:#2A3549;
-  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40; color-scheme:dark}
+  --band:#0A0F18; --band-ink:#E4E9F2; --band-muted:#98A3B8; --band-rule:#243049;
+  --accent:#E0A845; --accent-soft:#3A2E17; --oos:#7FAEDB; --oos-soft:#1C2C40;
+  --good:#5DB58D; --warn:#E0A845; --bad:#E07A6C; color-scheme:dark}
 
-body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--step0);line-height:1.6}
-.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--step0);line-height:1.6;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 .prose{max-width:66ch}
-h1,h2,h3{font-family:var(--display);font-stretch:85%;line-height:1.1;text-wrap:balance;margin:0}
-h1{font-size:var(--step4);font-weight:800;letter-spacing:-.01em}
+h1,h2,h3,h4{font-family:var(--display);font-stretch:85%;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:var(--step4);font-weight:800;letter-spacing:-.015em}
 h2{font-size:var(--step3);font-weight:750}
 h3{font-size:var(--step1);font-weight:700;font-stretch:90%}
 p{margin:0}
 a{color:inherit;text-decoration-color:var(--accent);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .label{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
 
-/* Header */
-header{padding-block:40px 8px}
-.topline{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:12px}
-.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-block:40px 48px}
-.hero .lede{font-size:var(--step1);color:var(--muted);max-width:58ch}
-.hero mark{background:linear-gradient(transparent 58%,var(--accent-soft) 58%);color:inherit;padding:0 2px}
+/* Status strip and navigation */
+.strip{background:var(--band);color:var(--band-ink);font-size:var(--step--1)}
+.strip .wrap{display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:space-between;padding-block:7px}
+.strip b{color:var(--accent);font-weight:600}
+.strip span{color:var(--band-muted)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--rule)}
+.nav .wrap{display:flex;align-items:center;gap:20px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-stretch:80%;font-weight:800;font-size:1.25rem;letter-spacing:.01em;white-space:nowrap}
+.brand svg{width:28px;height:28px;flex:none}
+.nav ul{list-style:none;margin:0 0 0 auto;padding:0;display:flex;gap:4px 18px;flex-wrap:wrap;justify-content:flex-end}
+.nav li a{text-decoration:none;font-size:.92rem;color:var(--muted);padding:6px 0;display:inline-block}
+.nav li a:hover,.nav li a[aria-current="page"]{color:var(--ink)}
+.nav .cta{color:var(--ink);font-weight:600}
+@media (max-width:860px){.nav .hide-sm{display:none}}
+@media (max-width:560px){.nav .wrap{flex-wrap:wrap;gap:4px 16px;padding-block:8px}.nav ul{margin:0;justify-content:flex-start;gap:2px 14px}}
 
-/* PTR record: the signature element */
-.record{margin:0;min-width:0;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
-.record-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:10px 16px;border-bottom:1px dashed var(--rule)}
-.record-line{overflow-x:auto;padding:14px 16px;font-family:var(--mono);font-size:.9rem;white-space:nowrap}
-.record-line span{padding:1px 3px;border-radius:2px}
-.hl{background:var(--accent-soft)}
-.record-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--rule)}
-.record-fields div{padding:10px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
-.record-fields b{display:block;font-family:var(--mono);font-weight:500;font-size:.95rem;overflow-wrap:anywhere}
-.record-note{padding:10px 16px;font-size:var(--step--1);color:var(--muted)}
+/* Buttons */
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:.95rem;padding:11px 18px;border-radius:3px;border:1px solid var(--ink);transition:background .15s,color .15s}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:color-mix(in srgb,var(--ink) 85%,var(--accent))}
+.btn.ghost{color:var(--ink)}
+.btn.ghost:hover{background:var(--sheet)}
 
-/* Figures */
-.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.figures div{background:var(--paper);padding:18px 16px;display:grid;gap:4px;align-content:start}
-.figures b{font-family:var(--display);font-stretch:80%;font-size:2.1rem;font-weight:750;line-height:1}
-.figures span{font-size:var(--step--1);color:var(--muted)}
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;align-items:start;padding-block:64px 56px}
+.hero-copy{display:grid;gap:24px;align-content:start}
+.hero .lede{font-size:var(--step1);color:var(--muted);max-width:52ch}
+.pill{display:inline-flex;align-items:center;gap:8px;justify-self:start;font-family:var(--mono);font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:99px;border:1px solid var(--rule);background:var(--sheet);color:var(--muted)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent)}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);gap:32px;padding-block:44px 40px}}
 
-section{padding-block:56px;border-top:1px solid var(--rule)}
-.sec-head{display:grid;gap:10px;margin-bottom:28px}
+/* Fact sheet */
+.facts{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.facts-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:14px 18px;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--sheet) 70%,var(--paper))}
+.facts dl{margin:0;display:grid}
+.facts dl div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:12px;padding:9px 18px;border-bottom:1px solid var(--rule)}
+.facts dl div:last-child{border-bottom:0}
+.facts dt{color:var(--muted);font-size:.9rem}
+.facts dd{margin:0;font-size:.92rem;font-weight:500;min-width:0}
+.facts .status{color:var(--warn);font-weight:600}
 
-/* Timeline */
-.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:8px}
-.tl-step{position:relative;padding:18px 14px 0 0;border-top:3px solid var(--rule)}
-.tl-step::before{content:"";position:absolute;top:-8px;left:0;width:13px;height:13px;border-radius:50%;background:var(--paper);border:3px solid var(--muted)}
-.tl-step.key{border-top-color:var(--accent)}
-.tl-step.key::before{border-color:var(--accent);background:var(--accent)}
-.tl-step h3{font-size:1.05rem;margin-bottom:4px}
-.tl-step p{font-size:.92rem;color:var(--muted)}
-.tl-gap{font-family:var(--mono);font-size:var(--step--1);color:var(--accent);margin-top:8px}
-@media (max-width:720px){.timeline{grid-template-columns:1fr;gap:18px}.tl-step{border-top:0;border-left:3px solid var(--rule);padding:0 0 0 18px}.tl-step.key{border-left-color:var(--accent)}.tl-step::before{top:2px;left:-8px}}
+/* Key-figure band */
+.band{background:var(--band);color:var(--band-ink)}
+.band .wrap{padding-block:30px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.kpis div{padding:4px 22px;border-left:1px solid var(--band-rule);display:grid;gap:6px;align-content:start}
+.kpis div:first-child{border-left:0;padding-left:0}
+.kpis b{font-family:var(--display);font-stretch:78%;font-weight:750;font-size:2.4rem;line-height:1}
+.kpis span{color:var(--band-muted);font-size:var(--step--1)}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 0}.kpis div:nth-child(3){border-left:0;padding-left:0}}
+@media (max-width:480px){.kpis b{font-size:1.7rem}.kpis div{padding:4px 14px}}
 
-/* Pipeline */
-.pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:16px;counter-reset:p}
-.stage{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:8px;align-content:start;counter-increment:p}
-.stage .label::before{content:"Trin " counter(p) " · "}
-.stage p{font-size:.95rem;color:var(--muted)}
-.stage .tech{font-family:var(--mono);font-size:.78rem;color:var(--ink)}
-.status{justify-self:start;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
-.status.done{color:var(--oos)}
-.status.run{color:var(--accent)}
+/* Sections */
+section{padding-block:72px;border-top:1px solid var(--rule)}
+section.first{border-top:0}
+.sec-head{display:grid;gap:12px;margin-bottom:36px}
+.sec-head p{color:var(--muted);font-size:1.05rem}
 
-/* Rules */
-.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:0 40px}
-.rule{display:grid;grid-template-columns:9.5rem 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule)}
-.rule dt{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
-.rule dd{margin:0;min-width:0}
-@media (max-width:480px){.rule{grid-template-columns:1fr;gap:2px}}
+/* Pillars */
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--ink)}
+.pillar{padding:22px 22px 0 0;display:grid;gap:10px;align-content:start}
+.pillar + .pillar{padding-left:22px;border-left:1px solid var(--rule)}
+.pillar svg{width:30px;height:30px;color:var(--accent)}
+.pillar p{color:var(--muted);font-size:.95rem}
+@media (max-width:900px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}.pillar:nth-child(3){padding-left:0;border-left:0}.pillar{padding-bottom:22px}}
+@media (max-width:520px){.pillars{grid-template-columns:minmax(0,1fr)}.pillar + .pillar{padding-left:0;border-left:0;border-top:1px solid var(--rule)}}
 
-/* Chart */
-.chart-box{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px 16px 10px}
-.chart-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:var(--step--1);color:var(--muted);margin-bottom:6px}
-.chart-legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+/* Process */
+.process{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;counter-reset:s}
+.process li{counter-increment:s;position:relative;padding:44px 18px 0 0;display:grid;gap:8px;align-content:start}
+.process li::before{content:counter(s);position:absolute;top:0;left:0;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.85rem;display:grid;place-items:center}
+.process li::after{content:"";position:absolute;top:15px;left:38px;right:8px;height:1px;background:var(--rule)}
+.process li:last-child::after{display:none}
+.process h3{font-size:1.05rem}
+.process p{color:var(--muted);font-size:.92rem}
+.process .rule-tag{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+@media (max-width:900px){.process{grid-template-columns:minmax(0,1fr);gap:22px}.process li{padding:0 0 0 46px}.process li::after{display:none}}
+
+/* Performance */
+.verdict-line{display:flex;gap:14px;align-items:flex-start;background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--warn);border-radius:3px;padding:16px 18px;margin-bottom:28px}
+.verdict-line p{font-size:1rem}
+.perf{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.perf{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 18px;align-items:baseline;margin-bottom:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:var(--step--1);color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.shade{background:var(--oos-soft);border:1px solid var(--rule)}
 .chart-scroll{overflow-x:auto}
 svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
 svg .val{fill:var(--ink);font-size:10.5px}
-.two{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:start}
-@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
-
-table{border-collapse:collapse;width:100%;font-size:.93rem}
+figcaption,.note{font-size:var(--step--1);color:var(--muted)}
 .table-scroll{overflow-x:auto}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule)}
-th{font-family:var(--mono);font-weight:500;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-td.r,th.r{text-align:right}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);vertical-align:bottom}
+td.r,th.r{text-align:right;white-space:nowrap}
+tr.sub th{padding-top:2px}
+th.grp{text-align:center;border-bottom:1px solid var(--rule)}
+td.pos{color:var(--good)} td.neg{color:var(--bad)}
+.years td,.years th{padding:7px 8px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:99px;border:1px solid var(--rule);background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.disclaimer{margin-top:20px;font-size:var(--step--1);color:var(--muted);max-width:90ch}
 
-/* Gaps */
-.gaps{display:grid;gap:0}
-.gap{display:grid;grid-template-columns:7rem 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule)}
-.sev{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;padding-top:3px}
-.sev.high{color:var(--accent)}
-.gap p{color:var(--muted);font-size:.95rem;margin-top:4px}
-@media (max-width:480px){.gap{grid-template-columns:1fr;gap:2px}}
-
-/* Results pending */
-.pending{background:var(--sheet);border:1px dashed var(--accent);border-radius:4px;padding:24px;display:grid;gap:14px}
-.pending ul{margin:0;padding-left:1.2em;color:var(--muted);columns:2 220px;column-gap:32px}
-
-.verdict{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:stretch;margin-bottom:28px}
-.alpha{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:20px;display:grid;gap:6px;align-content:start}
-.alpha b{font-family:var(--display);font-stretch:80%;font-size:3rem;font-weight:800;line-height:1}
-.alpha span:not(.label){color:var(--muted);font-size:var(--step--1)}
-.alpha p{font-size:.92rem;color:var(--muted);margin-top:8px}
-table.cmp td:first-child{color:var(--muted)}
-table.cmp td.r,table.cmp th.r{white-space:nowrap}
-.fig{margin:0 0 24px;display:grid;gap:8px}
-.fig-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline}
-.fig figcaption{font-size:var(--step--1);color:var(--muted)}
-.chart-legend i.shade{background:var(--oos-soft);border:1px solid var(--rule)}
-.chart-legend i.dash{height:0;border-top:2px dashed var(--muted);border-radius:0;vertical-align:3px}
-.review{display:grid;gap:14px;margin-top:8px}
-.review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
-.review-grid div{border-top:2px solid var(--oos);padding-top:12px;display:grid;gap:6px}
-.review-grid p{color:var(--muted);font-size:.95rem}
-@media (max-width:820px){.verdict{grid-template-columns:minmax(0,1fr)}}
+/* Live */
 .live{display:grid;gap:20px}
 .live-empty{background:var(--sheet);border:1px dashed var(--rule);border-radius:4px;padding:22px;display:grid;gap:8px}
-.live-empty p{color:var(--muted)}
-.live-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.live-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .live-kpis div{background:var(--paper);padding:14px 16px;display:grid;gap:4px}
 .live-kpis b{font-family:var(--display);font-stretch:80%;font-size:1.9rem;font-weight:750;line-height:1}
 .live-kpis span{font-size:var(--step--1);color:var(--muted)}
-.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:99px;border:1px solid currentColor}
-.pill.taken{color:var(--oos)} .pill.skipped{color:var(--accent)} .pill.ignored{color:var(--muted)}
-.live-note{font-size:var(--step--1);color:var(--muted);margin-top:12px}
-footer{border-top:1px solid var(--rule);padding-block:28px 48px;color:var(--muted);font-size:var(--step--1);display:grid;gap:8px}
-@media (prefers-reduced-motion:no-preference){.hl{transition:background .2s}}
-</style>
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.tag.taken{color:var(--oos)} .tag.skipped{color:var(--accent)} .tag.ignored{color:var(--muted)}
 
-<div class="wrap">
-<header>
-  <div class="topline">
-    <span class="label">Forskningsprojekt · Backtest v1 · Kontrolleret</span>
-    <span class="label num">Data til 16. nov. 2026</span>
+/* Risk */
+.risk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:40px;align-items:start}
+@media (max-width:900px){.risk{grid-template-columns:minmax(0,1fr)}}
+.scale{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:14px 0 8px}
+.scale span{display:grid;place-items:center;height:42px;border:1px solid var(--rule);border-radius:3px;font-family:var(--mono);color:var(--muted);background:var(--sheet)}
+.scale span.on{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+.scale-ends{display:flex;justify-content:space-between;font-size:var(--step--1);color:var(--muted)}
+.risks{display:grid;gap:0}
+.risks div{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.risks div:first-child{border-top:2px solid var(--ink)}
+.risks dt{font-weight:600;font-family:var(--display);font-stretch:90%}
+.risks dd{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:520px){.risks div{grid-template-columns:minmax(0,1fr);gap:2px}}
+
+/* Invest */
+.status-box{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:22px;margin-bottom:28px}
+.status-box .big{font-family:var(--display);font-stretch:80%;font-weight:800;font-size:1.5rem;color:var(--warn);white-space:nowrap}
+@media (max-width:620px){.status-box{grid-template-columns:minmax(0,1fr)}}
+.ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.ways{grid-template-columns:minmax(0,1fr)}}
+.way{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:20px;display:grid;gap:10px;align-content:start}
+.way p{color:var(--muted);font-size:.95rem}
+.way a.more{font-weight:600;font-size:.92rem;text-decoration-thickness:1px}
+.checklist{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0;border-top:2px solid var(--ink)}
+.checklist li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--rule)}
+.checklist .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--rule);margin-top:2px}
+.checklist .mark.done{background:var(--good);border-color:var(--good)}
+.checklist .st{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+.checklist .st.done{color:var(--good)}
+.checklist p{color:var(--muted);font-size:.92rem}
+@media (max-width:520px){.checklist li{grid-template-columns:28px minmax(0,1fr)}.checklist .st{grid-column:2}}
+
+/* FAQ */
+.faq{display:grid;gap:0;border-top:2px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;position:relative;font-family:var(--display);font-stretch:90%;font-weight:700;font-size:1.08rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:12px;font-family:var(--mono);font-size:1.3rem;color:var(--accent)}
+.faq details[open] summary::after{content:"–"}
+.faq .ans{padding:0 0 18px;color:var(--muted);max-width:72ch;display:grid;gap:10px}
+
+/* Footer */
+footer{background:var(--band);color:var(--band-muted);font-size:var(--step--1)}
+footer .wrap{padding-block:44px;display:grid;gap:28px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:760px){.foot-grid{grid-template-columns:minmax(0,1fr)}}
+footer h4{color:var(--band-ink);font-size:1rem;margin-bottom:10px}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+footer a{color:var(--band-ink);text-decoration-color:var(--band-rule)}
+footer .brand{color:var(--band-ink)}
+.legal{border-top:1px solid var(--band-rule);padding-top:20px;display:grid;gap:8px;max-width:100ch}
+
+.mk-bg{fill:var(--ink)}.mk-roof{fill:var(--accent)}.mk-col{stroke:var(--paper);stroke-width:1.8;fill:none}footer .mk-bg{fill:var(--band-ink)}footer .mk-col{stroke:var(--band)}
+</style>
+</head>
+<body>
+<div class="strip"><div class="wrap"><span><b>Papirfond</b> · handler med fiktive penge · ikke åben for investering</span><span>Data opdateres hver hverdag kl. 13:45 dansk tid</span></div></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Congress Fund, forside"><svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="3"/><path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/><path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg>Congress Fund</a>
+    <nav aria-label="Hovedmenu"><ul>
+      <li><a href="#strategi">Strategien</a></li>
+      <li><a href="#resultater">Resultater</a></li>
+      <li><a href="#live">Live portefølje</a></li>
+      <li class="hide-sm"><a href="#risiko">Risiko</a></li>
+      <li><a href="#investering">Investering</a></li>
+      <li class="hide-sm"><a href="research.html">Research</a></li>
+    </ul></nav>
   </div>
 </header>
 
-<div class="hero">
-  <h1>Kan man tjene penge på at kopiere kongresmedlemmers aktiekøb?</h1>
-  <p class="lede">Medlemmer af det amerikanske Repræsentanternes Hus skal indberette deres aktiehandler, men først op til 45 dage senere. Projektet bygger hele kæden fra rå PDF-indberetninger til en backtest, der kun handler på det, man <mark>faktisk kunne vide den dag</mark>. Svaret er nej: strategien fulgte markedet med lidt mere risiko. Nu kører den videre som <a href="#live">live papirfond</a>.</p>
-
-  <figure class="record" aria-label="Eksempel på en indberetningslinje og de felter, parseren udleder">
-    <div class="record-head"><span class="label">Periodic Transaction Report · én linje</span><span class="label">Eksempel i PTR-format</span></div>
-    <div class="record-line"><span class="hl">SP</span> &nbsp;Example Corp. Common Stock (<span class="hl">EXMP</span>) [<span class="hl">ST</span>] &nbsp;<span class="hl">P</span> &nbsp;<span class="hl">01/14/2025</span> &nbsp;02/03/2025 &nbsp;<span class="hl">$1,001 - $15,000</span></div>
-    <div class="record-fields">
-      <div><span class="label">Ejer</span><b>spouse</b></div>
-      <div><span class="label">Ticker</span><b>EXMP</b></div>
-      <div><span class="label">Type</span><b>aktie (ST)</b></div>
-      <div><span class="label">Handel</span><b>køb (P)</b></div>
-      <div><span class="label">Handelsdato</span><b class="num">2025-01-14</b></div>
-      <div><span class="label">Beløb</span><b class="num">1.001–15.000 $</b></div>
+<main>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-copy">
+      <span class="pill"><i></i>Live papirfond fra 18. november 2026</span>
+      <h1>Aktiestrategien, der følger Kongressens egne handler</h1>
+      <p class="lede">Congress Fund køber de aktier, som medlemmer af det amerikanske Repræsentanternes Hus selv har købt, når handlen bliver offentlig. Reglerne er faste, hver beslutning logges, og al kode og data ligger åbent.</p>
+      <div class="btns">
+        <a class="btn primary" href="#live">Se porteføljen live</a>
+        <a class="btn ghost" href="#resultater">Se resultaterne</a>
+      </div>
     </div>
-    <p class="record-note">Linjen er et konstrueret eksempel, der viser formatet. Parseren læser tre forskellige skabeloner fra 2016 til i dag og er kontrolleret mod 26 manuelt aflæste indberetninger.</p>
-  </figure>
-
-  <div class="figures">
-    <div><b class="num">7.004</b><span>indberetninger hentet fra House Clerk, 2016–2026</span></div>
-    <div><b class="num">41.998</b><span>aktie- og ETF-handler klar til backtest</span></div>
-    <div><b class="num">20.567</b><span>køb fra 193 medlemmer</span></div>
-    <div><b class="num">94,8 %</b><span>af købene har en kurs på indgangsdagen</span></div>
+    <aside class="facts" aria-label="Nøgletal for fonden">
+      <div class="facts-head"><h3>Fakta om fonden</h3><span class="label">Pr. 17.11.2026</span></div>
+      <dl>
+        <div><dt>Status</dt><dd class="status">Papirfond, ikke åben</dd></div>
+        <div><dt>Strategi</dt><dd>Kopierer offentliggjorte aktiekøb</dd></div>
+        <div><dt>Univers</dt><dd>Amerikanske aktier og ETF'er</dd></div>
+        <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY, inkl. udbytte)</dd></div>
+        <div><dt>Ejertid</dt><dd>6 måneder pr. køb</dd></div>
+        <div><dt>Handel</dt><dd>Ved åbning dagen efter indberetning</dd></div>
+        <div><dt>Planlagt gebyr</dt><dd class="num">0,01 % pr. måned (0,12 % årligt)</dd></div>
+        <div><dt>Risikoindikator</dt><dd class="num">5 af 7 (forenklet)</dd></div>
+        <div><dt>Mægler</dt><dd>Alpaca (papirkonto)</dd></div>
+      </dl>
+    </aside>
   </div>
 </div>
 
-<section aria-labelledby="h-live" id="live">
+<div class="band" aria-label="Fonden i tal">
+  <div class="wrap">
+    <div class="kpis">
+      <div><b class="num">41.998</b><span>aktiehandler analyseret, 2016–2026</span></div>
+      <div><b class="num">28 dage</b><span>median forsinkelse fra handel til offentliggørelse</span></div>
+      <div><b class="num">0,12 %</b><span>planlagt årligt forvaltningsgebyr</span></div>
+      <div><b class="num">2 runder</b><span>uafhængig fejlkontrol af alle resultater</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<section class="first" id="ide" aria-labelledby="h-ide">
   <div class="sec-head prose">
-    <span class="label">Live papirfond · opdateres hver hverdag</span>
-    <h2 id="h-live">Strategien kører nu med fiktive penge</h2>
-    <p>Hver hverdag før børsåbning henter et automatisk job nye indberetninger fra Huset, anvender den låste regel og handler på en Alpaca-papirkonto. Det er en ægte test på data, som ingen har set endnu.</p>
+    <span class="label">Investeringsidéen</span>
+    <h2 id="h-ide">Offentlig information, brugt med disciplin</h2>
+    <p>Siden 2012 har STOCK Act pålagt medlemmer af Kongressen at offentliggøre deres aktiehandler inden for 45 dage. Kongressens medlemmer sidder tæt på lovgivning, høringer og budgetter. Congress Fund omsætter deres indberetninger til en regelbaseret portefølje uden menneskelige skøn.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M5 16h22M16 5c3.5 3.2 3.5 18.8 0 22M16 5c-3.5 3.2-3.5 18.8 0 22"/></svg>
+      <h3>Fuld gennemsigtighed</h3>
+      <p>Al kode, alle data og hver eneste beslutning ligger offentligt på GitHub. Du kan se præcis, hvorfor en aktie blev købt eller sprunget over.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="5" width="20" height="22" rx="2"/><path d="M11 11h10M11 16h10M11 21h6"/></svg>
+      <h3>Faste regler</h3>
+      <p>Reglerne blev låst, før resultaterne blev set. Ingen mavefornemmelse, ingen efterrationalisering og ingen justering undervejs.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 24l7-8 5 5 8-11"/><path d="M20 10h6v6"/></svg>
+      <h3>Lave omkostninger</h3>
+      <p>Det planlagte gebyr er 0,12 % om året. Hele kæden fra indberetning til ordre er automatisk, så der er ingen dyre analytikere at betale.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 4l10 4v7c0 6.5-4.3 11.2-10 13-5.7-1.8-10-6.5-10-13V8z"/><path d="M11.5 16l3.2 3.2 6-6.4"/></svg>
+      <h3>Uafhængigt kontrolleret</h3>
+      <p>En separat gennemgang regnede alle 18.068 handler om fra rådata og jagtede skævheder som look-ahead og survivorship bias.</p>
+    </div>
+  </div>
+</section>
+
+<section id="strategi" aria-labelledby="h-strategi">
+  <div class="sec-head prose">
+    <span class="label">Investeringsprocessen</span>
+    <h2 id="h-strategi">Fra indberetning til ordre, hver hverdag</h2>
+    <p>Processen kører automatisk på GitHub før den amerikanske børs åbner. Den kan kun handle på det, der faktisk var offentligt den dag.</p>
+  </div>
+  <ol class="process">
+    <li><h3>Indberetning</h3><p>Et medlem eller dets ægtefælle handler en aktie og indberetter det til Husets Clerk.</p><span class="rule-tag">Frist: 45 dage</span></li>
+    <li><h3>Indlæsning</h3><p>Husets indeks og PDF-indberetninger hentes og læses automatisk. Scannede papirer springes over.</p><span class="rule-tag">3 skabeloner, 46 tests</span></li>
+    <li><h3>Filtrering</h3><p>Kun køb af aktier og ETF'er tæller. Optioner, udbytte-geninvestering og dubletter sorteres fra.</p><span class="rule-tag">Medlemmets eget valg</span></li>
+    <li><h3>Køb</h3><p>Aktien købes ved åbning dagen efter offentliggørelsen, medmindre kursen allerede er steget mere end 10 %.</p><span class="rule-tag">Spring over ved +10 %</span></li>
+    <li><h3>Salg</h3><p>Positionen sælges efter 6 måneder. Beløbet afhænger af, hvor stort medlemmets køb var.</p><span class="rule-tag">Ejertid 6 måneder</span></li>
+  </ol>
+</section>
+
+<section id="resultater" aria-labelledby="h-res">
+  <div class="sec-head prose">
+    <span class="label">Historiske resultater · simuleret</span>
+    <h2 id="h-res">På niveau med markedet, ikke bedre</h2>
+    <p>Strategien blev backtestet på 10 års indberetninger. Reglerne blev valgt på 2016–2021 og derefter testet uændret på 2022–2026. Det er testperioden, der viser, hvad strategien faktisk kan.</p>
+  </div>
+  <div class="verdict-line"><p><b>I testperioden gav strategien +63,9 % mod S&amp;P 500's +66,0 %, med større udsving.</b> Merafkastet er −0,3 % om året og statistisk ikke til at skelne fra nul (t = −0,06). Forspringet over hele perioden stammer fra 2020, som indgik i kalibreringen.</p></div>
+
+  <div class="perf">
+    <figure class="card" style="margin:0">
+      <div class="card-head"><h3>Værdi af 100 kr. investeret i januar 2016</h3>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Congress Fund</span><span><i style="background:var(--muted)"></i>S&amp;P 500</span><span><i class="shade"></i>Testperiode</span></div></div>
+      <div class="chart-scroll"><svg id="eq" viewBox="0 0 680 300" role="img" aria-label="Simuleret værdi af Congress Fund og S&amp;P 500 fra 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
+      <figcaption>Simuleret, efter handelsomkostninger på 0,1 % pr. handel. Uden forvaltningsgebyr.</figcaption>
+    </figure>
+    <div class="card">
+      <div class="tabs" role="group" aria-label="Vælg periode">
+        <button type="button" id="tab-oos" aria-pressed="true">Testperiode 2022–2026</button>
+        <button type="button" id="tab-all" aria-pressed="false">Hele perioden 2016–2026</button>
+      </div>
+      <div class="table-scroll"><table id="metrics">
+        <thead><tr><th>Nøgletal</th><th class="r">Fonden</th><th class="r">S&amp;P 500</th></tr></thead>
+        <tbody class="num"></tbody>
+      </table></div>
+      <p class="note" id="metrics-note" style="margin-top:10px"></p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:28px">
+    <div class="card-head"><h3>Afkast pr. kalenderår</h3><span class="label">Simuleret</span></div>
+    <div class="table-scroll"><table class="years">
+      <thead><tr><th></th><th class="r">2016</th><th class="r">2017</th><th class="r">2018</th><th class="r">2019</th><th class="r">2020</th><th class="r">2021</th><th class="r">2022</th><th class="r">2023</th><th class="r">2024</th><th class="r">2025</th><th class="r">2026*</th></tr></thead>
+      <tbody class="num"><tr><th>Congress Fund, %</th><td class="r">+6,7</td><td class="r">+19,4</td><td class="r">−8,1</td><td class="r">+29,2</td><td class="r">+47,3</td><td class="r">+36,6</td><td class="r">−7,6</td><td class="r">+23,3</td><td class="r">+16,8</td><td class="r">+17,7</td><td class="r">+4,7</td></tr><tr><th>S&amp;P 500, %</th><td class="r">+14,5</td><td class="r">+21,7</td><td class="r">−5,0</td><td class="r">+31,1</td><td class="r">+18,5</td><td class="r">+28,6</td><td class="r">−18,2</td><td class="r">+26,2</td><td class="r">+24,9</td><td class="r">+17,7</td><td class="r">+9,4</td></tr><tr><th>Forskel, procentpoint</th><td class="r neg">−7,8</td><td class="r neg">−2,4</td><td class="r neg">−3,1</td><td class="r neg">−2,0</td><td class="r pos">+28,8</td><td class="r pos">+7,9</td><td class="r pos">+10,6</td><td class="r neg">−2,8</td><td class="r neg">−8,1</td><td class="r neg">−0,1</td><td class="r neg">−4,7</td></tr></tbody>
+    </table></div>
+    <p class="note" style="margin-top:10px">2016–2021 er kalibreringsperioden, hvor reglerne blev valgt. 2022–2026 er testperioden. 2026 dækker til og med 16. november.</p>
+  </div>
+  <p class="disclaimer">Historiske og simulerede afkast er ingen garanti for fremtidige afkast. Tallene er beregnet på 41.998 handler fra tekstbaserede indberetninger. 24 % af indberetningerne er scannede papirer og indgår ikke. Fuld metode, kontrol og begrænsninger står i <a href="research.html">research-afsnittet</a>.</p>
+</section>
+
+<section id="live" aria-labelledby="h-live">
+  <div class="sec-head prose">
+    <span class="label">Live portefølje · opdateres hver hverdag</span>
+    <h2 id="h-live">Fonden kører nu med fiktive penge</h2>
+    <p>Fra 18. november 2026 handler fonden hver dag på en papirkonto hos mægleren Alpaca. Det er en ægte test, fordi ingen af disse indberetninger fandtes, da reglerne blev låst.</p>
   </div>
   <div id="live-root" class="live">
-    <div class="live-empty"><span class="label">Afventer første kørsel</span><p>Når papirfonden har kørt første gang, vises afkast mod S&amp;P 500, åbne positioner og de seneste beslutninger her.</p></div>
+    <div class="live-empty"><span class="label">Afventer første handelsdag</span><p class="muted">Første automatiske kørsel er onsdag 18. november 2026 kl. 13:45 dansk tid. Derefter vises afkast mod S&amp;P 500, åbne positioner og de seneste beslutninger her.</p></div>
   </div>
-  <p class="live-note">Papirfond med fiktive penge. Ikke investeringsrådgivning.</p>
+  <p class="note" style="margin-top:14px">Papirfond med fiktive penge (startkapital 100.000 USD). Ikke investeringsrådgivning. Hele handelsloggen ligger på <a href="https://github.com/Oleo007pat/congress-fund/tree/main/data/live">GitHub</a>.</p>
 </section>
 
-<section aria-labelledby="h-time">
+<section id="risiko" aria-labelledby="h-risk">
   <div class="sec-head prose">
-    <span class="label">Hvornår kan man handle?</span>
-    <h2 id="h-time">Strategien må aldrig kende handelsdatoen før offentligheden</h2>
-    <p>Den største fejlkilde i den slags analyser er at handle på medlemmets handelsdato. Den er først kendt, når indberetningen bliver offentlig. Backtesten køber derfor tidligst ved åbningen dagen efter indleveringen.</p>
+    <span class="label">Risiko</span>
+    <h2 id="h-risk">Hvad der kan gå galt</h2>
   </div>
-  <div class="timeline">
-    <div class="tl-step"><h3>Medlemmet handler</h3><p>Handelsdatoen står i indberetningen, men er ukendt for alle andre.</p></div>
-    <div class="tl-step"><h3>Indberetning</h3><p>Lovens frist (STOCK Act) er 45 dage. 19 % af købene kom senere.</p><p class="tl-gap num">median 28 dage · 90 % inden 226 dage</p></div>
-    <div class="tl-step key"><h3>Offentlig</h3><p>Indleveringsdatoen fra Husets eget indeks. Først nu er handlen kendt.</p></div>
-    <div class="tl-step key"><h3>Vi køber</h3><p>Ved åbningskursen næste handelsdag, med 0,1 % i handelsomkostning.</p></div>
-  </div>
-</section>
-
-<section aria-labelledby="h-pipe">
-  <div class="sec-head prose">
-    <span class="label">Sådan er det bygget</span>
-    <h2 id="h-pipe">Fra PDF til backtest i fem trin</h2>
-    <p>Hvert trin er et selvstændigt Python-modul med egne tests. Alle data kommer fra offentlige, gratis kilder.</p>
-  </div>
-  <div class="pipeline">
-    <article class="stage"><span class="label">Indsamling</span><h3>Hent indberetninger</h3><p>Husets årlige indeks og alle PTR-PDF'er fra 2016. Kørslen kan genoptages og fejlede 0 af 7.004 gange.</p><span class="tech">requests · XML · 19 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Parsing</span><h3>Læs PDF'erne</h3><p>Tre skabeloner, sideskift midt i handler, små bogstaver i tickere og ændringsindberetninger. Dubletter og slettede handler markeres.</p><span class="tech">pypdf · regex · 46 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Kurser</span><h3>Kobl tickere til kurser</h3><p>Daglige kurser justeret for splits og udbytte. Tickerskift findes via historik, og afnoterede aktier beholdes.</p><span class="tech">Alpaca SIP · 12 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Backtest</span><h3>Simulér strategien</h3><p>136 kombinationer af tærskel, exit og vægtning. Valgt på 2016–2021 og testet uændret på 2022–2026.</p><span class="tech">pandas · numpy · 42 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Kontrol</span><h3>Uafhængig fejljagt</h3><p>En separat gennemgang fandt to alvorlige fejl i første runde. De blev rettet, og anden runde godkendte resultatet.</p><span class="tech">Newey-West · stikprøver</span><span class="status done">2 runder</span></article>
-  </div>
-</section>
-
-<section aria-labelledby="h-rules">
-  <div class="sec-head prose">
-    <span class="label">Regler, låst før resultaterne</span>
-    <h2 id="h-rules">Hvad backtesten tester</h2>
-    <p>Reglerne blev skrevet ned, før nogen resultater blev set. Ved tvivl vælges den mest konservative fortolkning, og den noteres.</p>
-  </div>
-  <dl class="rules">
-    <div class="rule"><dt>Signal</dt><dd>Hvert køb af aktie eller ETF, også ægtefællers og børns. Ingen optioner, obligationer eller krypto.</dd></div>
-    <div class="rule"><dt>Spring over</dt><dd>Kun hvis kursen er steget mere end X % siden medlemmets handel. Et fald fører aldrig til, at et køb springes over.</dd></div>
-    <div class="rule"><dt>Tærskel X</dt><dd class="num">0, 2, 4 … 30 % og "ingen tærskel"</dd></div>
-    <div class="rule"><dt>Exit</dt><dd>Når medlemmet sælger, eller efter faste 3, 6 eller 12 måneder</dd></div>
-    <div class="rule"><dt>Vægtning</dt><dd>Lige vægt pr. handel, eller efter midten af det indberettede beløbsinterval</dd></div>
-    <div class="rule"><dt>Benchmark</dt><dd>S&amp;P 500 (SPY inkl. udbytte) i samme periode</dd></div>
-    <div class="rule"><dt>Overfitting</dt><dd>X vælges kun på 2016–2021 og testes uændret på 2022–i dag</dd></div>
-    <div class="rule"><dt>Omkostninger</dt><dd class="num">0,1 % ved køb og ved salg</dd></div>
-  </dl>
-</section>
-
-<section aria-labelledby="h-data">
-  <div class="sec-head prose">
-    <span class="label">Datagrundlaget</span>
-    <h2 id="h-data">Køb pr. år, delt i kalibrering og test</h2>
-  </div>
-  <div class="two">
-    <figure class="chart-box" style="margin:0">
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Kalibrering 2016–2021 · 12.176 køb</span><span><i style="background:var(--oos)"></i>Test 2022–2026 · 8.391 køb</span></div>
-      <div class="chart-scroll"><svg id="buys" viewBox="0 0 640 270" role="img" aria-label="Søjlediagram over antal køb pr. indleveringsår 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
-      <p class="label" style="margin-top:6px">2026 dækker 1. jan.–16. nov.</p>
-    </figure>
+  <div class="risk">
     <div>
-      <h3 style="margin-bottom:10px">Andel af købene med kurs</h3>
-      <div class="table-scroll"><table>
-        <thead><tr><th>Tidspunkt</th><th class="r">Dækning</th></tr></thead>
-        <tbody class="num">
-          <tr><td>Indgang (dagen efter indlevering)</td><td class="r">94,8 %</td></tr>
-          <tr><td>+3 måneder</td><td class="r">94,4 %</td></tr>
-          <tr><td>+6 måneder</td><td class="r">93,9 %</td></tr>
-          <tr><td>+12 måneder</td><td class="r">92,6 %</td></tr>
-        </tbody>
-      </table></div>
-      <p style="margin-top:14px;color:var(--muted);font-size:.93rem">2.848 af 3.418 tickere er koblet til kursdata. De fleste af resten er OTC-papirer og afnoterede selskaber, som det gratis kursfeed ikke dækker.</p>
+      <h3>Risikoindikator</h3>
+      <div class="scale" role="img" aria-label="Risikoindikator 5 på en skala fra 1 til 7"><span>1</span><span>2</span><span>3</span><span>4</span><span class="on">5</span><span>6</span><span>7</span></div>
+      <div class="scale-ends"><span>Lav risiko</span><span>Høj risiko</span></div>
+      <p class="note" style="margin-top:14px">Forenklet ud fra den simulerede volatilitet på 21,6–22,9 % om året, svarende til klasse 5 på EU's skala. Det er ikke en officiel PRIIPs-beregning. Til sammenligning: S&amp;P 500 havde 17,4 % i testperioden.</p>
     </div>
+    <dl class="risks">
+      <div><dt>Markedsrisiko</dt><dd>Fonden ejer kun amerikanske aktier og følger markedet tæt (beta 1,10). Falder aktiemarkedet, falder fonden typisk mere.</dd></div>
+      <div><dt>Koncentration</dt><dd>Fordi store indberettede køb vægter mere, kan nogle få medlemmer dominere porteføljen i perioder.</dd></div>
+      <div><dt>Forsinkelse</dt><dd>Handler bliver først offentlige efter i median 28 dage, og 19 % kommer for sent. En eventuel informationsfordel kan være væk, inden fonden køber.</dd></div>
+      <div><dt>Lovgivning</dt><dd>Der er fremsat lovforslag i Kongressen om at begrænse medlemmernes handel med enkeltaktier. Bliver det vedtaget, forsvinder strategiens råmateriale.</dd></div>
+      <div><dt>Data</dt><dd>Scannede indberetninger kan ikke læses automatisk, og indberetningerne kan indeholde fejl. Afnoterede aktier mangler delvist i kursdata.</dd></div>
+      <div><dt>Valuta</dt><dd>For en dansk investor svinger afkastet også med kursen på dollar.</dd></div>
+    </dl>
   </div>
 </section>
 
-<section aria-labelledby="h-res">
+<section id="investering" aria-labelledby="h-inv">
   <div class="sec-head prose">
-    <span class="label">Resultat · testperioden 2022–2026</span>
-    <h2 id="h-res">Strategien slår ikke markedet</h2>
-    <p>Reglen blev valgt på 2016–2021 efter et kriterium, der var skrevet ned på forhånd: hold hvert køb i 6 måneder, vægt efter det indberettede beløb, og spring købet over, hvis kursen allerede er steget mere end 10 %. Fra 3. januar 2022 gav den samme afkast som S&amp;P 500, men med større udsving.</p>
+    <span class="label">Sådan investerer man</span>
+    <h2 id="h-inv">Fonden er ikke åben, men strategien kan følges</h2>
   </div>
-  <div class="verdict">
-    <div class="table-scroll"><table class="cmp">
-      <thead><tr><th>3. jan. 2022 – 16. nov. 2026</th><th class="r">Strategi</th><th class="r">S&amp;P 500</th></tr></thead>
-      <tbody class="num">
-        <tr><td>Samlet afkast</td><td class="r">+63,9 %</td><td class="r">+66,0 %</td></tr>
-        <tr><td>Årligt afkast (CAGR)</td><td class="r">10,7 %</td><td class="r">11,0 %</td></tr>
-        <tr><td>Volatilitet</td><td class="r">22,9 %</td><td class="r">17,4 %</td></tr>
-        <tr><td>Sharpe (rf = 0)</td><td class="r">0,56</td><td class="r">0,69</td></tr>
-        <tr><td>Største fald</td><td class="r">−22,4 %</td><td class="r">−24,5 %</td></tr>
-      </tbody>
-    </table></div>
-    <div class="alpha">
-      <span class="label">Merafkast i forhold til markedet</span>
-      <b class="num">−0,3 %</b>
-      <span>om året · t = −0,06 (Newey-West) · beta 1,10</span>
-      <p>Et t-tal tæt på nul betyder, at der ikke er noget at skelne fra tilfældighed.</p>
-    </div>
+  <div class="status-box">
+    <span class="big">Ikke åben</span>
+    <p>Congress Fund tager ikke imod penge. Det er en papirfond, der kører offentligt for at teste strategien på data, som ingen har set. Den åbner kun, hvis den både slår markedet over tid og får de nødvendige tilladelser.</p>
   </div>
-
-  <figure class="chart-box fig">
-    <div class="fig-head"><h3>Formue for 1 krone investeret i 2016</h3>
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Strategi</span><span><i style="background:var(--muted)"></i>S&amp;P 500 (SPY)</span><span><i class="shade"></i>Testperiode</span></div></div>
-    <div class="chart-scroll"><svg id="equity" viewBox="0 0 680 300" role="img" aria-label="Formuekurve for strategien og S&amp;P 500 fra 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
-    <figcaption>Forspringet blev skabt i 2020, altså i kalibreringsperioden. I testperioden steg strategien en smule mindre end markedet.</figcaption>
-  </figure>
-
-  <div class="two">
-    <figure class="chart-box fig">
-      <h3>Merafkast pr. år</h3>
-      <div class="chart-scroll"><svg id="yearly" viewBox="0 0 420 250" role="img" aria-label="Søjler med strategiens merafkast i forhold til SPY pr. år 2016 til 2026" style="width:100%;min-width:360px;height:auto"></svg></div>
-      <figcaption>Kun 2020, 2021 og 2022 var positive. Procentpoint i forhold til SPY.</figcaption>
-    </figure>
-    <figure class="chart-box fig">
-      <h3>Sharpe som funktion af tærsklen X</h3>
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>2016–2021</span><span><i style="background:var(--oos)"></i>2022–2026</span><span><i class="dash"></i>SPY</span></div>
-      <div class="chart-scroll"><svg id="xchart" viewBox="0 0 420 250" role="img" aria-label="Sharpe-ratio for hver tærskel X i begge perioder" style="width:100%;min-width:360px;height:auto"></svg></div>
-      <figcaption>Over 4 % ligger kurverne fladt. At springe køb over efter en stigning tilføjer ikke noget pålideligt.</figcaption>
-    </figure>
+  <div class="ways">
+    <article class="way">
+      <span class="label">Følg med</span>
+      <h3>Se porteføljen hver dag</h3>
+      <p>Den live portefølje på denne side opdateres efter hver handelsdag med positioner, afkast og begrundelser for hvert køb.</p>
+      <a class="more" href="#live">Gå til live porteføljen</a>
+    </article>
+    <article class="way">
+      <span class="label">Gør det selv</span>
+      <h3>Kør strategien på din egen konto</h3>
+      <p>Koden er åben. Med en gratis papirkonto hos Alpaca kan du køre præcis samme regler på din egen konto, uden rigtige penge.</p>
+      <a class="more" href="https://github.com/Oleo007pat/congress-fund/blob/main/live/README.md">Læs vejledningen på GitHub</a>
+    </article>
+    <article class="way">
+      <span class="label">Hvis fonden åbner</span>
+      <h3>Sådan ville den fungere</h3>
+      <p>Investorer køber andele til dagens indre værdi. Gebyret er 0,01 % pr. måned og trækkes løbende. En investorbog holder styr på andele, indskud og hævninger.</p>
+      <a class="more" href="https://github.com/Oleo007pat/congress-fund/tree/main/fund">Se fondsmodulerne på GitHub</a>
+    </article>
   </div>
-
-  <div class="review">
-    <h3>Hvad den uafhængige kontrol fandt</h3>
-    <div class="review-grid">
-      <div><span class="label">Runde 1 · 2 alvorlige fejl</span><p>Den første version viste +106 % mod markedets +66 %. Kontrollen viste, at tallet kom af, at testporteføljen startede tom og i 2022 næsten kun bestod af ét medlems energikøb. Målt som én sammenhængende portefølje forsvandt forspringet.</p></div>
-      <div><span class="label">Runde 2 · ingen alvorlige fejl</span><p>Alle 18.068 handler blev regnet om fra rådata uden afvigelser, og 10 tilfældige handler blev kontrolleret i hånden. Valget af regel er skrøbeligt: flere varianter scorer næsten ens.</p></div>
-    </div>
-  </div>
+  <h3 style="margin-top:40px">Det skal være på plads, før fonden kan åbne</h3>
+  <ol class="checklist">
+    <li><span class="mark done" aria-hidden="true"></span><div><b>Data og backtest</b><p>10 års indberetninger, læst, koblet til kurser og testet.</p></div><span class="st done">Færdig</span></li>
+    <li><span class="mark done" aria-hidden="true"></span><div><b>Uafhængig kontrol</b><p>To runder fejljagt. Ingen alvorlige fejl tilbage.</p></div><span class="st done">Færdig</span></li>
+    <li><span class="mark done" aria-hidden="true"></span><div><b>Automatisk drift</b><p>Daglig kørsel med logning af hver beslutning.</p></div><span class="st done">Kører</span></li>
+    <li><span class="mark" aria-hidden="true"></span><div><b>Dokumenteret merafkast</b><p>Strategien har ikke slået markedet i testperioden. Den skal gøre det live over flere år, før den kan anbefales.</p></div><span class="st">Ikke opfyldt</span></li>
+    <li><span class="mark" aria-hidden="true"></span><div><b>Juridisk afklaring</b><p>Amerikansk lov forbyder kommerciel brug af Kongressens indberetninger, bortset fra nyhedsmedier. Det skal afklares af en advokat.</p></div><span class="st">Ikke startet</span></li>
+    <li><span class="mark" aria-hidden="true"></span><div><b>Tilladelse fra Finanstilsynet</b><p>En fond, der forvalter andres penge, kræver registrering eller tilladelse som forvalter, samt depotselskab og revisor.</p></div><span class="st">Ikke startet</span></li>
+  </ol>
 </section>
 
-<section aria-labelledby="h-ms">
+<section id="faq" aria-labelledby="h-faq">
   <div class="sec-head prose">
-    <span class="label">Opfølgning · kun de bedste medlemmer</span>
-    <h2 id="h-ms">At vælge tidligere vindere ser godt ud, men holder ikke</h2>
-    <p>Næste idé var at kopiere kun de medlemmer, hvis tidligere køb havde slået markedet. Hvert medlem blev kun bedømt på handler, der var afsluttet før købet. 128 varianter blev afprøvet, og den bedste på 2016–2021 blev valgt efter et kriterium fastlagt på forhånd: kopiér de 20 % bedste medlemmer målt over de seneste 24 måneder.</p>
+    <span class="label">Spørgsmål og svar</span>
+    <h2 id="h-faq">Det, folk typisk spørger om</h2>
   </div>
-  <div class="verdict">
-    <div class="table-scroll"><table class="cmp">
-      <thead><tr><th>2022 – 16. nov. 2026</th><th class="r">Bedste medlemmer</th><th class="r">Alle køb (v1)</th><th class="r">S&amp;P 500</th></tr></thead>
-      <tbody class="num">
-        <tr><td>Samlet afkast</td><td class="r">+89,6 %</td><td class="r">+63,9 %</td><td class="r">+66,0 %</td></tr>
-        <tr><td>Sharpe</td><td class="r">0,72</td><td class="r">0,56</td><td class="r">0,69</td></tr>
-        <tr><td>Alfa pr. år (t)</td><td class="r">+4,9 % (0,69)</td><td class="r">−0,3 % (−0,06)</td><td class="r">–</td></tr>
-        <tr><td>Uden største medlem</td><td class="r">+19,2 %</td><td class="r">–</td><td class="r">+66,0 %</td></tr>
-      </tbody>
-    </table></div>
-    <div class="alpha">
-      <span class="label">Deflated Sharpe ratio</span>
-      <b class="num">0,27</b>
-      <span>justeret for 128 afprøvede varianter · skal over 0,95</span>
-      <p>Tallet tager højde for, at man finder en flot variant ved et tilfælde, når man prøver mange.</p>
-    </div>
-  </div>
-  <div class="review-grid">
-    <div><span class="label">Koncentration</span><p>To medlemmer udgør 75 % af porteføljen: Mark Greens energikøb og nogle meget store Microsoft-køb fra Suzan DelBenes ægtefælle. Uden Mark Green falder afkastet fra +89,6 % til +19,2 %.</p></div>
-    <div><span class="label">Ingen vedholdenhed</span><p>Pr. handel klarede de udvalgte medlemmer sig 1,8 procentpoint dårligere end markedet over 6 måneder i testperioden, mod 0,9 for dem, der ikke blev valgt. De, der havde klaret sig godt før, fortsatte ikke med det.</p></div>
+  <div class="faq">
+    <details><summary>Hvorfor viser I, at strategien ikke slår markedet?</summary><div class="ans"><p>Fordi det er resultatet. Første version af backtesten viste +106 % mod markedets +66 %. Den uafhængige kontrol fandt, at tallet skyldtes en målefejl: testporteføljen startede tom. Rettet gav strategien det samme som markedet. En fond, der skjuler den slags, fortjener ingen tillid.</p></div></details>
+    <details><summary>Er det lovligt at handle på kongresmedlemmers aktiehandler?</summary><div class="ans"><p>Indberetningerne er offentlige, og enhver kan læse dem og handle på dem for egen regning. Amerikansk lov forbyder dog at bruge selve indberetningerne til kommercielle formål, bortset fra nyhedsmedier. Derfor er Congress Fund en papirfond og ikke et kommercielt produkt. Dette er ikke juridisk rådgivning.</p></div></details>
+    <details><summary>Hvorfor køber fonden ikke på medlemmets handelsdag?</summary><div class="ans"><p>Fordi handlen først er kendt, når indberetningen bliver offentlig, i median 28 dage senere. At bruge handelsdatoen i en backtest ville give et kunstigt godt resultat, som ingen kunne have opnået.</p></div></details>
+    <details><summary>Hvad med at følge kun de dygtigste medlemmer?</summary><div class="ans"><p>Det er testet. Hvis man kun kopierer de 20 % af medlemmerne med de bedste tidligere resultater, får man +89,6 % i testperioden. Men 75 % af porteføljen kom fra to medlemmer, og uden det største af dem faldt afkastet til +19,2 %. Justeret for de 128 varianter, der blev prøvet, forsvinder fordelen. Tidligere vindere fortsatte ikke med at vinde.</p></div></details>
+    <details><summary>Hvorfor er Senatet ikke med?</summary><div class="ans"><p>Senatets database blokerer automatiske hentninger. Senatet kommer med i en senere version, hvis der findes en lovlig datakilde.</p></div></details>
+    <details><summary>Hvem står bag?</summary><div class="ans"><p>Congress Fund er et uafhængigt forskningsprojekt. Det er bygget i Python med offentlige data fra Repræsentanternes Hus og kurser fra Alpaca. Det har ingen tilknytning til Kongressen eller til nogen kapitalforvalter.</p></div></details>
   </div>
 </section>
-
-<section aria-labelledby="h-gaps">
-  <div class="sec-head prose">
-    <span class="label">Begrænsninger</span>
-    <h2 id="h-gaps">Hvad data ikke kan sige</h2>
-    <p>Huller rapporteres som huller. Intet er udfyldt med skøn.</p>
-  </div>
-  <div class="gaps">
-    <div class="gap"><span class="sev high">Stor</span><div><h3>Scannede indberetninger mangler</h3><p>1.692 af 7.004 indberetninger (24 %) er scannet papir uden tekst. De rammer især 2016–2018 og nogle af de mest aktive handlere. En stikprøve læst af to uafhængige læsere stemte 254 af 254 handler, men resten er ikke med i v1.</p></div></div>
-    <div class="gap"><span class="sev high">Middel</span><div><h3>Survivorship bias</h3><p>5,2 % af købene har ingen kurs ved indgang, mest afnoterede selskaber. Det kan gøre resultatet for pænt. Antallet rapporteres i hver beregning.</p></div></div>
-    <div class="gap"><span class="sev">Lille</span><div><h3>Ændringsindberetninger uden original</h3><p>324 rækker kan ikke kobles til en original og kan derfor tælle dobbelt.</p></div></div>
-    <div class="gap"><span class="sev">Afgrænset</span><div><h3>Kun Repræsentanternes Hus</h3><p>Senatets database blokerer automatiske hentninger. Senatet tages op i en senere version med en anden datakilde.</p></div></div>
-  </div>
-</section>
+</div>
+</main>
 
 <footer>
-  <span>Kilder: U.S. House of Representatives, Office of the Clerk (Financial Disclosure Reports) · Alpaca Market Data (SIP).</span>
-  <span>Kode: <a href="https://github.com/Oleo007pat/congress-fund">github.com/Oleo007pat/congress-fund</a> · Python, pandas, pypdf.</span>
-  <span>Projektet er forskning og ikke investeringsrådgivning.</span>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div style="display:grid;gap:10px;align-content:start">
+        <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="3"/><path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/><path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg>Congress Fund</a>
+        <p>En regelbaseret papirfond, der følger amerikanske kongresmedlemmers offentliggjorte aktiekøb.</p>
+      </div>
+      <div><h4>Fonden</h4><ul><li><a href="#strategi">Strategien</a></li><li><a href="#resultater">Resultater</a></li><li><a href="#live">Live portefølje</a></li><li><a href="#risiko">Risiko</a></li></ul></div>
+      <div><h4>Dokumentation</h4><ul><li><a href="research.html">Research og metode</a></li><li><a href="https://github.com/Oleo007pat/congress-fund/blob/main/reports/backtest_v1.md">Backtest-rapport</a></li><li><a href="https://github.com/Oleo007pat/congress-fund">Kode på GitHub</a></li><li><a href="https://disclosures-clerk.house.gov/FinancialDisclosure">Kilde: House Clerk</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <p><b style="color:var(--band-ink)">Vigtig information.</b> Congress Fund er en papirfond, der handler med fiktive penge. Den er ikke en investeringsforening, en alternativ investeringsfond eller et finansielt produkt, og den tager ikke imod penge. Intet på denne side er investeringsrådgivning eller en opfordring til at købe eller sælge værdipapirer.</p>
+      <p>Historiske og simulerede afkast er ingen garanti for fremtidige afkast. Simulerede resultater har kendte begrænsninger, som er beskrevet i research-afsnittet. Kilder: U.S. House of Representatives, Office of the Clerk; Alpaca Market Data.</p>
+    </div>
+  </div>
 </footer>
-</div>
 
+<script id="fund-data" type="application/json">{"dates":["2016-01-08","2016-01-15","2016-01-22","2016-01-29","2016-02-05","2016-02-12","2016-02-19","2016-02-26","2016-03-04","2016-03-11","2016-03-18","2016-03-24","2016-04-01","2016-04-08","2016-04-15","2016-04-22","2016-04-29","2016-05-06","2016-05-13","2016-05-20","2016-05-27","2016-06-03","2016-06-10","2016-06-17","2016-06-24","2016-07-01","2016-07-08","2016-07-15","2016-07-22","2016-07-29","2016-08-05","2016-08-12","2016-08-19","2016-08-26","2016-09-02","2016-09-09","2016-09-16","2016-09-23","2016-09-30","2016-10-07","2016-10-14","2016-10-21","2016-10-28","2016-11-04","2016-11-11","2016-11-18","2016-11-25","2016-12-02","2016-12-09","2016-12-16","2016-12-23","2016-12-30","2017-01-06","2017-01-13","2017-01-20","2017-01-27","2017-02-03","2017-02-10","2017-02-17","2017-02-24","2017-03-03","2017-03-10","2017-03-17","2017-03-24","2017-03-31","2017-04-07","2017-04-13","2017-04-21","2017-04-28","2017-05-05","2017-05-12","2017-05-19","2017-05-26","2017-06-02","2017-06-09","2017-06-16","2017-06-23","2017-06-30","2017-07-07","2017-07-14","2017-07-21","2017-07-28","2017-08-04","2017-08-11","2017-08-18","2017-08-25","2017-09-01","2017-09-08","2017-09-15","2017-09-22","2017-09-29","2017-10-06","2017-10-13","2017-10-20","2017-10-27","2017-11-03","2017-11-10","2017-11-17","2017-11-24","2017-12-01","2017-12-08","2017-12-15","2017-12-22","2017-12-29","2018-01-05","2018-01-12","2018-01-19","2018-01-26","2018-02-02","2018-02-09","2018-02-16","2018-02-23","2018-03-02","2018-03-09","2018-03-16","2018-03-23","2018-03-29","2018-04-06","2018-04-13","2018-04-20","2018-04-27","2018-05-04","2018-05-11","2018-05-18","2018-05-25","2018-06-01","2018-06-08","2018-06-15","2018-06-22","2018-06-29","2018-07-06","2018-07-13","2018-07-20","2018-07-27","2018-08-03","2018-08-10","2018-08-17","2018-08-24","2018-08-31","2018-09-07","2018-09-14","2018-09-21","2018-09-28","2018-10-05","2018-10-12","2018-10-19","2018-10-26","2018-11-02","2018-11-09","2018-11-16","2018-11-23","2018-11-30","2018-12-07","2018-12-14","2018-12-21","2018-12-28","2019-01-04","2019-01-11","2019-01-18","2019-01-25","2019-02-01","2019-02-08","2019-02-15","2019-02-22","2019-03-01","2019-03-08","2019-03-15","2019-03-22","2019-03-29","2019-04-05","2019-04-12","2019-04-18","2019-04-26","2019-05-03","2019-05-10","2019-05-17","2019-05-24","2019-05-31","2019-06-07","2019-06-14","2019-06-21","2019-06-28","2019-07-05","2019-07-12","2019-07-19","2019-07-26","2019-08-02","2019-08-09","2019-08-16","2019-08-23","2019-08-30","2019-09-06","2019-09-13","2019-09-20","2019-09-27","2019-10-04","2019-10-11","2019-10-18","2019-10-25","2019-11-01","2019-11-08","2019-11-15","2019-11-22","2019-11-29","2019-12-06","2019-12-13","2019-12-20","2019-12-27","2020-01-03","2020-01-10","2020-01-17","2020-01-24","2020-01-31","2020-02-07","2020-02-14","2020-02-21","2020-02-28","2020-03-06","2020-03-13","2020-03-20","2020-03-27","2020-04-03","2020-04-09","2020-04-17","2020-04-24","2020-05-01","2020-05-08","2020-05-15","2020-05-22","2020-05-29","2020-06-05","2020-06-12","2020-06-19","2020-06-26","2020-07-02","2020-07-10","2020-07-17","2020-07-24","2020-07-31","2020-08-07","2020-08-14","2020-08-21","2020-08-28","2020-09-04","2020-09-11","2020-09-18","2020-09-25","2020-10-02","2020-10-09","2020-10-16","2020-10-23","2020-10-30","2020-11-06","2020-11-13","2020-11-20","2020-11-27","2020-12-04","2020-12-11","2020-12-18","2020-12-24","2020-12-31","2021-01-08","2021-01-15","2021-01-22","2021-01-29","2021-02-05","2021-02-12","2021-02-19","2021-02-26","2021-03-05","2021-03-12","2021-03-19","2021-03-26","2021-04-01","2021-04-09","2021-04-16","2021-04-23","2021-04-30","2021-05-07","2021-05-14","2021-05-21","2021-05-28","2021-06-04","2021-06-11","2021-06-18","2021-06-25","2021-07-02","2021-07-09","2021-07-16","2021-07-23","2021-07-30","2021-08-06","2021-08-13","2021-08-20","2021-08-27","2021-09-03","2021-09-10","2021-09-17","2021-09-24","2021-10-01","2021-10-08","2021-10-15","2021-10-22","2021-10-29","2021-11-05","2021-11-12","2021-11-19","2021-11-26","2021-12-03","2021-12-10","2021-12-17","2021-12-23","2021-12-31","2022-01-07","2022-01-14","2022-01-21","2022-01-28","2022-02-04","2022-02-11","2022-02-18","2022-02-25","2022-03-04","2022-03-11","2022-03-18","2022-03-25","2022-04-01","2022-04-08","2022-04-14","2022-04-22","2022-04-29","2022-05-06","2022-05-13","2022-05-20","2022-05-27","2022-06-03","2022-06-10","2022-06-17","2022-06-24","2022-07-01","2022-07-08","2022-07-15","2022-07-22","2022-07-29","2022-08-05","2022-08-12","2022-08-19","2022-08-26","2022-09-02","2022-09-09","2022-09-16","2022-09-23","2022-09-30","2022-10-07","2022-10-14","2022-10-21","2022-10-28","2022-11-04","2022-11-11","2022-11-18","2022-11-25","2022-12-02","2022-12-09","2022-12-16","2022-12-23","2022-12-30","2023-01-06","2023-01-13","2023-01-20","2023-01-27","2023-02-03","2023-02-10","2023-02-17","2023-02-24","2023-03-03","2023-03-10","2023-03-17","2023-03-24","2023-03-31","2023-04-06","2023-04-14","2023-04-21","2023-04-28","2023-05-05","2023-05-12","2023-05-19","2023-05-26","2023-06-02","2023-06-09","2023-06-16","2023-06-23","2023-06-30","2023-07-07","2023-07-14","2023-07-21","2023-07-28","2023-08-04","2023-08-11","2023-08-18","2023-08-25","2023-09-01","2023-09-08","2023-09-15","2023-09-22","2023-09-29","2023-10-06","2023-10-13","2023-10-20","2023-10-27","2023-11-03","2023-11-10","2023-11-17","2023-11-24","2023-12-01","2023-12-08","2023-12-15","2023-12-22","2023-12-29","2024-01-05","2024-01-12","2024-01-19","2024-01-26","2024-02-02","2024-02-09","2024-02-16","2024-02-23","2024-03-01","2024-03-08","2024-03-15","2024-03-22","2024-03-28","2024-04-05","2024-04-12","2024-04-19","2024-04-26","2024-05-03","2024-05-10","2024-05-17","2024-05-24","2024-05-31","2024-06-07","2024-06-14","2024-06-21","2024-06-28","2024-07-05","2024-07-12","2024-07-19","2024-07-26","2024-08-02","2024-08-09","2024-08-16","2024-08-23","2024-08-30","2024-09-06","2024-09-13","2024-09-20","2024-09-27","2024-10-04","2024-10-11","2024-10-18","2024-10-25","2024-11-01","2024-11-08","2024-11-15","2024-11-22","2024-11-29","2024-12-06","2024-12-13","2024-12-20","2024-12-27","2025-01-03","2025-01-10","2025-01-17","2025-01-24","2025-01-31","2025-02-07","2025-02-14","2025-02-21","2025-02-28","2025-03-07","2025-03-14","2025-03-21","2025-03-28","2025-04-04","2025-04-11","2025-04-17","2025-04-25","2025-05-02","2025-05-09","2025-05-16","2025-05-23","2025-05-30","2025-06-06","2025-06-13","2025-06-20","2025-06-27","2025-07-03","2025-07-11","2025-07-18","2025-07-25","2025-08-01","2025-08-08","2025-08-15","2025-08-22","2025-08-29","2025-09-05","2025-09-12","2025-09-19","2025-09-26","2025-10-03","2025-10-10","2025-10-17","2025-10-24","2025-10-31","2025-11-07","2025-11-14","2025-11-21","2025-11-28","2025-12-05","2025-12-12","2025-12-19","2025-12-26","2026-01-02","2026-01-09","2026-01-16","2026-01-23","2026-01-30","2026-02-06","2026-02-13","2026-02-20","2026-02-27","2026-03-06","2026-03-13","2026-03-20","2026-03-27","2026-04-02","2026-04-10","2026-04-17","2026-04-24","2026-05-01","2026-05-08","2026-05-15","2026-05-22","2026-05-29","2026-06-05","2026-06-12","2026-06-18","2026-06-26","2026-07-02","2026-07-10","2026-07-17","2026-07-24","2026-07-31","2026-08-07","2026-08-14","2026-08-21","2026-08-28","2026-09-04","2026-09-11","2026-09-18","2026-09-25","2026-10-02","2026-10-09","2026-10-16","2026-10-23","2026-10-30","2026-11-06","2026-11-13","2026-11-16"],"s":[0.9604,0.9311,0.9267,0.9143,0.8915,0.8799,0.9133,0.9304,0.9637,0.9726,0.9844,0.9707,0.9818,0.9759,0.994,1.0112,0.9949,0.9799,0.9683,0.9735,0.9932,1.0012,0.9969,0.9899,0.9751,1.0071,1.0165,1.0311,1.038,1.0356,1.0383,1.0444,1.0471,1.0369,1.0452,1.0204,1.0234,1.0397,1.0411,1.0263,1.0166,1.0262,1.0167,0.9936,1.0325,1.0437,1.0568,1.0479,1.0812,1.0775,1.0815,1.0713,1.089,1.081,1.0822,1.0886,1.0917,1.1017,1.1175,1.1217,1.1303,1.124,1.1276,1.1123,1.1276,1.1227,1.1138,1.1212,1.1384,1.1392,1.1344,1.1378,1.1472,1.1548,1.1493,1.1488,1.1532,1.1558,1.1552,1.1702,1.1743,1.1796,1.1831,1.162,1.1529,1.1618,1.1773,1.1669,1.1866,1.1855,1.1941,1.2076,1.2159,1.2185,1.2249,1.2292,1.2243,1.2305,1.2427,1.2543,1.2536,1.2652,1.2783,1.2787,1.3116,1.3306,1.3409,1.368,1.3098,1.2435,1.3027,1.3014,1.2753,1.318,1.3042,1.2371,1.2642,1.25,1.2658,1.271,1.2772,1.2808,1.3053,1.3007,1.307,1.3076,1.3306,1.3436,1.3386,1.3095,1.3314,1.3446,1.3407,1.3363,1.3464,1.3425,1.3467,1.3588,1.3702,1.3548,1.3632,1.3666,1.3621,1.3328,1.2913,1.2818,1.2454,1.259,1.2792,1.2666,1.2159,1.2893,1.2263,1.2261,1.1356,1.1645,1.1912,1.2218,1.265,1.2598,1.2498,1.2643,1.2999,1.3271,1.3376,1.3087,1.3544,1.3468,1.3632,1.3919,1.393,1.387,1.3936,1.404,1.3543,1.3405,1.3209,1.2855,1.3297,1.3348,1.3614,1.3686,1.3894,1.3944,1.374,1.3987,1.3548,1.3421,1.3308,1.3063,1.3423,1.3671,1.394,1.3936,1.3658,1.3575,1.3603,1.351,1.3798,1.4081,1.4282,1.4504,1.451,1.4685,1.4672,1.4853,1.5139,1.5257,1.5235,1.5413,1.5917,1.5704,1.5808,1.6734,1.6995,1.6624,1.499,1.4859,1.3842,1.1977,1.3126,1.3038,1.4282,1.5205,1.5009,1.5201,1.5902,1.538,1.6142,1.6676,1.7887,1.6909,1.7262,1.6762,1.7349,1.7577,1.7871,1.7971,1.8059,1.8736,1.8878,1.8653,1.9204,1.8569,1.8014,1.8192,1.7718,1.8181,1.9115,1.9039,1.9537,1.8167,1.8941,2.0083,2.0818,2.1625,2.2591,2.2745,2.2655,2.2434,2.236,2.3384,2.4225,2.412,2.3498,2.4841,2.5537,2.5291,2.4938,2.587,2.6846,2.6435,2.6165,2.6466,2.677,2.686,2.7131,2.7329,2.8035,2.7889,2.8137,2.8331,2.8829,2.9441,2.836,2.9099,2.9386,2.926,2.8299,2.8669,2.8733,2.8578,2.8642,2.7865,2.8872,2.9161,2.8562,2.8537,2.8642,2.8322,2.8681,2.9404,2.9881,3.0419,3.0888,3.0913,3.0693,2.9912,2.9272,3.0419,2.9466,3.0192,3.0533,2.9971,3.0055,2.8529,2.9058,2.9537,2.9229,2.8617,2.8944,2.9064,2.8354,2.9491,3.0882,3.0978,3.0793,3.1077,3.0277,2.9429,3.0168,2.9037,2.8828,3.0911,3.1056,2.9924,2.5794,2.6822,2.6784,2.6797,2.6508,2.7468,2.946,2.9382,3.0958,3.0376,2.9705,2.8662,2.966,2.8257,2.6462,2.6094,2.6696,2.6276,2.7531,2.8623,2.8111,2.9725,2.9133,2.9636,2.9997,2.9014,2.8466,2.8254,2.8216,2.8707,2.9837,2.9737,3.0494,3.0944,3.0301,3.0807,3.0039,3.073,2.8854,2.8957,2.9113,3.0248,2.98,3.0052,2.9967,3.0031,2.9902,2.9641,3.003,2.9852,3.0501,3.09,3.1761,3.0872,3.1783,3.1752,3.2544,3.288,3.3295,3.2527,3.2201,3.1156,3.1351,3.2047,3.1642,3.1894,3.0904,3.0804,3.0499,3.0665,3.0038,2.9185,3.1051,3.0553,3.168,3.1898,3.2663,3.2758,3.4044,3.4525,3.4798,3.4481,3.4692,3.4612,3.5197,3.5453,3.5851,3.6091,3.6363,3.6724,3.6729,3.6527,3.7078,3.7423,3.6897,3.6081,3.5327,3.5953,3.624,3.7067,3.7716,3.7303,3.7084,3.721,3.6942,3.7355,3.727,3.8208,3.8901,3.6886,3.6179,3.4004,3.3556,3.8295,3.9441,3.7572,3.3911,3.747,3.7034,3.8214,3.88,4.0758,4.1473,4.1798,4.0634,4.3488,4.2162,4.2543,4.2002,4.2736,4.1128,4.0778,4.1293,4.2541,4.1,4.1953,4.296,4.0068,3.9885,4.0319,4.0173,4.0075,3.9327,3.8375,3.8674,3.833,3.5223,3.6318,3.6159,3.773,3.876,3.8876,4.0644,3.9607,4.0101,4.0783,4.0556,4.0417,4.1608,4.301,4.3236,4.3668,4.4265,4.3131,4.4526,4.5277,4.5451,4.5194,4.5065,4.6127,4.6529,4.6447,4.7684,4.6477,4.7147,4.8182,4.942,4.7898,4.7779,4.6221,4.7678,4.8136,4.739,4.7468,4.8455,4.8053,4.9001,4.9286,4.9161,4.8801,4.8512,4.8361,4.8976,4.9075,4.7956,4.707,4.6101,4.5523,4.7031,4.8477,5.0602,5.0894,5.1478,5.2083,5.1523,5.2503,5.3474,5.2126,5.335,5.3632,5.3717,5.427,5.415,5.3063,5.2849,5.3156,5.5621,5.6217,5.5298,5.6377,5.9386,6.055,5.9585,6.2013,6.1825,6.0916,5.5218,5.3103,5.3077,4.9784,5.2101,5.0044],"m":[0.9653,0.9446,0.9582,0.9743,0.9453,0.9387,0.9657,0.9812,1.0081,1.0198,1.028,1.0216,1.0408,1.0286,1.0451,1.0511,1.0378,1.0347,1.0299,1.0335,1.0575,1.0576,1.0566,1.0441,1.0275,1.0613,1.0751,1.0912,1.0983,1.0977,1.1031,1.1045,1.1049,1.0986,1.104,1.0783,1.0842,1.0977,1.0993,1.0926,1.0826,1.0868,1.0798,1.0598,1.0999,1.1102,1.1256,1.1159,1.1511,1.1503,1.1536,1.1425,1.1615,1.1605,1.1589,1.1704,1.1723,1.1832,1.2014,1.2102,1.2187,1.2147,1.2172,1.2006,1.2099,1.2073,1.1939,1.2043,1.2224,1.2304,1.2272,1.2232,1.2409,1.2533,1.2501,1.2517,1.2544,1.2473,1.2489,1.2665,1.2733,1.2736,1.2762,1.2593,1.2521,1.2614,1.2784,1.2718,1.292,1.2932,1.3021,1.319,1.3214,1.3327,1.3359,1.3398,1.338,1.3368,1.3498,1.371,1.3763,1.3888,1.3938,1.3909,1.4246,1.4483,1.4611,1.4932,1.4356,1.3638,1.4234,1.4311,1.4021,1.4525,1.4346,1.3498,1.3781,1.3586,1.3869,1.3951,1.3946,1.3911,1.4263,1.4195,1.4241,1.4314,1.4555,1.4493,1.4374,1.4195,1.4406,1.4625,1.4634,1.4725,1.4838,1.4814,1.4911,1.5042,1.5186,1.5042,1.5219,1.5347,1.527,1.5125,1.4505,1.4514,1.3938,1.4284,1.46,1.4385,1.3838,1.4488,1.3856,1.3694,1.2718,1.3095,1.3341,1.368,1.4083,1.4049,1.4276,1.4301,1.4662,1.4756,1.4822,1.4509,1.4937,1.4831,1.4996,1.5318,1.5404,1.5396,1.5578,1.5608,1.5292,1.5181,1.5022,1.462,1.5268,1.5356,1.5685,1.5637,1.5913,1.604,1.5859,1.611,1.5612,1.5557,1.5408,1.5198,1.5602,1.5901,1.6058,1.5976,1.5833,1.5773,1.5878,1.5977,1.6164,1.641,1.6558,1.6712,1.667,1.6847,1.6874,1.7006,1.7282,1.7389,1.7366,1.7539,1.7882,1.7707,1.733,1.7895,1.8183,1.796,1.5956,1.602,1.4553,1.2428,1.3761,1.3433,1.5073,1.5524,1.5326,1.5323,1.5847,1.551,1.6008,1.6496,1.7304,1.649,1.6789,1.633,1.6988,1.7285,1.7505,1.7462,1.7761,1.8206,1.8329,1.8471,1.9076,1.8629,1.818,1.8071,1.7959,1.8241,1.8943,1.8975,1.8882,1.7848,1.9132,1.9564,1.9414,1.987,2.0202,2.0004,2.0254,2.0247,2.0534,2.092,2.0611,2.1003,2.0308,2.1268,2.1547,2.14,2.0849,2.1044,2.1617,2.1444,2.1793,2.2052,2.2651,2.2968,2.2939,2.2971,2.3236,2.2931,2.2843,2.313,2.3253,2.3356,2.2914,2.356,2.3952,2.4052,2.3821,2.4296,2.4217,2.4437,2.4626,2.4485,2.4865,2.5022,2.46,2.4455,2.4594,2.4058,2.4259,2.4702,2.5104,2.5443,2.5958,2.5888,2.5978,2.5428,2.5121,2.608,2.5568,2.6164,2.6407,2.5914,2.5837,2.435,2.4571,2.4946,2.4488,2.4142,2.4338,2.4028,2.3355,2.4791,2.5247,2.526,2.4961,2.4416,2.376,2.2977,2.2941,2.2404,2.173,2.3159,2.2896,2.1739,2.0492,2.1849,2.1354,2.177,2.1572,2.213,2.3076,2.3159,2.3922,2.3644,2.2702,2.197,2.2774,2.1684,2.0694,2.0088,2.0404,2.0114,2.105,2.1879,2.1166,2.2413,2.2273,2.2628,2.2885,2.2118,2.1655,2.1634,2.1607,2.1926,2.2515,2.2367,2.2921,2.3298,2.3054,2.301,2.2396,2.2836,2.1804,2.2118,2.2445,2.3218,2.3207,2.3393,2.3378,2.359,2.3403,2.3343,2.3742,2.3821,2.427,2.4382,2.5017,2.4661,2.5234,2.4965,2.5575,2.5741,2.6011,2.5435,2.5369,2.4848,2.5046,2.5684,2.5362,2.5328,2.4589,2.442,2.4538,2.465,2.4061,2.3461,2.4833,2.5171,2.5752,2.601,2.6227,2.629,2.692,2.7168,2.7263,2.6839,2.7341,2.7671,2.7957,2.8355,2.8748,2.8651,2.913,2.9417,2.9351,2.9334,2.9989,3.0096,2.9829,2.9393,2.849,2.9244,2.9418,2.9967,3.0463,3.0462,3.0343,3.0725,3.123,3.1431,3.1413,3.2015,3.2324,3.1689,3.1426,3.076,3.0765,3.1996,3.2448,3.2537,3.1191,3.2441,3.2901,3.3087,3.3175,3.3557,3.3848,3.3526,3.3063,3.4635,3.3914,3.448,3.4887,3.5192,3.4983,3.4342,3.4567,3.4389,3.3723,3.4716,3.532,3.4962,3.4901,3.542,3.4853,3.4518,3.3458,3.2696,3.2862,3.2378,2.9442,3.1112,3.0674,3.2085,3.3025,3.2884,3.4624,3.3744,3.4343,3.4911,3.4786,3.473,3.5936,3.6546,3.6445,3.6677,3.7233,3.6334,3.7238,3.7603,3.7713,3.7697,3.7825,3.842,3.8895,3.8785,3.9218,3.8269,3.8935,3.9689,3.9971,3.9321,3.9377,3.8622,4.0049,4.0184,3.9953,4.0002,4.0574,4.0154,4.0795,4.0653,4.0511,4.0672,4.0592,4.007,4.0522,4.032,3.952,3.8927,3.8226,3.7373,3.8654,4.0047,4.1855,4.2079,4.2475,4.3475,4.3566,4.3948,4.4587,4.3471,4.3718,4.4126,4.3077,4.401,4.4611,4.3922,4.3664,4.4143,4.5693,4.5875,4.5247,4.5462,4.5512,4.5163,4.5121,4.5693,4.5592,4.6121,4.5214,4.5019,4.4767,4.3557,4.4688,4.3833],"oos":"2022-01-03","metrics":{"oos":{"fund":{"total":0.6390348168487134,"cagr":0.10677036633268222,"vol":0.2294624123763801,"sharpe":0.5587196863166036,"mdd":-0.223554578854677},"spy":{"total":0.6599367386768966,"cagr":0.10965360324550821,"vol":0.1736512816171211,"sharpe":0.6880473765793591,"mdd":-0.24496487119437893},"extra":"\u22120,3 % (t = \u22120,06)","note":"3. januar 2022 til 16. november 2026. Reglerne var l\u00e5st inden perioden. Sharpe-ratio uden risikofri rente."},"all":{"fund":{"total":4.004443375866527,"cagr":0.15982149060735407,"vol":0.21551145448380016,"sharpe":0.7977987220571335,"mdd":-0.3095554315328013},"spy":{"total":3.383330371423483,"cagr":0.14575630962283004,"vol":0.17476751835905383,"sharpe":0.8680748084099633,"mdd":-0.3379388816644995},"note":"6. januar 2016 til 16. november 2026. Perioden indeholder 2016\u20132021, hvor reglerne blev valgt, og tallene er derfor for optimistiske."}}}</script>
 <script>
 (function(){
-  var data=[[2016,1370],[2017,1564],[2018,1745],[2019,2015],[2020,3049],[2021,2433],[2022,1347],[2023,1265],[2024,1072],[2025,3300],[2026,1407]];
-  var svg=document.getElementById('buys'); if(!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  var L=52,R=628,T=22,B=232,max=3500;
-  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
-  function y(v){return B-(v/max)*(B-T);}
-  [0,1000,2000,3000].forEach(function(v){
-    el('line',{x1:L,x2:R,y1:y(v),y2:y(v),stroke:'var(--rule)','stroke-width':1});
-    el('text',{x:L-8,y:y(v)+4,'text-anchor':'end'},v.toLocaleString('da-DK'));
-  });
-  var slot=(R-L)/data.length,bw=slot*0.64;
-  data.forEach(function(d,i){
-    var x=L+i*slot+(slot-bw)/2, oos=d[0]>=2022;
-    el('rect',{x:x,y:y(d[1]),width:bw,height:B-y(d[1]),fill:oos?'var(--oos)':'var(--accent)',rx:2});
-    el('text',{x:x+bw/2,y:y(d[1])-6,'text-anchor':'middle','class':'val'},d[1].toLocaleString('da-DK'));
-    el('text',{x:x+bw/2,y:B+18,'text-anchor':'middle'},d[0]);
-  });
-  var split=L+6*slot;
-  el('line',{x1:split,x2:split,y1:T-10,y2:B,stroke:'var(--muted)','stroke-dasharray':'3 3'});
-})();
-</script>
-<script id="res-data" type="application/json">{"dates":["2016-01-08","2016-01-15","2016-01-22","2016-01-29","2016-02-05","2016-02-12","2016-02-19","2016-02-26","2016-03-04","2016-03-11","2016-03-18","2016-03-24","2016-04-01","2016-04-08","2016-04-15","2016-04-22","2016-04-29","2016-05-06","2016-05-13","2016-05-20","2016-05-27","2016-06-03","2016-06-10","2016-06-17","2016-06-24","2016-07-01","2016-07-08","2016-07-15","2016-07-22","2016-07-29","2016-08-05","2016-08-12","2016-08-19","2016-08-26","2016-09-02","2016-09-09","2016-09-16","2016-09-23","2016-09-30","2016-10-07","2016-10-14","2016-10-21","2016-10-28","2016-11-04","2016-11-11","2016-11-18","2016-11-25","2016-12-02","2016-12-09","2016-12-16","2016-12-23","2016-12-30","2017-01-06","2017-01-13","2017-01-20","2017-01-27","2017-02-03","2017-02-10","2017-02-17","2017-02-24","2017-03-03","2017-03-10","2017-03-17","2017-03-24","2017-03-31","2017-04-07","2017-04-13","2017-04-21","2017-04-28","2017-05-05","2017-05-12","2017-05-19","2017-05-26","2017-06-02","2017-06-09","2017-06-16","2017-06-23","2017-06-30","2017-07-07","2017-07-14","2017-07-21","2017-07-28","2017-08-04","2017-08-11","2017-08-18","2017-08-25","2017-09-01","2017-09-08","2017-09-15","2017-09-22","2017-09-29","2017-10-06","2017-10-13","2017-10-20","2017-10-27","2017-11-03","2017-11-10","2017-11-17","2017-11-24","2017-12-01","2017-12-08","2017-12-15","2017-12-22","2017-12-29","2018-01-05","2018-01-12","2018-01-19","2018-01-26","2018-02-02","2018-02-09","2018-02-16","2018-02-23","2018-03-02","2018-03-09","2018-03-16","2018-03-23","2018-03-29","2018-04-06","2018-04-13","2018-04-20","2018-04-27","2018-05-04","2018-05-11","2018-05-18","2018-05-25","2018-06-01","2018-06-08","2018-06-15","2018-06-22","2018-06-29","2018-07-06","2018-07-13","2018-07-20","2018-07-27","2018-08-03","2018-08-10","2018-08-17","2018-08-24","2018-08-31","2018-09-07","2018-09-14","2018-09-21","2018-09-28","2018-10-05","2018-10-12","2018-10-19","2018-10-26","2018-11-02","2018-11-09","2018-11-16","2018-11-23","2018-11-30","2018-12-07","2018-12-14","2018-12-21","2018-12-28","2019-01-04","2019-01-11","2019-01-18","2019-01-25","2019-02-01","2019-02-08","2019-02-15","2019-02-22","2019-03-01","2019-03-08","2019-03-15","2019-03-22","2019-03-29","2019-04-05","2019-04-12","2019-04-18","2019-04-26","2019-05-03","2019-05-10","2019-05-17","2019-05-24","2019-05-31","2019-06-07","2019-06-14","2019-06-21","2019-06-28","2019-07-05","2019-07-12","2019-07-19","2019-07-26","2019-08-02","2019-08-09","2019-08-16","2019-08-23","2019-08-30","2019-09-06","2019-09-13","2019-09-20","2019-09-27","2019-10-04","2019-10-11","2019-10-18","2019-10-25","2019-11-01","2019-11-08","2019-11-15","2019-11-22","2019-11-29","2019-12-06","2019-12-13","2019-12-20","2019-12-27","2020-01-03","2020-01-10","2020-01-17","2020-01-24","2020-01-31","2020-02-07","2020-02-14","2020-02-21","2020-02-28","2020-03-06","2020-03-13","2020-03-20","2020-03-27","2020-04-03","2020-04-09","2020-04-17","2020-04-24","2020-05-01","2020-05-08","2020-05-15","2020-05-22","2020-05-29","2020-06-05","2020-06-12","2020-06-19","2020-06-26","2020-07-02","2020-07-10","2020-07-17","2020-07-24","2020-07-31","2020-08-07","2020-08-14","2020-08-21","2020-08-28","2020-09-04","2020-09-11","2020-09-18","2020-09-25","2020-10-02","2020-10-09","2020-10-16","2020-10-23","2020-10-30","2020-11-06","2020-11-13","2020-11-20","2020-11-27","2020-12-04","2020-12-11","2020-12-18","2020-12-24","2020-12-31","2021-01-08","2021-01-15","2021-01-22","2021-01-29","2021-02-05","2021-02-12","2021-02-19","2021-02-26","2021-03-05","2021-03-12","2021-03-19","2021-03-26","2021-04-01","2021-04-09","2021-04-16","2021-04-23","2021-04-30","2021-05-07","2021-05-14","2021-05-21","2021-05-28","2021-06-04","2021-06-11","2021-06-18","2021-06-25","2021-07-02","2021-07-09","2021-07-16","2021-07-23","2021-07-30","2021-08-06","2021-08-13","2021-08-20","2021-08-27","2021-09-03","2021-09-10","2021-09-17","2021-09-24","2021-10-01","2021-10-08","2021-10-15","2021-10-22","2021-10-29","2021-11-05","2021-11-12","2021-11-19","2021-11-26","2021-12-03","2021-12-10","2021-12-17","2021-12-23","2021-12-31","2022-01-07","2022-01-14","2022-01-21","2022-01-28","2022-02-04","2022-02-11","2022-02-18","2022-02-25","2022-03-04","2022-03-11","2022-03-18","2022-03-25","2022-04-01","2022-04-08","2022-04-14","2022-04-22","2022-04-29","2022-05-06","2022-05-13","2022-05-20","2022-05-27","2022-06-03","2022-06-10","2022-06-17","2022-06-24","2022-07-01","2022-07-08","2022-07-15","2022-07-22","2022-07-29","2022-08-05","2022-08-12","2022-08-19","2022-08-26","2022-09-02","2022-09-09","2022-09-16","2022-09-23","2022-09-30","2022-10-07","2022-10-14","2022-10-21","2022-10-28","2022-11-04","2022-11-11","2022-11-18","2022-11-25","2022-12-02","2022-12-09","2022-12-16","2022-12-23","2022-12-30","2023-01-06","2023-01-13","2023-01-20","2023-01-27","2023-02-03","2023-02-10","2023-02-17","2023-02-24","2023-03-03","2023-03-10","2023-03-17","2023-03-24","2023-03-31","2023-04-06","2023-04-14","2023-04-21","2023-04-28","2023-05-05","2023-05-12","2023-05-19","2023-05-26","2023-06-02","2023-06-09","2023-06-16","2023-06-23","2023-06-30","2023-07-07","2023-07-14","2023-07-21","2023-07-28","2023-08-04","2023-08-11","2023-08-18","2023-08-25","2023-09-01","2023-09-08","2023-09-15","2023-09-22","2023-09-29","2023-10-06","2023-10-13","2023-10-20","2023-10-27","2023-11-03","2023-11-10","2023-11-17","2023-11-24","2023-12-01","2023-12-08","2023-12-15","2023-12-22","2023-12-29","2024-01-05","2024-01-12","2024-01-19","2024-01-26","2024-02-02","2024-02-09","2024-02-16","2024-02-23","2024-03-01","2024-03-08","2024-03-15","2024-03-22","2024-03-28","2024-04-05","2024-04-12","2024-04-19","2024-04-26","2024-05-03","2024-05-10","2024-05-17","2024-05-24","2024-05-31","2024-06-07","2024-06-14","2024-06-21","2024-06-28","2024-07-05","2024-07-12","2024-07-19","2024-07-26","2024-08-02","2024-08-09","2024-08-16","2024-08-23","2024-08-30","2024-09-06","2024-09-13","2024-09-20","2024-09-27","2024-10-04","2024-10-11","2024-10-18","2024-10-25","2024-11-01","2024-11-08","2024-11-15","2024-11-22","2024-11-29","2024-12-06","2024-12-13","2024-12-20","2024-12-27","2025-01-03","2025-01-10","2025-01-17","2025-01-24","2025-01-31","2025-02-07","2025-02-14","2025-02-21","2025-02-28","2025-03-07","2025-03-14","2025-03-21","2025-03-28","2025-04-04","2025-04-11","2025-04-17","2025-04-25","2025-05-02","2025-05-09","2025-05-16","2025-05-23","2025-05-30","2025-06-06","2025-06-13","2025-06-20","2025-06-27","2025-07-03","2025-07-11","2025-07-18","2025-07-25","2025-08-01","2025-08-08","2025-08-15","2025-08-22","2025-08-29","2025-09-05","2025-09-12","2025-09-19","2025-09-26","2025-10-03","2025-10-10","2025-10-17","2025-10-24","2025-10-31","2025-11-07","2025-11-14","2025-11-21","2025-11-28","2025-12-05","2025-12-12","2025-12-19","2025-12-26","2026-01-02","2026-01-09","2026-01-16","2026-01-23","2026-01-30","2026-02-06","2026-02-13","2026-02-20","2026-02-27","2026-03-06","2026-03-13","2026-03-20","2026-03-27","2026-04-02","2026-04-10","2026-04-17","2026-04-24","2026-05-01","2026-05-08","2026-05-15","2026-05-22","2026-05-29","2026-06-05","2026-06-12","2026-06-18","2026-06-26","2026-07-02","2026-07-10","2026-07-17","2026-07-24","2026-07-31","2026-08-07","2026-08-14","2026-08-21","2026-08-28","2026-09-04","2026-09-11","2026-09-18","2026-09-25","2026-10-02","2026-10-09","2026-10-16","2026-10-23","2026-10-30","2026-11-06","2026-11-13","2026-11-16"],"s":[0.9569,0.9277,0.9233,0.911,0.8882,0.8767,0.91,0.9271,0.9602,0.9691,0.9808,0.9672,0.9782,0.9723,0.9904,1.0076,0.9913,0.9764,0.9648,0.9699,0.9896,0.9976,0.9933,0.9863,0.9715,1.0035,1.0128,1.0273,1.0342,1.0318,1.0346,1.0406,1.0433,1.0332,1.0414,1.0167,1.0197,1.0359,1.0373,1.0226,1.0129,1.0225,1.013,0.99,1.0287,1.0399,1.053,1.0441,1.0773,1.0736,1.0776,1.0675,1.085,1.0771,1.0783,1.0847,1.0878,1.0977,1.1135,1.1176,1.1262,1.1199,1.1235,1.1083,1.1235,1.1186,1.1097,1.1171,1.1342,1.135,1.1302,1.1337,1.143,1.1506,1.1451,1.1446,1.149,1.1516,1.151,1.166,1.17,1.1753,1.1788,1.1577,1.1487,1.1576,1.173,1.1626,1.1823,1.1812,1.1898,1.2032,1.2115,1.2141,1.2204,1.2247,1.2199,1.226,1.2382,1.2498,1.249,1.2606,1.2736,1.2741,1.3068,1.3258,1.336,1.3631,1.305,1.239,1.2979,1.2967,1.2707,1.3132,1.2994,1.2326,1.2597,1.2455,1.2612,1.2664,1.2725,1.2761,1.3006,1.296,1.3022,1.3028,1.3257,1.3387,1.3338,1.3048,1.3266,1.3397,1.3358,1.3314,1.3415,1.3376,1.3418,1.3539,1.3652,1.3498,1.3583,1.3617,1.3572,1.3279,1.2866,1.2771,1.2409,1.2544,1.2745,1.262,1.2114,1.2847,1.2219,1.2217,1.1315,1.1603,1.1869,1.2173,1.2604,1.2552,1.2452,1.2597,1.2952,1.3223,1.3327,1.3039,1.3494,1.342,1.3582,1.3868,1.388,1.382,1.3885,1.3989,1.3494,1.3356,1.3161,1.2808,1.3249,1.33,1.3565,1.3636,1.3844,1.3893,1.369,1.3936,1.3499,1.3373,1.326,1.3016,1.3374,1.3621,1.389,1.3885,1.3608,1.3526,1.3554,1.3461,1.3748,1.4029,1.423,1.4451,1.4457,1.4631,1.4618,1.4799,1.5084,1.5202,1.518,1.5357,1.5859,1.5646,1.575,1.6673,1.6933,1.6563,1.4935,1.4805,1.3792,1.1934,1.3078,1.2991,1.423,1.515,1.4955,1.5146,1.5844,1.5324,1.6083,1.6615,1.7822,1.6848,1.72,1.6701,1.7285,1.7513,1.7806,1.7905,1.7993,1.8668,1.8809,1.8585,1.9134,1.8501,1.7948,1.8126,1.7653,1.8115,1.9045,1.897,1.9466,1.8101,1.8872,2.001,2.0742,2.1546,2.2509,2.2663,2.2573,2.2353,2.2279,2.3299,2.4137,2.4032,2.3412,2.475,2.5444,2.5199,2.4847,2.5776,2.6749,2.6339,2.607,2.637,2.6673,2.6762,2.7032,2.723,2.7933,2.7788,2.8035,2.8228,2.8724,2.9334,2.8257,2.8994,2.928,2.9153,2.8196,2.8565,2.8628,2.8475,2.8538,2.7763,2.8767,2.9055,2.8459,2.8433,2.8537,2.8219,2.8577,2.9297,2.9772,3.0309,3.0775,3.08,3.0581,2.9803,2.9165,3.0308,2.9359,3.0083,3.0422,2.9862,2.9945,2.8425,2.8952,2.9429,2.9123,2.8513,2.8839,2.8958,2.8251,2.9384,3.077,3.0865,3.0681,3.0964,3.0167,2.9322,3.0059,2.8932,2.8724,3.0799,3.0943,2.9816,2.5701,2.6724,2.6687,2.67,2.6412,2.7368,2.9352,2.9276,3.0845,3.0265,2.9597,2.8557,2.9552,2.8154,2.6366,2.5999,2.6599,2.618,2.7431,2.8519,2.8009,2.9617,2.9027,2.9528,2.9888,2.8908,2.8362,2.8152,2.8113,2.8603,2.9728,2.9629,3.0383,3.0832,3.0191,3.0695,2.993,3.0619,2.875,2.8851,2.9008,3.0138,2.9692,2.9943,2.9858,2.9922,2.9793,2.9533,2.992,2.9744,3.039,3.0787,3.1645,3.076,3.1667,3.1636,3.2426,3.2761,3.3174,3.2409,3.2084,3.1043,3.1237,3.193,3.1527,3.1778,3.0792,3.0692,3.0388,3.0554,2.9929,2.9079,3.0938,3.0442,3.1565,3.1782,3.2544,3.2639,3.3921,3.44,3.4671,3.4356,3.4566,3.4486,3.5069,3.5324,3.5721,3.596,3.6231,3.659,3.6595,3.6395,3.6943,3.7287,3.6763,3.595,3.5198,3.5822,3.6109,3.6932,3.7579,3.7167,3.695,3.7075,3.6808,3.722,3.7135,3.8069,3.8759,3.6752,3.6047,3.388,3.3434,3.8155,3.9297,3.7435,3.3787,3.7334,3.6899,3.8075,3.8659,4.061,4.1323,4.1647,4.0487,4.333,4.2009,4.2388,4.1849,4.2581,4.0978,4.063,4.1143,4.2386,4.0851,4.1801,4.2804,3.9922,3.974,4.0173,4.0027,3.9929,3.9184,3.8236,3.8533,3.8191,3.5095,3.6186,3.6027,3.7593,3.8619,3.8735,4.0496,3.9463,3.9955,4.0634,4.0408,4.0271,4.1457,4.2854,4.3079,4.351,4.4104,4.2974,4.4364,4.5113,4.5286,4.503,4.4901,4.5959,4.636,4.6278,4.7511,4.6308,4.6976,4.8007,4.924,4.7724,4.7606,4.6053,4.7504,4.7961,4.7218,4.7296,4.8279,4.7879,4.8823,4.9107,4.8982,4.8623,4.8336,4.8185,4.8798,4.8896,4.7782,4.6899,4.5934,4.5358,4.686,4.83,5.0418,5.0709,5.1291,5.1894,5.1335,5.2312,5.328,5.1937,5.3156,5.3438,5.3522,5.4072,5.3954,5.2871,5.2657,5.2963,5.5418,5.6013,5.5097,5.6172,5.917,6.033,5.9368,6.1787,6.16,6.0695,5.5017,5.291,5.2884,4.9604,5.1911,4.9863],"m":[0.9677,0.947,0.9606,0.9768,0.9477,0.941,0.9681,0.9837,1.0106,1.0223,1.0305,1.0242,1.0434,1.0311,1.0477,1.0537,1.0404,1.0373,1.0324,1.0361,1.0601,1.0603,1.0592,1.0467,1.0301,1.064,1.0778,1.0939,1.1011,1.1005,1.1058,1.1073,1.1077,1.1013,1.1068,1.081,1.0869,1.1004,1.1021,1.0954,1.0853,1.0896,1.0825,1.0624,1.1026,1.113,1.1285,1.1187,1.1539,1.1532,1.1565,1.1453,1.1644,1.1634,1.1618,1.1733,1.1752,1.1862,1.2043,1.2132,1.2217,1.2178,1.2202,1.2036,1.2129,1.2103,1.1969,1.2073,1.2254,1.2335,1.2302,1.2262,1.244,1.2564,1.2532,1.2548,1.2575,1.2504,1.252,1.2697,1.2764,1.2768,1.2794,1.2624,1.2552,1.2645,1.2815,1.275,1.2953,1.2964,1.3053,1.3223,1.3247,1.336,1.3392,1.3432,1.3414,1.3402,1.3532,1.3744,1.3797,1.3922,1.3973,1.3944,1.4282,1.4519,1.4647,1.4969,1.4392,1.3672,1.4269,1.4347,1.4056,1.4561,1.4382,1.3532,1.3816,1.362,1.3904,1.3985,1.3981,1.3946,1.4299,1.4231,1.4276,1.435,1.4592,1.4529,1.441,1.4231,1.4441,1.4662,1.467,1.4762,1.4875,1.4851,1.4948,1.5079,1.5224,1.508,1.5257,1.5386,1.5308,1.5163,1.4541,1.455,1.3973,1.4319,1.4636,1.4421,1.3873,1.4524,1.389,1.3728,1.275,1.3127,1.3374,1.3715,1.4118,1.4084,1.4312,1.4336,1.4699,1.4793,1.4859,1.4545,1.4974,1.4868,1.5034,1.5357,1.5442,1.5434,1.5617,1.5647,1.533,1.5219,1.506,1.4656,1.5306,1.5394,1.5724,1.5676,1.5952,1.608,1.5898,1.615,1.5651,1.5596,1.5446,1.5236,1.5641,1.5941,1.6098,1.6016,1.5873,1.5813,1.5918,1.6016,1.6205,1.645,1.6599,1.6753,1.6711,1.6889,1.6916,1.7048,1.7325,1.7432,1.741,1.7583,1.7927,1.7751,1.7373,1.7939,1.8229,1.8005,1.5996,1.606,1.4589,1.2459,1.3795,1.3466,1.5111,1.5563,1.5364,1.5361,1.5887,1.5549,1.6048,1.6537,1.7347,1.6531,1.6831,1.637,1.703,1.7328,1.7549,1.7506,1.7806,1.8251,1.8375,1.8517,1.9124,1.8676,1.8225,1.8116,1.8004,1.8286,1.899,1.9023,1.8929,1.7892,1.9179,1.9613,1.9462,1.992,2.0252,2.0053,2.0304,2.0298,2.0585,2.0972,2.0663,2.1056,2.0359,2.1321,2.1601,2.1454,2.0901,2.1097,2.1671,2.1498,2.1848,2.2107,2.2707,2.3026,2.2997,2.3028,2.3294,2.2988,2.29,2.3187,2.3311,2.3415,2.2971,2.3618,2.4012,2.4112,2.388,2.4357,2.4278,2.4498,2.4687,2.4546,2.4927,2.5084,2.4661,2.4516,2.4655,2.4118,2.4319,2.4764,2.5167,2.5507,2.6022,2.5952,2.6043,2.5491,2.5183,2.6145,2.5632,2.623,2.6472,2.5978,2.5902,2.4411,2.4633,2.5009,2.455,2.4202,2.4399,2.4088,2.3413,2.4853,2.531,2.5323,2.5023,2.4477,2.382,2.3035,2.2998,2.246,2.1784,2.3217,2.2953,2.1793,2.0543,2.1903,2.1407,2.1824,2.1625,2.2185,2.3134,2.3217,2.3982,2.3703,2.2758,2.2024,2.2831,2.1738,2.0746,2.0138,2.0455,2.0164,2.1103,2.1934,2.1219,2.2469,2.2329,2.2684,2.2942,2.2174,2.1709,2.1688,2.1661,2.1981,2.2571,2.2423,2.2978,2.3356,2.3112,2.3067,2.2451,2.2893,2.1858,2.2174,2.2501,2.3276,2.3265,2.3451,2.3436,2.3649,2.3461,2.3402,2.3801,2.3881,2.433,2.4443,2.5079,2.4722,2.5297,2.5027,2.5639,2.5805,2.6076,2.5499,2.5433,2.491,2.5108,2.5749,2.5425,2.5392,2.465,2.4481,2.4599,2.4712,2.4121,2.3519,2.4895,2.5234,2.5816,2.6075,2.6293,2.6355,2.6987,2.7236,2.7331,2.6906,2.741,2.774,2.8027,2.8426,2.882,2.8723,2.9202,2.949,2.9425,2.9407,3.0064,3.0171,2.9903,2.9466,2.8561,2.9316,2.9491,3.0042,3.0539,3.0538,3.0419,3.0802,3.1308,3.1509,3.1492,3.2095,3.2405,3.1768,3.1505,3.0837,3.0842,3.2076,3.2529,3.2618,3.1268,3.2522,3.2984,3.317,3.3258,3.3641,3.3932,3.3609,3.3145,3.4721,3.3999,3.4566,3.4974,3.5279,3.507,3.4428,3.4653,3.4475,3.3807,3.4803,3.5408,3.505,3.4988,3.5509,3.494,3.4604,3.3541,3.2777,3.2944,3.2459,2.9515,3.1189,3.075,3.2165,3.3107,3.2966,3.471,3.3828,3.4429,3.4999,3.4873,3.4817,3.6026,3.6637,3.6536,3.6768,3.7326,3.6424,3.7331,3.7697,3.7807,3.7791,3.792,3.8515,3.8992,3.8882,3.9316,3.8365,3.9033,3.9788,4.0071,3.9419,3.9476,3.8718,4.0148,4.0284,4.0053,4.0102,4.0675,4.0254,4.0897,4.0755,4.0612,4.0773,4.0694,4.017,4.0624,4.042,3.9619,3.9024,3.8322,3.7466,3.8751,4.0147,4.196,4.2184,4.2581,4.3583,4.3675,4.4057,4.4698,4.3579,4.3827,4.4236,4.3184,4.412,4.4722,4.4032,4.3773,4.4253,4.5807,4.599,4.536,4.5575,4.5625,4.5276,4.5234,4.5807,4.5706,4.6236,4.5326,4.5132,4.4879,4.3666,4.4799,4.3943],"oos":"2022-01-03","yearly":[[2016,-7.8,"in_sample"],[2017,-2.4,"in_sample"],[2018,-3.1,"in_sample"],[2019,-2.0,"in_sample"],[2020,28.8,"in_sample"],[2021,7.9,"in_sample"],[2022,10.6,"oos"],[2023,-2.8,"oos"],[2024,-8.1,"oos"],[2025,-0.1,"oos"],[2026,-4.7,"oos"]],"x_is":[["0",0.59],["2",0.733],["4",0.993],["6",1.008],["8",1.014],["10",1.015],["12",1.001],["14",0.993],["16",0.996],["18",0.992],["20",0.992],["22",0.996],["24",0.996],["26",0.996],["28",0.993],["30",0.995],["none",1.001]],"x_oos":[["0",0.492],["2",0.496],["4",0.492],["6",0.503],["8",0.545],["10",0.559],["12",0.554],["14",0.552],["16",0.549],["18",0.55],["20",0.552],["22",0.555],["24",0.562],["26",0.561],["28",0.559],["30",0.559],["none",0.562]],"spy_is":1.014,"spy_oos":0.688}</script>
-<script>
-(function(){
-  var D=JSON.parse(document.getElementById('res-data').textContent), NS='http://www.w3.org/2000/svg';
-  function mk(svg,n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
-  function fmt(v,d){return v.toLocaleString('da-DK',{minimumFractionDigits:d,maximumFractionDigits:d});}
-  // equity
-  var sv=document.getElementById('equity');
-  if(sv){var L=44,R=664,T=14,B=270,n=D.dates.length,max=6,min=0.5;
+  var D=JSON.parse(document.getElementById('fund-data').textContent),NS='http://www.w3.org/2000/svg';
+  function fmt(v,d){return Number(v).toLocaleString('da-DK',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  function sgn(v,d){return (v>0?'+':v<0?'−':'')+fmt(Math.abs(v),d);}
+  // Equity chart
+  var sv=document.getElementById('eq');
+  if(sv){
+    var mk=function(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;sv.appendChild(e);return e;};
+    var L=46,R=664,T=14,B=268,n=D.dates.length,min=50,max=650;
     var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
-    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)}, Y=function(v){return B-(v-min)/(max-min)*(B-T)};
-    var xo=X(D.oos);mk(sv,'rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos-soft)'});
-    [1,2,3,4,5,6].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sv,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,0));});
-    for(var yr=2016;yr<=2026;yr+=2){var x=X(yr+'-01-04');mk(sv,'text',{x:x,y:B+18,'text-anchor':'middle'},yr);}
-    function path(arr){return arr.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v).toFixed(1)}).join('');}
-    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
-    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2});
-    mk(sv,'text',{x:xo+6,y:T+14},'Test fra 3. jan. 2022');
-    var ls=D.s[n-1],lm=D.m[n-1];
-    mk(sv,'circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk(sv,'circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--muted)'});
-    mk(sv,'text',{x:R-6,y:Y(ls)-8,'text-anchor':'end','class':'val'},fmt(ls,2));
-    mk(sv,'text',{x:R-6,y:Y(lm)+16,'text-anchor':'end','class':'val'},fmt(lm,2));
+    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)},Y=function(v){return B-(v-min)/(max-min)*(B-T)};
+    var xo=X(D.oos);mk('rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos-soft)'});
+    [100,200,300,400,500,600].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},v);});
+    for(var yr=2016;yr<=2026;yr+=2){mk('text',{x:X(yr+'-01-04'),y:B+18,'text-anchor':'middle'},yr);}
+    var path=function(a){return a.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v*100).toFixed(1)}).join('')};
+    mk('path',{d:path(D.m),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
+    mk('path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2.2});
+    mk('text',{x:xo+6,y:T+14},'Testperiode');
+    var ls=D.s[n-1]*100,lm=D.m[n-1]*100;
+    mk('circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk('circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--muted)'});
+    mk('text',{x:R-6,y:Y(ls)-8,'text-anchor':'end','class':'val'},fmt(ls,0));
+    mk('text',{x:R-6,y:Y(lm)+16,'text-anchor':'end','class':'val'},fmt(lm,0));
   }
-  // yearly excess
-  var sy=document.getElementById('yearly');
-  if(sy){var L=36,R=412,T=14,B=212,lo=-10,hi=30,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    [-10,0,10,20,30].forEach(function(v){mk(sy,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===0?'var(--muted)':'var(--rule)'});mk(sy,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(v>0?'+':'')+v);});
-    var slot=(R-L)/D.yearly.length,bw=slot*0.62;
-    D.yearly.forEach(function(r,i){var x=L+i*slot+(slot-bw)/2,v=r[1],y0=Y(0),y1=Y(v);
-      mk(sy,'rect',{x:x,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0)),fill:r[2]==='oos'?'var(--oos)':'var(--accent)',rx:1.5});
-      mk(sy,'text',{x:x+bw/2,y:v>=0?y1-5:y1+12,'text-anchor':'middle','class':'val'},(v>0?'+':'')+fmt(v,1));
-      mk(sy,'text',{x:x+bw/2,y:B+16,'text-anchor':'middle'},"'"+String(r[0]).slice(2));});
+  // Metrics table with period toggle
+  var M=D.metrics, tb=document.querySelector('#metrics tbody'), note=document.getElementById('metrics-note');
+  var rows=[['Samlet afkast','total','pct'],['Årligt afkast (CAGR)','cagr','pct'],['Volatilitet','vol','pct0'],['Sharpe-ratio','sharpe','dec'],['Største fald','mdd','pct0']];
+  function show(k){
+    var p=M[k];tb.innerHTML='';
+    rows.forEach(function(r){var a=p.fund[r[1]],b=p.spy[r[1]];
+      var f=r[2]==='dec'?function(v){return fmt(v,2)}:r[2]==='pct'?function(v){return sgn(v*100,1)+' %'}:function(v){return (v<0?'−':'')+fmt(Math.abs(v*100),1)+' %'};
+      var tr=document.createElement('tr');tr.innerHTML='<td>'+r[0]+'</td><td class="r">'+f(a)+'</td><td class="r">'+f(b)+'</td>';tb.appendChild(tr);});
+    if(p.extra){var tr=document.createElement('tr');tr.innerHTML='<td>Merafkast pr. år (t-værdi)</td><td class="r">'+p.extra+'</td><td class="r">–</td>';tb.appendChild(tr);}
+    note.textContent=p.note;
+    document.getElementById('tab-oos').setAttribute('aria-pressed',k==='oos');document.getElementById('tab-all').setAttribute('aria-pressed',k==='all');
   }
-  // sharpe vs X
-  var sx=document.getElementById('xchart');
-  if(sx){var L=36,R=392,T=14,B=212,lo=0.4,hi=1.1,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    var labs=D.x_is.map(function(p){return p[0]}),slot=(R-L-24)/(labs.length-1),Xp=function(i){return L+8+i*slot+(i===labs.length-1?12:0)};
-    [0.4,0.6,0.8,1.0].forEach(function(v){mk(sx,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sx,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},fmt(v,1));});
-    [[D.spy_is,'var(--accent)'],[D.spy_oos,'var(--oos)']].forEach(function(r){mk(sx,'line',{x1:L,x2:R,y1:Y(r[0]),y2:Y(r[0]),stroke:r[1],'stroke-dasharray':'4 4','stroke-width':1.2,opacity:.8});});
-    [[D.x_is,'var(--accent)'],[D.x_oos,'var(--oos)']].forEach(function(r){
-      var pts=r[0].slice(0,-1).map(function(p,i){return (i?'L':'M')+Xp(i).toFixed(1)+' '+Y(p[1]).toFixed(1)}).join('');
-      mk(sx,'path',{d:pts,fill:'none',stroke:r[1],'stroke-width':2});
-      var last=r[0][r[0].length-1];mk(sx,'circle',{cx:Xp(labs.length-1),cy:Y(last[1]),r:4,fill:r[1]});});
-    labs.forEach(function(l,i){if(l==='none'||(+l)%10===0)mk(sx,'text',{x:Xp(i),y:B+16,'text-anchor':'middle'},l==='none'?'ingen':l+' %');});
-    var ci=labs.indexOf('10');mk(sx,'line',{x1:Xp(ci),x2:Xp(ci),y1:T,y2:B,stroke:'var(--muted)','stroke-dasharray':'2 3'});
-    mk(sx,'text',{x:Xp(ci)+4,y:T+10},'valgt');
-  }
+  document.getElementById('tab-oos').addEventListener('click',function(){show('oos')});
+  document.getElementById('tab-all').addEventListener('click',function(){show('all')});
+  show('oos');
 })();
 </script>
 <script>
@@ -458,34 +526,34 @@ footer{border-top:1px solid var(--rule);padding-block:28px 48px;color:var(--mute
   var root=document.getElementById('live-root'); if(!root||!window.fetch) return;
   fetch('data/live.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(render).catch(function(){});
   function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function pct(v,d){if(v==null||isNaN(v))return '–';return (v>0?'+':'')+Number(v).toLocaleString('da-DK',{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d})+' %';}
+  function pct(v){if(v==null||isNaN(v))return '–';return (v>0?'+':v<0?'−':'')+Math.abs(Number(v)).toLocaleString('da-DK',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';}
   function render(D){
-    if(!D||!D.curve||!D.curve.dates||!D.curve.dates.length) {
-      if(D&&D.last_run){root.querySelector('.live-empty p').textContent='Seneste kørsel: '+(D.last_run.time_utc||'')+' · status: '+(D.last_run.status||'')+'. '+(D.last_run.message||'');}
+    if(!D||!D.curve||!D.curve.dates||!D.curve.dates.length){
+      if(D&&D.last_run){root.querySelector('.live-empty p').textContent='Seneste kørsel: '+String(D.last_run.time_utc||'').slice(0,16).replace('T',' ')+' UTC · status: '+(D.last_run.status||'')+'. '+(D.last_run.message||'');}
       return;}
-    var tr=D.total_return||{}, lr=D.last_run||{}, h='';
+    var tr=D.total_return||{},lr=D.last_run||{},h='';
     h+='<div class="live-kpis">'+
-      '<div><b class="num">'+pct(tr.fund_pct)+'</b><span>papirfonden siden '+esc(D.start_date)+'</span></div>'+
-      '<div><b class="num">'+pct(tr.spy_pct)+'</b><span>S&amp;P 500 (SPY) i samme periode</span></div>'+
+      '<div><b class="num">'+pct(tr.fund_pct)+'</b><span>Congress Fund siden '+esc(D.start_date)+'</span></div>'+
+      '<div><b class="num">'+pct(tr.spy_pct)+'</b><span>S&amp;P 500 i samme periode</span></div>'+
       '<div><b class="num">'+(D.positions?D.positions.length:0)+'</b><span>åbne positioner</span></div>'+
-      '<div><b class="num" style="font-size:1.1rem;font-family:var(--mono);font-stretch:100%">'+esc((lr.time_utc||'').slice(0,16).replace('T',' '))+'</b><span>seneste kørsel (UTC) · '+esc(lr.status)+'</span></div></div>';
-    h+='<figure class="chart-box fig"><div class="fig-head"><h3>Værdi, indeks 100 ved start</h3><div class="chart-legend"><span><i style="background:var(--accent)"></i>Papirfond</span><span><i style="background:var(--muted)"></i>S&amp;P 500</span></div></div><div class="chart-scroll"><svg id="livechart" viewBox="0 0 680 240" role="img" aria-label="Papirfondens værdi mod S&amp;P 500" style="width:100%;min-width:480px;height:auto"></svg></div></figure>';
+      '<div><b class="num" style="font-size:1.05rem;font-family:var(--mono);font-stretch:100%">'+esc(String(lr.time_utc||'').slice(0,16).replace('T',' '))+'</b><span>seneste kørsel (UTC) · '+esc(lr.status)+'</span></div></div>';
+    h+='<figure class="card" style="margin:0"><div class="card-head"><h3>Værdi, indeks 100 ved start</h3><div class="legend"><span><i style="background:var(--accent)"></i>Congress Fund</span><span><i style="background:var(--muted)"></i>S&amp;P 500</span></div></div><div class="chart-scroll"><svg id="livechart" viewBox="0 0 680 240" role="img" aria-label="Papirfondens værdi mod S&amp;P 500" style="width:100%;min-width:480px;height:auto"></svg></div></figure>';
     if(D.positions&&D.positions.length){
-      h+='<div><h3 style="margin-bottom:8px">Åbne positioner</h3><div class="table-scroll"><table><thead><tr><th>Ticker</th><th>Medlem</th><th>Indberettet</th><th>Købt</th><th class="r">Afkast</th><th>Planlagt salg</th></tr></thead><tbody class="num">';
+      h+='<div><h3 style="margin-bottom:8px">Åbne positioner</h3><div class="table-scroll"><table><thead><tr><th>Aktie</th><th>Medlem</th><th>Indberettet</th><th>Købt</th><th class="r">Afkast</th><th>Planlagt salg</th></tr></thead><tbody class="num">';
       D.positions.forEach(function(p){h+='<tr><td><b>'+esc(p.ticker)+'</b></td><td>'+esc(p.member)+'</td><td>'+esc(p.filed)+'</td><td>'+esc(p.entered)+'</td><td class="r">'+pct(p.return_pct)+'</td><td>'+esc(p.planned_exit)+'</td></tr>';});
       h+='</tbody></table></div></div>';}
     if(D.decisions&&D.decisions.length){
       var lbl={taken:'købt',skipped:'sprunget over',ignored:'ikke med'};
-      h+='<div><h3 style="margin-bottom:8px">Seneste beslutninger</h3><div class="table-scroll"><table><thead><tr><th>Medlem</th><th>Ticker</th><th>Indberettet</th><th>Beslutning</th><th>Årsag</th></tr></thead><tbody>';
-      D.decisions.slice(0,12).forEach(function(d){h+='<tr><td>'+esc(d.member)+'</td><td><b>'+esc(d.ticker)+'</b></td><td class="num">'+esc(d.filed)+'</td><td><span class="pill '+esc(d.decision)+'">'+esc(lbl[d.decision]||d.decision)+'</span></td><td style="color:var(--muted)">'+esc(d.reason)+'</td></tr>';});
+      h+='<div><h3 style="margin-bottom:8px">Seneste beslutninger</h3><div class="table-scroll"><table><thead><tr><th>Medlem</th><th>Aktie</th><th>Indberettet</th><th>Beslutning</th><th>Begrundelse</th></tr></thead><tbody>';
+      D.decisions.slice(0,12).forEach(function(d){h+='<tr><td>'+esc(d.member)+'</td><td><b>'+esc(d.ticker)+'</b></td><td class="num">'+esc(d.filed)+'</td><td><span class="tag '+esc(d.decision)+'">'+esc(lbl[d.decision]||d.decision)+'</span></td><td class="muted">'+esc(d.reason)+'</td></tr>';});
       h+='</tbody></table></div></div>';}
     root.innerHTML=h;
     var sv=document.getElementById('livechart'),NS='http://www.w3.org/2000/svg',c=D.curve;
     function mk(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;sv.appendChild(e);return e;}
     var all=c.fund.concat(c.spy).filter(function(v){return v!=null}),lo=Math.min.apply(null,all),hi=Math.max.apply(null,all),pad=Math.max(1,(hi-lo)*0.15);lo-=pad;hi+=pad;
-    var L=44,R=664,T=12,B=212,n=c.dates.length,X=function(i){return n<2?(L+R)/2:L+i*(R-L)/(n-1)},Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    [lo+pad,100,hi-pad].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===100?'var(--muted)':'var(--rule)'});mk('text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(hi-lo<12?v.toFixed(1):Math.round(v)).toString().replace('.',','));});
-    mk('text',{x:L,y:B+18},c.dates[0]);mk('text',{x:R,y:B+18,'text-anchor':'end'},c.dates[n-1]);
+    var L=48,R=664,T=12,B=212,n=c.dates.length,X=function(i){return n<2?(L+R)/2:L+i*(R-L)/(n-1)},Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    [lo+pad,100,hi-pad].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===100?'var(--muted)':'var(--rule)'});mk('text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(hi-lo<12?v.toFixed(1):String(Math.round(v))).replace('.',','));});
+    mk('text',{x:L,y:B+18},c.dates[0]);if(n>1)mk('text',{x:R,y:B+18,'text-anchor':'end'},c.dates[n-1]);
     function path(a){var d='';a.forEach(function(v,i){if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);});return d;}
     mk('path',{d:path(c.spy),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
     mk('path',{d:path(c.fund),fill:'none',stroke:'var(--accent)','stroke-width':2});

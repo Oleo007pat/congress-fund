@@ -110,3 +110,16 @@ Hentningen (de to første trin og kurserne) kræver netværksadgang til House Cl
 2. **Scannede indberetninger.** Brugeren beslutter, om ca. 6.600 sider skal læses, og med hvilken model. Derefter køres v1 igen med samme kriterium.
 3. **Valg af medlemmer kun ud fra tidligere information.** Fx rullende rangering af medlemmer efter deres afsluttede handler, med kriteriet låst i git, før der regnes.
 4. **Hjemmesidens resultatafsnit** bygges på `reports/site_data.json`.
+
+## Hjemmeside og live papirfond (tilføjet 17/11-2026)
+
+- **Offentlig side:** https://oleo007pat.github.io/congress-fund/ (GitHub Pages fra `main` / `docs`).
+  - `docs/index.html` er fondssiden: strategi, resultater, live portefølje, risiko, investering og FAQ.
+  - `docs/research.html` er den detaljerede research-side.
+- **Byg siden igen:** `python3 site/build.py` læser `site/src/` og `results/` og skriver `docs/`. Ret aldrig i `docs/*.html` direkte.
+- **Live papirfond:** `live/` køres hver hverdag kl. 12:45 UTC af `.github/workflows/paper_fund.yml` på Alpaca PAPER.
+  - Reglen ligger i `live/strategy.json`: hold 6 mdr., beløbsvægtet, X = 10 %.
+  - Botten committer `data/live/` og `docs/data/live.json` hver dag.
+  - **Klik derfor altid Sync i VS Code, før du ændrer noget.**
+- **GitHub-secrets:** `ALPACA_KEY_ID`, `ALPACA_SECRET_KEY` og `ALPACA_BASE_URL` er sat. Workflow permissions: read and write.
+- **Test af de bedste medlemmer:** `reports/member_selection_v1.md`. Resultatet er +89,6 % i testperioden, men ikke signifikant og domineret af to medlemmer.
