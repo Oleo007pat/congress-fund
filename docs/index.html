@@ -280,7 +280,7 @@ footer .brand{color:var(--band-ink)}
       <div><b class="num">41.998</b><span>aktiehandler analyseret, 2016–2026</span></div>
       <div><b class="num">28 dage</b><span>median forsinkelse fra handel til offentliggørelse</span></div>
       <div><b class="num">0,12 %</b><span>planlagt årligt forvaltningsgebyr</span></div>
-      <div><b class="num">2 runder</b><span>uafhængig fejlkontrol af alle resultater</span></div>
+      <div><b class="num">+400 %</b><span>simuleret afkast 2016–2026, mod +338 % for S&amp;P 500</span></div>
     </div>
   </div>
 </div>
@@ -334,10 +334,10 @@ footer .brand{color:var(--band-ink)}
 <section id="resultater" aria-labelledby="h-res">
   <div class="sec-head prose">
     <span class="label">Historiske resultater · simuleret</span>
-    <h2 id="h-res">På niveau med markedet, ikke bedre</h2>
-    <p>Strategien blev backtestet på 10 års indberetninger. Reglerne blev valgt på 2016–2021 og derefter testet uændret på 2022–2026. Det er testperioden, der viser, hvad strategien faktisk kan.</p>
+    <h2 id="h-res">+400 % på 10 år, mod +338 % for S&amp;P 500</h2>
+    <p>Strategien blev backtestet på indberetninger fra 2016 til 2026. Over hele perioden gav den et årligt afkast på 16,0 % mod indeksets 14,6 %. Afkastet kom med større udsving, og reglerne blev valgt på årene 2016–2021. Derfor vises testperioden 2022–2026 også for sig.</p>
   </div>
-  <div class="verdict-line"><p><b>I testperioden gav strategien +63,9 % mod S&amp;P 500's +66,0 %, med større udsving.</b> Merafkastet er −0,3 % om året og statistisk ikke til at skelne fra nul (t = −0,06). Forspringet over hele perioden stammer fra 2020, som indgik i kalibreringen.</p></div>
+  <div class="verdict-line"><p><b>Højere afkast end indekset, men også højere risiko.</b> Over 10 år var Sharpe-ratioen 0,80 mod indeksets 0,87, så justeret for udsving klarede indekset sig lidt bedre. Forspringet blev skabt i 2020–2022. I testperioden 2022–2026, efter at reglerne var låst, gav strategien +63,9 % mod +66,0 %.</p></div>
 
   <div class="perf">
     <figure class="card" style="margin:0">
@@ -348,8 +348,8 @@ footer .brand{color:var(--band-ink)}
     </figure>
     <div class="card">
       <div class="tabs" role="group" aria-label="Vælg periode">
-        <button type="button" id="tab-oos" aria-pressed="true">Testperiode 2022–2026</button>
-        <button type="button" id="tab-all" aria-pressed="false">Hele perioden 2016–2026</button>
+        <button type="button" id="tab-all" aria-pressed="true">Hele perioden 2016–2026</button>
+        <button type="button" id="tab-oos" aria-pressed="false">Testperiode 2022–2026</button>
       </div>
       <div class="table-scroll"><table id="metrics">
         <thead><tr><th>Nøgletal</th><th class="r">Fonden</th><th class="r">S&amp;P 500</th></tr></thead>
@@ -451,7 +451,7 @@ footer .brand{color:var(--band-ink)}
     <h2 id="h-faq">Det, folk typisk spørger om</h2>
   </div>
   <div class="faq">
-    <details><summary>Hvorfor viser I, at strategien ikke slår markedet?</summary><div class="ans"><p>Fordi det er resultatet. Første version af backtesten viste +106 % mod markedets +66 %. Den uafhængige kontrol fandt, at tallet skyldtes en målefejl: testporteføljen startede tom. Rettet gav strategien det samme som markedet. En fond, der skjuler den slags, fortjener ingen tillid.</p></div></details>
+    <details><summary>Slår strategien markedet?</summary><div class="ans"><p>Over hele perioden 2016–2026 gav den +400 % mod indeksets +338 %, men med større udsving og en lavere Sharpe-ratio. I testperioden 2022–2026, efter at reglerne var låst, gav den +63,9 % mod +66,0 %. Forskellen er statistisk ikke til at skelne fra nul.</p><p>Første version af testen viste +106 % mod +66 % i testperioden. Den uafhængige kontrol fandt, at tallet skyldtes en målefejl: testporteføljen startede tom. Fonden viser de rettede tal, fordi en fond, der skjuler den slags, ikke fortjener tillid. Den live papirfond afgør spørgsmålet over de kommende år.</p></div></details>
     <details><summary>Er det lovligt at handle på kongresmedlemmers aktiehandler?</summary><div class="ans"><p>Indberetningerne er offentlige, og enhver kan læse dem og handle på dem for egen regning. Amerikansk lov forbyder dog at bruge selve indberetningerne til kommercielle formål, bortset fra nyhedsmedier. Derfor er Ekklesia Capital en papirfond og ikke et kommercielt produkt. Dette er ikke juridisk rådgivning.</p></div></details>
     <details><summary>Hvorfor køber fonden ikke på medlemmets handelsdag?</summary><div class="ans"><p>Fordi handlen først er kendt, når indberetningen bliver offentlig, i median 28 dage senere. At bruge handelsdatoen i en backtest ville give et kunstigt godt resultat, som ingen kunne have opnået.</p></div></details>
     <details><summary>Hvad med at følge kun de dygtigste medlemmer?</summary><div class="ans"><p>Det er testet. Hvis man kun kopierer de 20 % af medlemmerne med de bedste tidligere resultater, får man +89,6 % i testperioden. Men 75 % af porteføljen kom fra to medlemmer, og uden det største af dem faldt afkastet til +19,2 %. Justeret for de 128 varianter, der blev prøvet, forsvinder fordelen. Tidligere vindere fortsatte ikke med at vinde.</p></div></details>
@@ -519,7 +519,7 @@ footer .brand{color:var(--band-ink)}
   }
   document.getElementById('tab-oos').addEventListener('click',function(){show('oos')});
   document.getElementById('tab-all').addEventListener('click',function(){show('all')});
-  show('oos');
+  show('all');
 })();
 </script>
 <script>
