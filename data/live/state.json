@@ -1,0 +1,25 @@
+{
+ "capabilities": {
+  "notional_opg": null
+ },
+ "doc_failures": {},
+ "last_run": {
+  "dry_run": false,
+  "filings_checked": 0,
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "new_signals": 0,
+  "orders_sent": 0,
+  "status": "ok",
+  "time_utc": "2026-11-18T15:01:38+00:00"
+ },
+ "lots": {},
+ "pending_orders": {},
+ "seen_doc_ids": {},
+ "start_date": "2026-11-18",
+ "start_equity": 100000.0,
+ "started_at": "2026-11-18T15:01:38+00:00",
+ "strategy_changes": [],
+ "strategy_hash": "bdca934bfe22",
+ "strategy_name": "v1_hold6m_amount_x10",
+ "version": 1
+}

@@ -1,0 +1,47 @@
+{
+ "curve": {
+  "dates": [
+   "2026-11-18"
+  ],
+  "fund": [
+   100.0
+  ],
+  "spy": [
+   100.0
+  ]
+ },
+ "decisions": [],
+ "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
+ "generated_at": "2026-11-18T15:01:38+00:00",
+ "last_run": {
+  "dry_run": false,
+  "filings_checked": 0,
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "new_signals": 0,
+  "orders_sent": 0,
+  "status": "ok",
+  "time_utc": "2026-11-18T15:01:38+00:00"
+ },
+ "latest_equity": 100000.0,
+ "positions": [],
+ "schema_version": 1,
+ "start_date": "2026-11-18",
+ "start_equity": 100000.0,
+ "strategy": {
+  "changed_since_start": false,
+  "config": {
+   "exit_rule": "hold_6m",
+   "member_filter_enabled": false,
+   "skip_rise_pct": 10.0,
+   "weighting": "amount"
+  },
+  "description": "Fonden kopierer køb af aktier og ETF'er, som medlemmer af USA's Repræsentanternes Hus indberetter (Periodic Transaction Reports), uanset hvem i familien der ejer papiret. Optioner, short-relaterede handler, handler der ikke var medlemmets eget valg (fx tildelte aktier og geninvestering), dubletter og handler med mistænkelig dato indgår ikke. Når en indberetning er offentliggjort, sendes en market-on-open-ordre på Alpacas papirkonto til næste børsåbning. Købet springes kun over, hvis kursen er steget mere end 10 % siden medlemmets handelsdag (et kursfald giver aldrig et skip). Positionen holdes i 6 måneder og sælges derefter til lukkekursen (market-on-close). Positionens størrelse følger beløbet i indberetningen: 1 % af kapitalen gange beløbets midtpunkt i forhold til medianen (8.000,5 USD), begrænset til 0,25-10 gange. Ingen position over 10 % af kapitalen; kun kontanter (ingen gearing, ingen shortsalg). Reglen er låst på forhånd og er den samme som i backtesten (hold 6 mdr., beløbsvægtet, X = 10 %), men handler i realtid med fiktive penge.",
+  "hash": "bdca934bfe22",
+  "name": "v1_hold6m_amount_x10"
+ },
+ "total_return": {
+  "excess_pct_points": 0.0,
+  "fund_pct": 0.0,
+  "spy_pct": 0.0
+ }
+}
