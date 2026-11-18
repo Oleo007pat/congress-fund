@@ -1,87 +1,81 @@
-<div class="strip"><div class="wrap"><span><b>Papirfond</b> · handler med fiktive penge · ikke åben for investering</span><span>Data opdateres hver hverdag kl. 13:45 dansk tid</span></div></div>
-
-<header class="nav">
-  <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Ekklesia Capital, forside">%%MARK%%Ekklesia Capital</a>
-    <nav aria-label="Hovedmenu"><ul>
-      <li><a href="#strategi">Strategien</a></li>
-      <li><a href="#resultater">Resultater</a></li>
-      <li><a href="#live">Live portefølje</a></li>
-      <li class="hide-sm"><a href="#risiko">Risiko</a></li>
-      <li><a href="#investering">Investering</a></li>
-      <li class="hide-sm"><a href="research.html">Research</a></li>
-    </ul></nav>
-  </div>
-</header>
-
-<main>
+%%TOP%%
+<main id="indhold">
 <div class="wrap">
   <div class="hero">
     <div class="hero-copy">
-      <span class="pill"><i></i>Live papirfond fra 18. november 2026</span>
-      <h1>Aktiestrategien, der følger Kongressens egne handler</h1>
-      <p class="lede">Ekklesia Capital køber de aktier, som medlemmer af det amerikanske Repræsentanternes Hus selv har købt, når handlen bliver offentlig. Reglerne er faste, hver beslutning logges, og al kode og data ligger åbent.</p>
+      <span class="eyebrow"><i class="dot" aria-hidden="true"></i>Live papirfond siden 18. november 2026</span>
+      <h1>Kongressens aktiehandler, omsat til en disciplineret portefølje</h1>
+      <p class="lede">Ekklesia Capital køber de aktier, som medlemmer af det amerikanske Repræsentanternes Hus selv har købt, så snart handlen bliver offentlig. Faste regler, fuld åbenhed og hver beslutning logget.</p>
       <div class="btns">
-        <a class="btn primary" href="#live">Se porteføljen live</a>
+        <a class="btn primary" href="#live">Følg porteføljen live</a>
         <a class="btn ghost" href="#resultater">Se resultaterne</a>
       </div>
+      <ul class="trust">
+        <li>Åben kode</li><li>Uafhængigt kontrolleret</li><li>0,12 % i årligt gebyr</li>
+      </ul>
     </div>
-    <aside class="facts" aria-label="Nøgletal for fonden">
-      <div class="facts-head"><h3>Fakta om fonden</h3><span class="label">Pr. 17.11.2026</span></div>
-      <dl>
-        <div><dt>Status</dt><dd class="status">Papirfond, ikke åben</dd></div>
-        <div><dt>Strategi</dt><dd>Kopierer offentliggjorte aktiekøb</dd></div>
-        <div><dt>Univers</dt><dd>Amerikanske aktier og ETF'er</dd></div>
-        <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY, inkl. udbytte)</dd></div>
-        <div><dt>Ejertid</dt><dd>6 måneder pr. køb</dd></div>
-        <div><dt>Handel</dt><dd>Ved åbning dagen efter indberetning</dd></div>
-        <div><dt>Planlagt gebyr</dt><dd class="num">0,01 % pr. måned (0,12 % årligt)</dd></div>
-        <div><dt>Risikoindikator</dt><dd class="num">5 af 7 (forenklet)</dd></div>
-        <div><dt>Mægler</dt><dd>Alpaca (papirkonto)</dd></div>
-      </dl>
-    </aside>
-  </div>
-</div>
-
-<div class="band" aria-label="Fonden i tal">
-  <div class="wrap">
-    <div class="kpis">
-      <div><b class="num">41.998</b><span>aktiehandler analyseret, 2016–2026</span></div>
-      <div><b class="num">28 dage</b><span>median forsinkelse fra handel til offentliggørelse</span></div>
-      <div><b class="num">0,12 %</b><span>planlagt årligt forvaltningsgebyr</span></div>
-      <div><b class="num">+400 %</b><span>simuleret afkast 2016–2026, mod +338 % for S&amp;P 500</span></div>
-    </div>
+    <figure class="hero-card" aria-label="Simuleret udvikling 2016 til 2026">
+      <div class="hero-card-head"><span class="meta">Simuleret udvikling · jan. 2016 – nov. 2026</span></div>
+      <div class="hero-stats">
+        <div><span class="meta">Ekklesia</span><b class="num">+400 %</b></div>
+        <div><span class="meta">S&amp;P 500</span><b class="num muted-num">+338 %</b></div>
+      </div>
+      <svg id="spark" viewBox="0 0 480 170" role="img" aria-label="Linjediagram: Ekklesia og S&amp;P 500 fra 2016 til 2026" style="width:100%;height:auto"></svg>
+      <figcaption class="meta">Efter handelsomkostninger. Højere udsving end indekset. <a href="#resultater">Se alle nøgletal</a></figcaption>
+    </figure>
   </div>
 </div>
 
 <div class="wrap">
-<section class="first" id="ide" aria-labelledby="h-ide">
+  <div class="sources" aria-label="Datakilder">
+    <span class="meta">Bygget på</span>
+    <span class="src">U.S. House of Representatives · Office of the Clerk</span>
+    <span class="src">Alpaca Markets</span>
+    <span class="src">GitHub Actions</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <dl class="stats" aria-label="Fonden i tal">
+    <div><dt>Handler analyseret</dt><dd class="num">41.998</dd><span class="meta">aktie- og ETF-køb og -salg, 2016–2026</span></div>
+    <div><dt>Median forsinkelse</dt><dd class="num">28 dage</dd><span class="meta">fra medlemmets handel til offentliggørelse</span></div>
+    <div><dt>Planlagt gebyr</dt><dd class="num">0,12 %</dd><span class="meta">om året, 0,01 % pr. måned</span></div>
+    <div><dt>Årligt afkast</dt><dd class="num">16,0 %</dd><span class="meta">simuleret 2016–2026, mod 14,6 % for S&amp;P 500</span></div>
+  </dl>
+</div>
+
+<div class="wrap">
+<section id="ide" aria-labelledby="h-ide">
   <div class="sec-head prose">
     <span class="label">Investeringsidéen</span>
     <h2 id="h-ide">Offentlig information, brugt med disciplin</h2>
-    <p>Siden 2012 har STOCK Act pålagt medlemmer af Kongressen at offentliggøre deres aktiehandler inden for 45 dage. Kongressens medlemmer sidder tæt på lovgivning, høringer og budgetter. Ekklesia Capital omsætter deres indberetninger til en regelbaseret portefølje uden menneskelige skøn.</p>
+    <p>Siden 2012 har STOCK Act pålagt medlemmer af Kongressen at offentliggøre deres aktiehandler inden for 45 dage. Medlemmerne sidder tæt på lovgivning, høringer og budgetter. Ekklesia Capital omsætter deres indberetninger til en regelbaseret portefølje uden menneskelige skøn.</p>
   </div>
-  <div class="pillars">
-    <div class="pillar">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M5 16h22M16 5c3.5 3.2 3.5 18.8 0 22M16 5c-3.5 3.2-3.5 18.8 0 22"/></svg>
-      <h3>Fuld gennemsigtighed</h3>
-      <p>Al kode, alle data og hver eneste beslutning ligger offentligt på GitHub. Du kan se præcis, hvorfor en aktie blev købt eller sprunget over.</p>
-    </div>
-    <div class="pillar">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="5" width="20" height="22" rx="2"/><path d="M11 11h10M11 16h10M11 21h6"/></svg>
-      <h3>Faste regler</h3>
-      <p>Reglerne blev låst, før resultaterne blev set. Ingen mavefornemmelse, ingen efterrationalisering og ingen justering undervejs.</p>
-    </div>
-    <div class="pillar">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 24l7-8 5 5 8-11"/><path d="M20 10h6v6"/></svg>
-      <h3>Lave omkostninger</h3>
-      <p>Det planlagte gebyr er 0,12 % om året. Hele kæden fra indberetning til ordre er automatisk, så der er ingen dyre analytikere at betale.</p>
-    </div>
-    <div class="pillar">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 4l10 4v7c0 6.5-4.3 11.2-10 13-5.7-1.8-10-6.5-10-13V8z"/><path d="M11.5 16l3.2 3.2 6-6.4"/></svg>
-      <h3>Uafhængigt kontrolleret</h3>
-      <p>En separat gennemgang regnede alle 18.068 handler om fra rådata og jagtede skævheder som look-ahead og survivorship bias.</p>
-    </div>
+  <div class="bento">
+    <article class="tile tile-wide">
+      <span class="label">Fuld gennemsigtighed</span>
+      <h3>Hver beslutning kan efterprøves</h3>
+      <p>Al kode, alle data og hver eneste beslutning ligger offentligt på GitHub. Sådan ser en linje i beslutningsloggen ud:</p>
+      <pre class="log" aria-label="Eksempel på en linje fra beslutningsloggen"><code><span class="k">KØBT</span>  GOOGL  indberettet 12.11.2026
+      kurs siden medlemmets handel  <span class="v">+0,1 %</span>  (grænse +10 %)
+      ordre  ved åbning · 1.000 USD · sælges efter 6 mdr.</code></pre>
+      <span class="meta">Fra prøvekørslen 17. november 2026.</span>
+    </article>
+    <article class="tile">
+      <span class="label">Faste regler</span>
+      <h3>Låst før resultaterne</h3>
+      <p>Ingen mavefornemmelse, ingen efterrationalisering og ingen justering undervejs.</p>
+    </article>
+    <article class="tile">
+      <span class="label">Lave omkostninger</span>
+      <h3>0,12 % om året</h3>
+      <p>Hele kæden fra indberetning til ordre er automatisk. Der er ingen analytikere at betale.</p>
+    </article>
+    <article class="tile tile-wide">
+      <span class="label">Uafhængigt kontrolleret</span>
+      <h3>18.068 handler regnet om fra rådata</h3>
+      <p>En separat gennemgang jagtede skævheder som look-ahead og survivorship bias i to runder. Den første runde fandt to alvorlige fejl, som blev rettet. Den anden fandt ingen.</p>
+    </article>
   </div>
 </section>
 
@@ -111,7 +105,7 @@
   <div class="perf">
     <figure class="card" style="margin:0">
       <div class="card-head"><h3>Værdi af 100 kr. investeret i januar 2016</h3>
-        <div class="legend"><span><i style="background:var(--accent)"></i>Ekklesia</span><span><i style="background:var(--muted)"></i>S&amp;P 500</span><span><i class="shade"></i>Testperiode</span></div></div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Ekklesia</span><span><i style="background:var(--spy)"></i>S&amp;P 500</span><span><i class="shade"></i>Testperiode</span></div></div>
       <div class="chart-scroll"><svg id="eq" viewBox="0 0 680 300" role="img" aria-label="Simuleret værdi af Ekklesia Capital og S&amp;P 500 fra 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
       <figcaption>Simuleret, efter handelsomkostninger på 0,1 % pr. handel. Uden forvaltningsgebyr.</figcaption>
     </figure>
@@ -128,13 +122,13 @@
     </div>
   </div>
 
-  <div class="card" style="margin-top:28px">
+  <div class="card stack-16">
     <div class="card-head"><h3>Afkast pr. kalenderår</h3><span class="label">Simuleret</span></div>
     <div class="table-scroll"><table class="years">
       <thead><tr><th></th>%%YEAR_HEAD%%</tr></thead>
       <tbody class="num">%%YEAR_ROWS%%</tbody>
     </table></div>
-    <p class="note" style="margin-top:10px">2016–2021 er kalibreringsperioden, hvor reglerne blev valgt. 2022–2026 er testperioden. 2026 dækker til og med 16. november.</p>
+    <p class="note" style="margin-top:12px">2016–2021 er kalibreringsperioden, hvor reglerne blev valgt. 2022–2026 er testperioden. 2026 dækker til og med 16. november.</p>
   </div>
   <p class="disclaimer">Historiske og simulerede afkast er ingen garanti for fremtidige afkast. Tallene er beregnet på 41.998 handler fra tekstbaserede indberetninger. 24 % af indberetningerne er scannede papirer og indgår ikke. Fuld metode, kontrol og begrænsninger står i <a href="research.html">research-afsnittet</a>.</p>
 </section>
@@ -153,15 +147,30 @@
 
 <section id="risiko" aria-labelledby="h-risk">
   <div class="sec-head prose">
-    <span class="label">Risiko</span>
-    <h2 id="h-risk">Hvad der kan gå galt</h2>
+    <span class="label">Fakta og risiko</span>
+    <h2 id="h-risk">Hvad fonden er, og hvad der kan gå galt</h2>
   </div>
   <div class="risk">
-    <div>
+    <div class="risk-side">
+      <div class="facts">
+        <div class="facts-head"><h3>Fakta om fonden</h3><span class="meta">Pr. 18.11.2026</span></div>
+        <dl>
+          <div><dt>Status</dt><dd class="status">Papirfond, ikke åben</dd></div>
+          <div><dt>Strategi</dt><dd>Kopierer offentliggjorte aktiekøb</dd></div>
+          <div><dt>Univers</dt><dd>Amerikanske aktier og ETF'er</dd></div>
+          <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY, inkl. udbytte)</dd></div>
+          <div><dt>Ejertid</dt><dd>6 måneder pr. køb</dd></div>
+          <div><dt>Handel</dt><dd>Ved åbning dagen efter indberetning</dd></div>
+          <div><dt>Planlagt gebyr</dt><dd class="num">0,01 % pr. måned (0,12 % årligt)</dd></div>
+          <div><dt>Mægler</dt><dd>Alpaca (papirkonto)</dd></div>
+        </dl>
+      </div>
+      <div>
       <h3>Risikoindikator</h3>
       <div class="scale" role="img" aria-label="Risikoindikator 5 på en skala fra 1 til 7"><span>1</span><span>2</span><span>3</span><span>4</span><span class="on">5</span><span>6</span><span>7</span></div>
       <div class="scale-ends"><span>Lav risiko</span><span>Høj risiko</span></div>
       <p class="note" style="margin-top:14px">Forenklet ud fra den simulerede volatilitet på 21,6–22,9 % om året, svarende til klasse 5 på EU's skala. Det er ikke en officiel PRIIPs-beregning. Til sammenligning: S&amp;P 500 havde 17,4 % i testperioden.</p>
+      </div>
     </div>
     <dl class="risks">
       <div><dt>Markedsrisiko</dt><dd>Fonden ejer kun amerikanske aktier og følger markedet tæt (beta 1,10). Falder aktiemarkedet, falder fonden typisk mere.</dd></div>
@@ -203,7 +212,7 @@
       <a class="more" href="https://github.com/Oleo007pat/congress-fund/tree/main/fund">Se fondsmodulerne på GitHub</a>
     </article>
   </div>
-  <h3 style="margin-top:40px">Det skal være på plads, før fonden kan åbne</h3>
+  <h3 class="sub-h">Det skal være på plads, før fonden kan åbne</h3>
   <ol class="checklist">
     <li><span class="mark done" aria-hidden="true"></span><div><b>Data og backtest</b><p>10 års indberetninger, læst, koblet til kurser og testet.</p></div><span class="st done">Færdig</span></li>
     <li><span class="mark done" aria-hidden="true"></span><div><b>Uafhængig kontrol</b><p>To runder fejljagt. Ingen alvorlige fejl tilbage.</p></div><span class="st done">Færdig</span></li>
@@ -230,9 +239,22 @@
   </div>
 </section>
 </div>
+<div class="wrap">
+  <div class="cta-band">
+    <div>
+      <h2>Følg Ekklesia live</h2>
+      <p>Porteføljen opdateres hver hverdag. Se, hvad Kongressen køber, og hvordan strategien klarer sig mod S&amp;P 500.</p>
+    </div>
+    <div class="btns">
+      <a class="btn primary" href="#live">Se porteføljen</a>
+      <a class="btn ghost" href="https://github.com/Oleo007pat/congress-fund">Se koden på GitHub</a>
+    </div>
+  </div>
+</div>
 </main>
 
 <footer>
+  <div class="meander" aria-hidden="true"></div>
   <div class="wrap">
     <div class="foot-grid">
       <div style="display:grid;gap:10px;align-content:start">
@@ -243,7 +265,7 @@
       <div><h4>Dokumentation</h4><ul><li><a href="research.html">Research og metode</a></li><li><a href="https://github.com/Oleo007pat/congress-fund/blob/main/reports/backtest_v1.md">Backtest-rapport</a></li><li><a href="https://github.com/Oleo007pat/congress-fund">Kode på GitHub</a></li><li><a href="https://disclosures-clerk.house.gov/FinancialDisclosure">Kilde: House Clerk</a></li></ul></div>
     </div>
     <div class="legal">
-      <p><b style="color:var(--band-ink)">Vigtig information.</b> Ekklesia Capital er en papirfond, der handler med fiktive penge. Den er ikke en investeringsforening, en alternativ investeringsfond eller et finansielt produkt, og den tager ikke imod penge. Intet på denne side er investeringsrådgivning eller en opfordring til at købe eller sælge værdipapirer.</p>
+      <p><b>Vigtig information.</b> Ekklesia Capital er en papirfond, der handler med fiktive penge. Den er ikke en investeringsforening, en alternativ investeringsfond eller et finansielt produkt, og den tager ikke imod penge. Intet på denne side er investeringsrådgivning eller en opfordring til at købe eller sælge værdipapirer.</p>
       <p>Historiske og simulerede afkast er ingen garanti for fremtidige afkast. Simulerede resultater har kendte begrænsninger, som er beskrevet i research-afsnittet. Kilder: U.S. House of Representatives, Office of the Clerk; Alpaca Market Data.</p>
     </div>
   </div>
@@ -262,17 +284,31 @@
     var L=46,R=664,T=14,B=268,n=D.dates.length,min=50,max=650;
     var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
     var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)},Y=function(v){return B-(v-min)/(max-min)*(B-T)};
-    var xo=X(D.oos);mk('rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos-soft)'});
-    [100,200,300,400,500,600].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},v);});
+    var xo=X(D.oos);mk('rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos)'});
+    [100,200,300,400,500,600].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--line)'});mk('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},v);});
     for(var yr=2016;yr<=2026;yr+=2){mk('text',{x:X(yr+'-01-04'),y:B+18,'text-anchor':'middle'},yr);}
     var path=function(a){return a.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v*100).toFixed(1)}).join('')};
-    mk('path',{d:path(D.m),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
-    mk('path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2.2});
+    mk('path',{d:path(D.m),fill:'none',stroke:'var(--spy)','stroke-width':1.5});
+    mk('path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2});
     mk('text',{x:xo+6,y:T+14},'Testperiode');
     var ls=D.s[n-1]*100,lm=D.m[n-1]*100;
-    mk('circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk('circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--muted)'});
+    mk('circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk('circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--spy)'});
     mk('text',{x:R-6,y:Y(ls)-8,'text-anchor':'end','class':'val'},fmt(ls,0));
     mk('text',{x:R-6,y:Y(lm)+16,'text-anchor':'end','class':'val'},fmt(lm,0));
+  }
+  // Hero sparkline (same data, compact)
+  var sp=document.getElementById('spark');
+  if(sp){
+    var ms=function(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);sp.appendChild(e);return e;};
+    var n2=D.dates.length,W=480,H=170,P=6,lo=0.8,hi=6.4;
+    var x=function(i){return P+i*(W-2*P)/(n2-1)},y=function(v){return H-P-(v-lo)/(hi-lo)*(H-2*P)};
+    var line=function(a){return a.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)}).join('')};
+    var oi=D.dates.findIndex(function(d){return d>=D.oos});
+    ms('rect',{x:x(oi),y:0,width:W-x(oi),height:H,fill:'var(--oos)',rx:6});
+    ms('path',{d:line(D.s)+'L'+x(n2-1)+' '+H+'L'+x(0)+' '+H+'Z',fill:'var(--accent)',opacity:.08});
+    ms('path',{d:line(D.m),fill:'none',stroke:'var(--spy)','stroke-width':1.5});
+    ms('path',{d:line(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2});
+    ms('circle',{cx:x(n2-1),cy:y(D.s[n2-1]),r:3.5,fill:'var(--accent)'});
   }
   // Metrics table with period toggle
   var M=D.metrics, tb=document.querySelector('#metrics tbody'), note=document.getElementById('metrics-note');
@@ -307,7 +343,7 @@
       '<div><b class="num">'+pct(tr.spy_pct)+'</b><span>S&amp;P 500 i samme periode</span></div>'+
       '<div><b class="num">'+(D.positions?D.positions.length:0)+'</b><span>åbne positioner</span></div>'+
       '<div><b class="num" style="font-size:1.05rem;font-family:var(--mono);font-stretch:100%">'+esc(String(lr.time_utc||'').slice(0,16).replace('T',' '))+'</b><span>seneste kørsel (UTC) · '+esc(lr.status)+'</span></div></div>';
-    h+='<figure class="card" style="margin:0"><div class="card-head"><h3>Værdi, indeks 100 ved start</h3><div class="legend"><span><i style="background:var(--accent)"></i>Ekklesia</span><span><i style="background:var(--muted)"></i>S&amp;P 500</span></div></div><div class="chart-scroll"><svg id="livechart" viewBox="0 0 680 240" role="img" aria-label="Papirfondens værdi mod S&amp;P 500" style="width:100%;min-width:480px;height:auto"></svg></div></figure>';
+    h+='<figure class="card" style="margin:0"><div class="card-head"><h3>Værdi, indeks 100 ved start</h3><div class="legend"><span><i style="background:var(--accent)"></i>Ekklesia</span><span><i style="background:var(--spy)"></i>S&amp;P 500</span></div></div><div class="chart-scroll"><svg id="livechart" viewBox="0 0 680 240" role="img" aria-label="Papirfondens værdi mod S&amp;P 500" style="width:100%;min-width:480px;height:auto"></svg></div></figure>';
     if(D.positions&&D.positions.length){
       h+='<div><h3 style="margin-bottom:8px">Åbne positioner</h3><div class="table-scroll"><table><thead><tr><th>Aktie</th><th>Medlem</th><th>Indberettet</th><th>Købt</th><th class="r">Afkast</th><th>Planlagt salg</th></tr></thead><tbody class="num">';
       D.positions.forEach(function(p){h+='<tr><td><b>'+esc(p.ticker)+'</b></td><td>'+esc(p.member)+'</td><td>'+esc(p.filed)+'</td><td>'+esc(p.entered)+'</td><td class="r">'+pct(p.return_pct)+'</td><td>'+esc(p.planned_exit)+'</td></tr>';});
@@ -322,10 +358,10 @@
     function mk(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;sv.appendChild(e);return e;}
     var all=c.fund.concat(c.spy).filter(function(v){return v!=null}),lo=Math.min.apply(null,all),hi=Math.max.apply(null,all),pad=Math.max(1,(hi-lo)*0.15);lo-=pad;hi+=pad;
     var L=48,R=664,T=12,B=212,n=c.dates.length,X=function(i){return n<2?(L+R)/2:L+i*(R-L)/(n-1)},Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    [lo+pad,100,hi-pad].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===100?'var(--muted)':'var(--rule)'});mk('text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(hi-lo<12?v.toFixed(1):String(Math.round(v))).replace('.',','));});
+    [lo+pad,100,hi-pad].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===100?'var(--line-strong)':'var(--line)'});mk('text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(hi-lo<12?v.toFixed(1):String(Math.round(v))).replace('.',','));});
     mk('text',{x:L,y:B+18},c.dates[0]);if(n>1)mk('text',{x:R,y:B+18,'text-anchor':'end'},c.dates[n-1]);
     function path(a){var d='';a.forEach(function(v,i){if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);});return d;}
-    mk('path',{d:path(c.spy),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
+    mk('path',{d:path(c.spy),fill:'none',stroke:'var(--spy)','stroke-width':1.5});
     mk('path',{d:path(c.fund),fill:'none',stroke:'var(--accent)','stroke-width':2});
     if(n===1){mk('circle',{cx:X(0),cy:Y(c.fund[0]),r:4,fill:'var(--accent)'});}
   }
