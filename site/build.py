@@ -98,7 +98,7 @@ def year_table(yearly: list) -> tuple[str, str]:
     fund = "".join(f'<td class="r">{f(y["strategy"])}</td>' for y in yearly)
     spy = "".join(f'<td class="r">{f(y["spy"])}</td>' for y in yearly)
     diff = "".join(f'<td class="r {"pos" if y["excess"] > 0 else "neg"}">{f(y["excess"])}</td>' for y in yearly)
-    rows = (f"<tr><th>Congress Fund, %</th>{fund}</tr><tr><th>S&amp;P 500, %</th>{spy}</tr>"
+    rows = (f"<tr><th>Ekklesia, %</th>{fund}</tr><tr><th>S&amp;P 500, %</th>{spy}</tr>"
             f"<tr><th>Forskel, procentpoint</th>{diff}</tr>")
     return head, rows
 
@@ -139,7 +139,7 @@ def main() -> None:
     body = (body.replace("%%MARK%%", MARK).replace("%%YEAR_HEAD%%", yh).replace("%%YEAR_ROWS%%", yr)
                 .replace("%%DATA%%", json.dumps(data, separators=(",", ":"))))
     assert "%%" not in body
-    title = "Congress Fund"
+    title = "Ekklesia Capital"
     desc = ("En regelbaseret papirfond, der følger amerikanske kongresmedlemmers offentliggjorte aktiekøb. "
             "Ærlige resultater, åben kode og en live portefølje.")
     (DOCS / "index.html").write_text(head(title, desc, "index.html", css) + body + "\n</body>\n</html>\n")
@@ -152,12 +152,12 @@ def main() -> None:
     r = re.sub(r"<script>\s*\(function\(\)\{\s*var root=document.getElementById\('live-root'\).*?</script>\s*", "", r, count=1, flags=re.S)
     r = r.replace('<a href="#live">live papirfond</a>', '<a href="index.html#live">live papirfond</a>')
     r = r.replace('<span class="label">Forskningsprojekt · Backtest v1 · Kontrolleret</span>',
-                  '<a class="label" href="index.html">← Congress Fund</a><span class="label">Research · Backtest v1 · Kontrolleret</span>')
-    assert "live-root" not in r and "index.html#live" in r and "← Congress Fund" in r
+                  '<a class="label" href="index.html">← Ekklesia Capital</a><span class="label">Research · Backtest v1 · Kontrolleret</span>')
+    assert "live-root" not in r and "index.html#live" in r and "← Ekklesia Capital" in r
     style = re.search(r"<style>(.*?)</style>", r, flags=re.S).group(1)
     rbody = r[r.index("</style>") + len("</style>"):]
-    rtitle = "Congress Fund Research"
-    rdesc = "Metode, datakvalitet, backtest og uafhængig fejlkontrol bag Congress Fund."
+    rtitle = "Ekklesia Capital Research"
+    rdesc = "Metode, datakvalitet, backtest og uafhængig fejlkontrol bag Ekklesia Capital."
     full = head(rtitle, rdesc, "research.html", style) + rbody.strip() + "\n</body>\n</html>\n"
     (DOCS / "research.html").write_text(full)
     (PREVIEW / "research.html").write_text(full)
