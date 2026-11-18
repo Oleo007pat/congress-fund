@@ -25,17 +25,15 @@ POSTHOG_HOST = "https://eu.i.posthog.com"
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600'
-         '&family=IBM+Plex+Mono:wght@400;500&display=swap">')
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display'
+         '&family=Public+Sans:wght@400;500;600&display=swap">')
 
 MARK = ('<svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="6"/>'
         '<path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/>'
         '<path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg>')
-MARK_CSS = (".mk-bg{fill:var(--ink)}.mk-roof{fill:var(--accent)}.mk-col{stroke:var(--canvas);stroke-width:1.6;fill:none}"
-            "footer .mk-bg{fill:var(--band-ink)}footer .mk-col{stroke:var(--band)}")
 FAVICON = ("data:image/svg+xml," + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E"
-           "%3Crect x='1' y='1' width='26' height='26' rx='6' fill='%230E1726'/%3E"
-           "%3Cpath d='M6 11.5 14 6l8 5.5z' fill='%238EA6FF'/%3E"
+           "%3Crect x='1' y='1' width='26' height='26' rx='6' fill='%2317211C'/%3E"
+           "%3Cpath d='M6 11.5 14 6l8 5.5z' fill='%237CC7A5'/%3E"
            "%3Cpath d='M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E")
 
 
@@ -82,12 +80,12 @@ def build_data() -> tuple[dict, list]:
                 "spy": {"total": h["spy"]["total_return"], "cagr": h["spy"]["cagr"], "vol": h["spy"]["volatility"],
                         "sharpe": h["spy"]["sharpe"], "mdd": h["spy"]["max_drawdown"]},
                 "extra": f"{sign(t_alpha)}{fmt(t_alpha, 1)} % (t = {sign(sig['alpha_t_nw'])}{fmt(sig['alpha_t_nw'], 2)})",
-                "note": "3. januar 2022 til 16. november 2026. Reglerne var låst inden perioden. Sharpe-ratio uden risikofri rente.",
+                "note": "3 January 2022 to 16 November 2026, after the rules were fixed. Sharpe ratio without a risk-free rate.",
             },
             "all": {
                 "fund": stats(s), "spy": stats(m),
-                "note": ("6. januar 2016 til 16. november 2026. Perioden indeholder 2016–2021, hvor reglerne blev valgt, "
-                         "og tallene er derfor for optimistiske."),
+                "note": ("6 January 2016 to 16 November 2026, simulated. Sharpe ratio without a risk-free rate. "
+                         "The rules were chosen using 2016–2021 data."),
             },
         },
     }
@@ -95,13 +93,13 @@ def build_data() -> tuple[dict, list]:
 
 
 def year_table(yearly: list) -> tuple[str, str]:
-    f = lambda v: ("+" if v > 0 else "−" if v < 0 else "") + f"{abs(v) * 100:.1f}".replace(".", ",")
+    f = lambda v: ("+" if v > 0 else "−" if v < 0 else "") + f"{abs(v) * 100:.1f}"
     head = "".join(f'<th class="r">{y["year"]}{"*" if y["year"] == 2026 else ""}</th>' for y in yearly)
     fund = "".join(f'<td class="r">{f(y["strategy"])}</td>' for y in yearly)
     spy = "".join(f'<td class="r">{f(y["spy"])}</td>' for y in yearly)
     diff = "".join(f'<td class="r {"pos" if y["excess"] > 0 else "neg"}">{f(y["excess"])}</td>' for y in yearly)
     rows = (f"<tr><th>Ekklesia, %</th>{fund}</tr><tr><th>S&amp;P 500, %</th>{spy}</tr>"
-            f"<tr><th>Forskel, procentpoint</th>{diff}</tr>")
+            f"<tr><th>Difference, points</th>{diff}</tr>")
     return head, rows
 
 
@@ -117,7 +115,7 @@ posthog.init("%s",{api_host:"%s",cookieless_mode:"always",person_profiles:"ident
 def head(title: str, desc: str, path: str, css: str, extra: str = "") -> str:
     url = SITE_URL + ("" if path == "index.html" else path)
     return f"""<!doctype html>
-<html lang="da">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -131,7 +129,7 @@ def head(title: str, desc: str, path: str, css: str, extra: str = "") -> str:
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{url}">
 <link rel="icon" href="{FAVICON}">
-<meta name="theme-color" content="#F6F7F9">
+<meta name="theme-color" content="#F2F3EF">
 {FONTS}
 {POSTHOG}
 <style>
@@ -143,80 +141,39 @@ def head(title: str, desc: str, path: str, css: str, extra: str = "") -> str:
 """
 
 
-RESEARCH_OVERRIDES = """
-/* Research page: map its old tokens onto the shared design system */
-:root{--paper:var(--canvas);--sheet:var(--surface);--rule:var(--line);
-  --step--1:.75rem;--step0:1rem;--step1:1.125rem;--step2:1.5rem;--step3:clamp(2rem,3.8vw,3rem);--step4:clamp(2.6rem,6vw,4.4rem)}
-h1,h2,h3{font-stretch:normal}
-h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.01em}
-h3{font-family:var(--body);font-weight:600}
-.figures b,.alpha b,.record-fields b{font-family:var(--display);font-weight:400;font-stretch:normal}
-.record-fields b{font-family:var(--mono);font-weight:500}
-b,strong{font-weight:600}
-.r-hero{padding-block:64px 48px}
-.figures,.record,.chart-box,.stage,.pending,.alpha{border-radius:var(--r)}
-.figures{background:var(--line)}
-#equity text,#yearly text,#xchart text,#buys text{font-size:8px}
-@media (max-width:640px){#equity text,#yearly text,#xchart text,#buys text{font-size:12px}}
-.status{font-size:.75rem}
-section{border-top:0}
-"""
-
-
-def strip_tokens(css: str) -> str:
-    """Drop the research page's own colour/token blocks; the shared design system defines them."""
-    css = re.sub(r":root\{.*?\}\s*@media \(prefers-color-scheme: dark\)\{:root:not\(\[data-theme=\"light\"\]\)\{.*?\}\}\s*:root\[data-theme=\"dark\"\]\{.*?\}", "", css, count=1, flags=re.S)
-    css = re.sub(r"(^|\n)body\{[^}]*\}", "\n", css, count=1)
-    css = re.sub(r"(^|\n)footer\{[^}]*\}", "\n", css, count=1)
-    css = re.sub(r"(^|\n)header\{[^}]*\}", "\n", css, count=1)
-    return css
-
-
 def main() -> None:
     DOCS.mkdir(exist_ok=True)
     PREVIEW.mkdir(parents=True, exist_ok=True)
-    css = (SRC / "fund.css").read_text() + "\n" + MARK_CSS
-    top = (SRC / "top.html").read_text()
+    css = (SRC / "site.css").read_text()
+    header = (SRC / "header.html").read_text().replace("%%MARK%%", MARK)
+    footer = (SRC / "footer.html").read_text().replace("%%MARK%%", MARK)
     data, yearly = build_data()
     yh, yr = year_table(yearly)
-    body = (SRC / "index.body.html").read_text()
-    body = (body.replace("%%TOP%%", top).replace("%%MARK%%", MARK).replace("%%YEAR_HEAD%%", yh).replace("%%YEAR_ROWS%%", yr)
-                .replace("%%DATA%%", json.dumps(data, separators=(",", ":"))))
-    assert "%%" not in body
-    footer = body[body.index("<footer>"):body.index("</footer>") + len("</footer>")]
-    footer_abs = re.sub(r'href="#([a-z-]+)"', r'href="index.html#\1"', footer)
-    title = "Ekklesia Capital"
-    desc = ("Ekklesia Capital er en regelbaseret papirfond, der følger amerikanske kongresmedlemmers "
-            "offentliggjorte aktiekøb. Ærlige resultater, åben kode og en live portefølje.")
-    (DOCS / "index.html").write_text(head(title, desc, "index.html", css) + body + "\n</body>\n</html>\n")
-    (PREVIEW / "index.html").write_text(
-        f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n{FONTS}\n<style>\n{css}\n</style>\n' + body)
 
-    # Research page (case study): the detailed project page, with the shared nav and footer.
-    r = (ROOT / "site" / "index.html").read_text()
-    r = re.sub(r'<section aria-labelledby="h-live" id="live">.*?</section>\s*', "", r, count=1, flags=re.S)
-    r = re.sub(r"<script>\s*\(function\(\)\{\s*var root=document.getElementById\('live-root'\).*?</script>\s*", "", r, count=1, flags=re.S)
-    r = r.replace('<a href="#live">live papirfond</a>', '<a href="index.html#live">live papirfond</a>')
-    # colours: old "oos" blue becomes slate, old soft shade becomes the shared test-period shade
-    r = re.sub(r"var\(--oos\)", "var(--ink-2)", r).replace("var(--oos-soft)", "var(--oos)")
-    r = r.replace('class="hero"', 'class="r-hero"').replace(".hero{", ".r-hero{").replace(".hero ", ".r-hero ")
-    style = strip_tokens(re.search(r"<style>(.*?)</style>", r, flags=re.S).group(1))
-    rbody = r[r.index("</style>") + len("</style>"):]
-    rbody = re.sub(r"<header>.*?</header>\s*", "", rbody, count=1, flags=re.S)
-    rbody = re.sub(r"<footer>.*?</footer>\s*", "", rbody, count=1, flags=re.S)
-    k = rbody.index("<script")
-    rhtml, rscripts = rbody[:k].strip(), rbody[k:].strip()
-    rtitle = "Research og metode · Ekklesia Capital"
-    rdesc = "Metode, datakvalitet, backtest og uafhængig fejlkontrol bag Ekklesia Capital."
-    rcss = style + "\n" + css + "\n" + RESEARCH_OVERRIDES
-    full = (head(rtitle, rdesc, "research.html", rcss) + top.replace("%%MARK%%", MARK)
-            + '\n<main id="indhold">\n' + rhtml + "\n</main>\n" + footer_abs + "\n" + rscripts + "\n</body>\n</html>\n")
-    full = full.replace('<a href="research.html">Research</a>', '<a href="research.html" aria-current="page">Research</a>')
-    assert "live-root" not in full and "index.html#live" in full and "%%" not in full
+    def assemble(src: str, **extra: str) -> str:
+        body = (SRC / src).read_text().replace("%%HEADER%%", header).replace("%%FOOTER%%", footer)
+        for k, v in extra.items():
+            body = body.replace(f"%%{k}%%", v)
+        assert "%%" not in body, src
+        return body
+
+    home = assemble("home.html", YEAR_HEAD=yh, YEAR_ROWS=yr, DATA=json.dumps(data, separators=(",", ":")),
+                    LIVEJS=(SRC / "live.html").read_text())
+    title = "Ekklesia Capital — a fund that follows Congress's stock trades"
+    desc = ("Ekklesia Capital is a rule-based paper fund that follows the stock purchases disclosed by members of the "
+            "U.S. Congress. Ten years of simulated results, open code and a live portfolio.")
+    (DOCS / "index.html").write_text(head(title, desc, "index.html", css) + home + "\n</body>\n</html>\n")
+    (PREVIEW / "index.html").write_text(
+        f'<title>Ekklesia Capital</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n{FONTS}\n<style>\n{css}\n</style>\n' + home)
+
+    research = assemble("research.html", RESDATA=(SRC / "research_data.json").read_text())
+    research = research.replace('<a href="research.html">Research</a>', '<a href="research.html" aria-current="page">Research</a>', 1)
+    rtitle = "Research and method · Ekklesia Capital"
+    rdesc = "How Ekklesia Capital's backtest was built: data, method, an independent review and the limits of the data."
+    full = head(rtitle, rdesc, "research.html", css) + research + "\n</body>\n</html>\n"
     (DOCS / "research.html").write_text(full)
     (PREVIEW / "research.html").write_text(full)
 
-    # Search engines
     (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n")
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

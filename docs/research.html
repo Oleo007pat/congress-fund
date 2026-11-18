@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="da">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Research og metode · Ekklesia Capital</title>
-<meta name="description" content="Metode, datakvalitet, backtest og uafhængig fejlkontrol bag Ekklesia Capital.">
+<title>Research and method · Ekklesia Capital</title>
+<meta name="description" content="How Ekklesia Capital's backtest was built: data, method, an independent review and the limits of the data.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Research og metode · Ekklesia Capital">
-<meta property="og:description" content="Metode, datakvalitet, backtest og uafhængig fejlkontrol bag Ekklesia Capital.">
+<meta property="og:title" content="Research and method · Ekklesia Capital">
+<meta property="og:description" content="How Ekklesia Capital's backtest was built: data, method, an independent review and the limits of the data.">
 <meta property="og:url" content="https://ekklesia-capital.vercel.app/research.html">
 <meta property="og:image" content="https://ekklesia-capital.vercel.app/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ekklesia-capital.vercel.app/research.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect x='1' y='1' width='26' height='26' rx='6' fill='%230E1726'/%3E%3Cpath d='M6 11.5 14 6l8 5.5z' fill='%238EA6FF'/%3E%3Cpath d='M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E">
-<meta name="theme-color" content="#F6F7F9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect x='1' y='1' width='26' height='26' rx='6' fill='%2317211C'/%3E%3Cpath d='M6 11.5 14 6l8 5.5z' fill='%237CC7A5'/%3E%3Cpath d='M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#F2F3EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Public+Sans:wght@400;500;600&display=swap">
 <script>
 /* Anonymous, cookieless page statistics (PostHog EU). Runs only on the public site, not on local copies. */
 if (/(vercel\.app|github\.io)$/.test(location.hostname)) {
@@ -26,732 +26,552 @@ posthog.init("phc_AK2oxvEZ4qMo3GcPnu7RjbgbFF8aaM4QZd82L7NS9mtA",{api_host:"https
 </script>
 <style>
 :root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
-
-/* Layout: one reading column on "form paper", with full-width data bands; a PTR record line is the signature element. */
-
-
-
-.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.prose{max-width:66ch}
-h1,h2,h3{font-family:var(--display);font-stretch:85%;line-height:1.1;text-wrap:balance;margin:0}
-h1{font-size:var(--step4);font-weight:800;letter-spacing:-.01em}
-h2{font-size:var(--step3);font-weight:750}
-h3{font-size:var(--step1);font-weight:700;font-stretch:90%}
-p{margin:0}
-a{color:inherit;text-decoration-color:var(--accent);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.label{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.num{font-variant-numeric:tabular-nums}
-
-/* Header */
-
-.topline{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:12px}
-.r-hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-block:40px 48px}
-.r-hero .lede{font-size:var(--step1);color:var(--muted);max-width:58ch}
-.r-hero mark{background:linear-gradient(transparent 58%,var(--accent-soft) 58%);color:inherit;padding:0 2px}
-
-/* PTR record: the signature element */
-.record{margin:0;min-width:0;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
-.record-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:10px 16px;border-bottom:1px dashed var(--rule)}
-.record-line{overflow-x:auto;padding:14px 16px;font-family:var(--mono);font-size:.9rem;white-space:nowrap}
-.record-line span{padding:1px 3px;border-radius:2px}
-.hl{background:var(--accent-soft)}
-.record-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--rule)}
-.record-fields div{padding:10px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
-.record-fields b{display:block;font-family:var(--mono);font-weight:500;font-size:.95rem;overflow-wrap:anywhere}
-.record-note{padding:10px 16px;font-size:var(--step--1);color:var(--muted)}
-
-/* Figures */
-.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.figures div{background:var(--paper);padding:18px 16px;display:grid;gap:4px;align-content:start}
-.figures b{font-family:var(--display);font-stretch:80%;font-size:2.1rem;font-weight:750;line-height:1}
-.figures span{font-size:var(--step--1);color:var(--muted)}
-
-section{padding-block:56px;border-top:1px solid var(--rule)}
-.sec-head{display:grid;gap:10px;margin-bottom:28px}
-
-/* Timeline */
-.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:8px}
-.tl-step{position:relative;padding:18px 14px 0 0;border-top:3px solid var(--rule)}
-.tl-step::before{content:"";position:absolute;top:-8px;left:0;width:13px;height:13px;border-radius:50%;background:var(--paper);border:3px solid var(--muted)}
-.tl-step.key{border-top-color:var(--accent)}
-.tl-step.key::before{border-color:var(--accent);background:var(--accent)}
-.tl-step h3{font-size:1.05rem;margin-bottom:4px}
-.tl-step p{font-size:.92rem;color:var(--muted)}
-.tl-gap{font-family:var(--mono);font-size:var(--step--1);color:var(--accent);margin-top:8px}
-@media (max-width:720px){.timeline{grid-template-columns:1fr;gap:18px}.tl-step{border-top:0;border-left:3px solid var(--rule);padding:0 0 0 18px}.tl-step.key{border-left-color:var(--accent)}.tl-step::before{top:2px;left:-8px}}
-
-/* Pipeline */
-.pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:16px;counter-reset:p}
-.stage{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px;display:grid;gap:8px;align-content:start;counter-increment:p}
-.stage .label::before{content:"Trin " counter(p) " · "}
-.stage p{font-size:.95rem;color:var(--muted)}
-.stage .tech{font-family:var(--mono);font-size:.78rem;color:var(--ink)}
-.status{justify-self:start;font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
-.status.done{color:var(--ink-2)}
-.status.run{color:var(--accent)}
-
-/* Rules */
-.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:0 40px}
-.rule{display:grid;grid-template-columns:9.5rem 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule)}
-.rule dt{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
-.rule dd{margin:0;min-width:0}
-@media (max-width:480px){.rule{grid-template-columns:1fr;gap:2px}}
-
-/* Chart */
-.chart-box{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:18px 16px 10px}
-.chart-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:var(--step--1);color:var(--muted);margin-bottom:6px}
-.chart-legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.chart-scroll{overflow-x:auto}
-svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
-svg .val{fill:var(--ink);font-size:10.5px}
-.two{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:start}
-@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
-
-table{border-collapse:collapse;width:100%;font-size:.93rem}
-.table-scroll{overflow-x:auto}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule)}
-th{font-family:var(--mono);font-weight:500;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-td.r,th.r{text-align:right}
-
-/* Gaps */
-.gaps{display:grid;gap:0}
-.gap{display:grid;grid-template-columns:7rem 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule)}
-.sev{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;padding-top:3px}
-.sev.high{color:var(--accent)}
-.gap p{color:var(--muted);font-size:.95rem;margin-top:4px}
-@media (max-width:480px){.gap{grid-template-columns:1fr;gap:2px}}
-
-/* Results pending */
-.pending{background:var(--sheet);border:1px dashed var(--accent);border-radius:4px;padding:24px;display:grid;gap:14px}
-.pending ul{margin:0;padding-left:1.2em;color:var(--muted);columns:2 220px;column-gap:32px}
-
-.verdict{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:28px;align-items:stretch;margin-bottom:28px}
-.alpha{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:20px;display:grid;gap:6px;align-content:start}
-.alpha b{font-family:var(--display);font-stretch:80%;font-size:3rem;font-weight:800;line-height:1}
-.alpha span:not(.label){color:var(--muted);font-size:var(--step--1)}
-.alpha p{font-size:.92rem;color:var(--muted);margin-top:8px}
-table.cmp td:first-child{color:var(--muted)}
-table.cmp td.r,table.cmp th.r{white-space:nowrap}
-.fig{margin:0 0 24px;display:grid;gap:8px}
-.fig-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline}
-.fig figcaption{font-size:var(--step--1);color:var(--muted)}
-.chart-legend i.shade{background:var(--oos);border:1px solid var(--rule)}
-.chart-legend i.dash{height:0;border-top:2px dashed var(--muted);border-radius:0;vertical-align:3px}
-.review{display:grid;gap:14px;margin-top:8px}
-.review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
-.review-grid div{border-top:2px solid var(--ink-2);padding-top:12px;display:grid;gap:6px}
-.review-grid p{color:var(--muted);font-size:.95rem}
-@media (max-width:820px){.verdict{grid-template-columns:minmax(0,1fr)}}
-.live{display:grid;gap:20px}
-.live-empty{background:var(--sheet);border:1px dashed var(--rule);border-radius:4px;padding:22px;display:grid;gap:8px}
-.live-empty p{color:var(--muted)}
-.live-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.live-kpis div{background:var(--paper);padding:14px 16px;display:grid;gap:4px}
-.live-kpis b{font-family:var(--display);font-stretch:80%;font-size:1.9rem;font-weight:750;line-height:1}
-.live-kpis span{font-size:var(--step--1);color:var(--muted)}
-.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:99px;border:1px solid currentColor}
-.pill.taken{color:var(--ink-2)} .pill.skipped{color:var(--accent)} .pill.ignored{color:var(--muted)}
-.live-note{font-size:var(--step--1);color:var(--muted);margin-top:12px}
-
-@media (prefers-reduced-motion:no-preference){.hl{transition:background .2s}}
-
-/* Layout: marketing home route — nav, hero with chart card, sources, stats, bento, process, results, live, facts+risk, invest, FAQ, CTA, footer.
-   Type: Instrument Serif (display, 400) + Inter (400/500/600) + IBM Plex Mono (meta). Max 3 UI weights, nothing above 600.
-   Colour: 60 canvas / 30 white surfaces with hairlines / 10 Aegean-blue accent for actions, links, focus and the fund line. */
+/* Ekklesia Capital — design tokens
+   Colour: limestone paper, ink, banknote green (fund line, actions, links), stone grey (benchmark), one seal-gold for markers.
+   Type: Libre Caslon Display for headings and figures (the face of 18th-century American printing), Public Sans for text and UI
+   (the U.S. government's own typeface). Left-aligned editorial layout; rules instead of cards; one bold element: the hero chart. */
 :root{
-  --canvas:#F6F7F9; --surface:#FFFFFF; --surface-2:#EEF1F5;
-  --ink:#0E1726; --ink-2:#334155; --muted:#5E6B7E; --faint:#8A95A6;
-  --line:rgba(14,23,38,.09); --line-strong:rgba(14,23,38,.16);
-  --accent:#2445C9; --accent-ink:#FFFFFF; --accent-soft:#E7ECFB;
-  --spy:#98A2B3; --oos:#E9EDF5;
-  --good:#1F7A55; --warn:#A16207; --bad:#B42318;
-  --band:#0B1220; --band-ink:#E7ECF3; --band-muted:#9AA6B8; --band-line:rgba(231,236,243,.12);
-  --shadow:0 1px 2px rgba(14,23,38,.04),0 8px 24px rgba(14,23,38,.05);
-  --display:"Instrument Serif","Iowan Old Style","Palatino Linotype",Georgia,serif;
-  --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-  --r:12px; --r-sm:8px;
+  --paper:#F2F3EF; --paper-2:#E8EAE4; --surface:#FAFAF7;
+  --ink:#17211C; --ink-2:#3B4640; --muted:#606B64;
+  --green:#1F5A45; --green-ink:#FFFFFF; --green-tint:rgba(31,90,69,.08);
+  --stone:#8B938C; --rule:#D3D8D0; --rule-strong:#B9C0B7;
+  --seal:#9A7A2E; --pos:#1F6B47; --neg:#A23B2A; --test:rgba(23,33,28,.045);
+  --foot-bg:#17211C; --foot-ink:#F2F3EF;
+  --display:"Libre Caslon Display","Libre Caslon Text",Baskerville,"Baskerville Old Face",Georgia,serif;
+  --text:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --canvas:#0A0F17; --surface:#111826; --surface-2:#172033;
-  --ink:#E8ECF2; --ink-2:#C3CBD7; --muted:#97A2B4; --faint:#6F7B8F;
-  --line:rgba(232,236,242,.09); --line-strong:rgba(232,236,242,.16);
-  --accent:#8EA6FF; --accent-ink:#0A0F17; --accent-soft:#1A2547;
-  --spy:#6B7689; --oos:#141D2E;
-  --good:#4CC38A; --warn:#E3A93B; --bad:#F07A6A;
-  --band:#060A11; --band-ink:#E8ECF2; --band-muted:#97A2B4; --band-line:rgba(232,236,242,.10);
-  --shadow:inset 0 1px 0 rgba(255,255,255,.04); color-scheme:dark}}
+  --paper:#101613; --paper-2:#18201C; --surface:#141B17;
+  --ink:#E6EAE4; --ink-2:#C2CAC3; --muted:#949E96;
+  --green:#7CC7A5; --green-ink:#0F1512; --green-tint:rgba(124,199,165,.10);
+  --stone:#6D7770; --rule:#27312C; --rule-strong:#36423B;
+  --seal:#D6B867; --pos:#6FCB98; --neg:#EC8A76; --test:rgba(230,234,228,.04); --foot-bg:#0A0F0C; --foot-ink:#E6EAE4; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --canvas:#0A0F17; --surface:#111826; --surface-2:#172033;
-  --ink:#E8ECF2; --ink-2:#C3CBD7; --muted:#97A2B4; --faint:#6F7B8F;
-  --line:rgba(232,236,242,.09); --line-strong:rgba(232,236,242,.16);
-  --accent:#8EA6FF; --accent-ink:#0A0F17; --accent-soft:#1A2547;
-  --spy:#6B7689; --oos:#141D2E;
-  --good:#4CC38A; --warn:#E3A93B; --bad:#F07A6A;
-  --band:#060A11; --band-ink:#E8ECF2; --band-muted:#97A2B4; --band-line:rgba(232,236,242,.10);
-  --shadow:inset 0 1px 0 rgba(255,255,255,.04); color-scheme:dark}
+  --paper:#101613; --paper-2:#18201C; --surface:#141B17;
+  --ink:#E6EAE4; --ink-2:#C2CAC3; --muted:#949E96;
+  --green:#7CC7A5; --green-ink:#0F1512; --green-tint:rgba(124,199,165,.10);
+  --stone:#6D7770; --rule:#27312C; --rule-strong:#36423B;
+  --seal:#D6B867; --pos:#6FCB98; --neg:#EC8A76; --test:rgba(230,234,228,.04); --foot-bg:#0A0F0C; --foot-ink:#E6EAE4; color-scheme:dark}
 
-html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-body{background:var(--canvas);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1160px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
-@media (max-width:480px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
-.prose{max-width:68ch}
-h1,h2{font-family:var(--display);font-weight:400;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0;color:var(--ink)}
-h1{font-size:clamp(2.6rem,6vw,4.6rem)}
-h2{font-size:clamp(2rem,3.8vw,3rem)}
-h3,h4{font-family:var(--body);font-weight:600;font-size:1.125rem;line-height:1.3;letter-spacing:-.005em;margin:0}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}
+@media (max-width:640px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.005em;color:var(--ink)}
+h1{font-size:clamp(2.5rem,5.6vw,4.5rem);line-height:1.04}
+h2{font-size:clamp(1.9rem,3.4vw,2.75rem);line-height:1.1}
+h3{font-size:1.125rem;line-height:1.35;font-weight:600}
 p{margin:0}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline;text-underline-offset:3px}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.label{font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.meta{font-size:.75rem;line-height:1.4;color:var(--muted)}
-.muted{color:var(--muted)}
-.num{font-variant-numeric:tabular-nums}
-.skip{position:absolute;left:-9999px;top:8px;z-index:50;background:var(--surface);padding:8px 16px;border-radius:var(--r-sm)}
+a{color:var(--green);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.small{font-size:.875rem;color:var(--muted)}
+.fine{font-size:.75rem;line-height:1.5;color:var(--muted)}
+.measure{max-width:64ch}
+.skip{position:absolute;left:-9999px;top:8px;z-index:50;background:var(--surface);padding:8px 16px}
 .skip:focus{left:16px}
 
-/* Navigation (opaque, hairline; no blur) */
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--canvas)}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--canvas);border-bottom:1px solid var(--line)}
-.nav-inner{display:flex;align-items:center;gap:32px;min-height:64px}
-.brand{display:inline-flex;align-items:center;gap:12px;color:var(--ink);font-family:var(--display);font-size:1.5rem;line-height:1;white-space:nowrap}
-.brand:hover{text-decoration:none}
-.brand svg{width:28px;height:28px;flex:none}
-.nav-links{margin-left:auto}
-.nav-links ul{list-style:none;margin:0;padding:0;display:flex;gap:24px}
-.nav-links a{color:var(--ink-2);font-size:.875rem;font-weight:500}
-.nav-links a:hover{color:var(--ink);text-decoration:none}
+/* Header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
+.site-head .wrap{display:flex;align-items:center;gap:40px;min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-family:var(--display);font-size:1.5rem;line-height:1;white-space:nowrap}
+.brand svg{width:30px;height:30px;flex:none}
+.nav{margin-left:auto}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:28px}
+.nav a{color:var(--ink-2);text-decoration:none;font-size:.9375rem}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
 .menu{display:none;margin-left:auto;position:relative}
-.menu summary{list-style:none;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:var(--r-sm);color:var(--ink)}
+.menu summary{list-style:none;cursor:pointer;min-height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid var(--rule-strong);border-radius:4px;font-size:.9375rem;font-weight:500}
 .menu summary::-webkit-details-marker{display:none}
-.menu ul{list-style:none;margin:0;padding:8px;position:absolute;right:0;top:52px;min-width:220px;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);box-shadow:var(--shadow);display:grid}
-.menu li a{display:block;padding:12px 16px;border-radius:var(--r-sm);color:var(--ink);font-weight:500}
-.menu li a:hover{background:var(--surface-2);text-decoration:none}
-@media (max-width:920px){.nav .nav-links,.nav .nav-cta{display:none}.nav .menu{display:block}}
+.menu ul{list-style:none;margin:0;padding:8px 0;position:absolute;right:0;top:52px;min-width:240px;background:var(--surface);border:1px solid var(--rule-strong);border-radius:4px;box-shadow:0 12px 32px rgba(23,33,28,.07)}
+.menu a{display:block;padding:12px 20px;color:var(--ink);text-decoration:none}
+.menu a:hover{background:var(--paper-2)}
+@media (max-width:960px){.site-head .nav,.site-head .head-cta{display:none}.site-head .menu{display:block}}
 
 /* Buttons */
-.btns{display:flex;flex-wrap:wrap;gap:12px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:var(--r-sm);font-size:.9375rem;font-weight:500;border:1px solid transparent;transition:background-color .15s ease,border-color .15s ease}
-.btn:hover{text-decoration:none}
-.btn.primary{background:var(--accent);color:var(--accent-ink)}
-.btn.primary:hover{background:color-mix(in srgb,var(--accent) 88%,var(--ink))}
-.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
-.btn.ghost:hover{border-color:var(--ink-2)}
-.btn.sm{min-height:36px;padding:0 16px;font-size:.875rem}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;border-radius:4px;font-size:.9375rem;font-weight:500;text-decoration:none;border:1px solid transparent;transition:background-color .15s ease,border-color .15s ease}
+.button.solid{background:var(--green);color:var(--green-ink)}
+.button.solid:hover{background:color-mix(in srgb,var(--green) 86%,var(--ink))}
+.button.line{color:var(--ink);border-color:var(--rule-strong)}
+.button.line:hover{border-color:var(--ink)}
+.button.compact{min-height:40px;padding:0 16px;font-size:.875rem}
 
 /* Hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:64px;align-items:center;padding-block:80px 64px}
-.hero-copy{display:grid;gap:24px;align-content:start}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;justify-self:start;font-size:.875rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);padding:4px 12px 4px 8px;border-radius:999px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px color-mix(in srgb,var(--good) 18%,transparent)}
-.lede{font-size:1.125rem;line-height:1.6;color:var(--ink-2);max-width:56ch}
-.trust{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 24px;font-size:.875rem;color:var(--muted)}
-.trust li{display:inline-flex;align-items:center;gap:8px}
-.trust li::before{content:"";width:16px;height:16px;flex:none;background:var(--good);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat}
-.hero-card{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px;display:grid;gap:16px}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hero-stats div{display:grid;gap:4px}
-.hero-stats b{font-family:var(--display);font-weight:400;font-size:2.75rem;line-height:1;color:var(--accent)}
-.hero-stats b.muted-num{color:var(--ink-2)}
-@media (max-width:920px){.hero{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:48px 40px}}
+.hero{padding-block:72px 0}
+.hero-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:end}
+.hero-top .intro{display:grid;gap:24px;padding-bottom:8px}
+.hero-top .intro p{font-size:1.125rem;color:var(--ink-2);max-width:46ch}
+@media (max-width:960px){.hero{padding-block:48px 0}.hero-top{grid-template-columns:minmax(0,1fr);gap:24px}}
+.hero-chart{margin:48px 0 0;position:relative}
+.hero-chart svg{display:block;width:100%;height:auto}
+.hero-chart figcaption{margin-top:16px;max-width:72ch}
+.chart-wide{overflow-x:auto}
+svg text{font-family:var(--text);font-size:12px;fill:var(--muted)}
+svg .figure{font-family:var(--display);fill:var(--ink)}
+svg .figure-green{font-family:var(--display);fill:var(--green)}
+svg .note{fill:var(--ink-2);font-size:12px;paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
 
-/* Sources strip */
-.sources{display:flex;flex-wrap:wrap;align-items:center;gap:8px 32px;padding-block:24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.sources .src{font-size:.875rem;font-weight:500;color:var(--ink-2)}
-
-/* Stats */
-.stats{margin:48px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
-.stats div{padding:24px;display:grid;gap:4px;align-content:start;border-left:1px solid var(--line)}
-.stats div:first-child{border-left:0}
-.stats dt{font-size:.875rem;color:var(--muted);font-weight:500}
-.stats dd{margin:0;font-family:var(--display);font-size:2.5rem;line-height:1.1;color:var(--ink)}
-@media (max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats div:nth-child(3){border-left:0}.stats div:nth-child(n+3){border-top:1px solid var(--line)}}
-@media (max-width:420px){.stats dd{font-size:2rem}.stats div{padding:16px}}
+/* Factsheet strip */
+.facts{margin:56px 0 0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.facts div{padding:16px 16px 20px 0;display:grid;gap:4px;align-content:start}
+.facts div + div{padding-left:16px;border-left:1px solid var(--rule)}
+.facts dt{font-size:.8125rem;color:var(--muted)}
+.facts dd{margin:0;font-size:.9375rem;font-weight:500}
+.facts .status{color:var(--seal)}
+@media (max-width:1000px){.facts{grid-template-columns:repeat(3,minmax(0,1fr))}.facts div:nth-child(4){padding-left:0;border-left:0}.facts div:nth-child(n+4){border-top:1px solid var(--rule)}}
+@media (max-width:560px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(odd){padding-left:0;border-left:0}.facts div:nth-child(4){padding-left:16px;border-left:1px solid var(--rule)}.facts div:nth-child(n+3){border-top:1px solid var(--rule)}}
 
 /* Sections */
-section{padding-block:96px 0}
-.sec-head{display:grid;gap:16px;margin-bottom:40px}
-.sec-head p{color:var(--ink-2);font-size:1.0625rem}
-@media (max-width:640px){section{padding-block:64px 0}}
+.section{padding-block:112px 0}
+@media (max-width:640px){.section{padding-block:72px 0}}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:64px;align-items:start}
+.split > .lead{display:grid;gap:20px;position:sticky;top:112px}
+.split > .lead p{color:var(--ink-2)}
+@media (max-width:960px){.split{grid-template-columns:minmax(0,1fr);gap:32px}.split > .lead{position:static}}
+.head{display:grid;gap:16px;margin-bottom:40px;max-width:68ch}
+.head p{color:var(--ink-2);font-size:1.0625rem}
 
-/* Bento */
-.bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:12px;align-content:start}
-.tile p{color:var(--ink-2);font-size:.9375rem}
-.tile-wide{grid-column:span 2}
-.log{margin:4px 0 0;padding:16px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);font-family:var(--mono);font-size:.8125rem;line-height:1.7;color:var(--ink-2);overflow-x:auto;white-space:pre}
-.log .k{color:var(--good);font-weight:500}.log .v{color:var(--accent)}
-@media (max-width:860px){.bento{grid-template-columns:minmax(0,1fr)}.tile-wide{grid-column:auto}}
+/* Principles list */
+.principles{margin:0;border-top:1px solid var(--ink)}
+.principles > div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px;padding:24px 0;border-bottom:1px solid var(--rule)}
+.principles dt{font-family:var(--display);font-size:1.5rem;line-height:1.2}
+.principles dd{margin:0;color:var(--ink-2);display:grid;gap:16px}
+@media (max-width:640px){.principles > div{grid-template-columns:minmax(0,1fr);gap:8px}}
+.logline{margin:0;padding:16px 20px;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--green);font-size:.875rem;line-height:1.7;color:var(--ink-2);overflow-x:auto}
+.logline b{color:var(--green);font-weight:600}
 
-/* Process */
-.process{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;counter-reset:s}
-.process li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 20px;display:flex;flex-direction:column;gap:8px}
-.process li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:500;letter-spacing:.06em}
-.process h3{font-size:1rem}
-.process p{color:var(--ink-2);font-size:.875rem}
-.process .rule-tag{margin-top:auto;font-size:.75rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
-@media (max-width:1000px){.process{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.process{grid-template-columns:minmax(0,1fr)}}
+/* Steps (a real sequence) */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));counter-reset:step;border-top:1px solid var(--ink)}
+.steps li{counter-increment:step;padding:24px 24px 0 0;display:flex;flex-direction:column;gap:8px}
+.steps li + li{padding-left:24px;border-left:1px solid var(--rule)}
+.steps li::before{content:counter(step);font-family:var(--display);font-size:2.5rem;line-height:1;color:var(--green)}
+.steps p{color:var(--ink-2);font-size:.9375rem}
+.steps .rule-tag{font-size:.8125rem;color:var(--muted);margin-top:auto;padding-top:8px}
+@media (max-width:1000px){.steps{grid-template-columns:minmax(0,1fr)}.steps li,.steps li + li{padding:20px 0;border-left:0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:16px}.steps li::before{grid-row:span 3}}
 
-/* Results */
-.verdict-line{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 24px;margin-bottom:24px;color:var(--ink-2)}
-.verdict-line b{color:var(--ink);font-weight:600}
-.perf{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:960px){.perf{grid-template-columns:minmax(0,1fr)}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
-.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;align-items:baseline;margin-bottom:12px}
-.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.75rem;color:var(--muted)}
-.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:8px;vertical-align:3px}
-.legend i.shade{height:12px;vertical-align:-1px;background:var(--oos);border:1px solid var(--line-strong)}
-.chart-scroll{overflow-x:auto}
-svg text{font-family:var(--mono);font-size:12px;fill:var(--muted)}
-svg .val{fill:var(--ink);font-size:12px}
-figcaption,.note{font-size:.75rem;line-height:1.4;color:var(--muted)}
-.table-scroll{overflow-x:auto}
+/* Performance */
+.perf{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:start}
+@media (max-width:960px){.perf{grid-template-columns:minmax(0,1fr);gap:40px}}
+.period{display:inline-flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--rule)}
+.period button{font:inherit;font-size:.875rem;min-height:40px;padding:0 4px;margin-right:16px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer}
+.period button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--green);font-weight:500}
 table{border-collapse:collapse;width:100%;font-size:.9375rem}
-th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}
-tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
-th{font-size:.75rem;font-weight:500;color:var(--muted);vertical-align:bottom;letter-spacing:.02em}
-tbody th{font-size:.875rem;color:var(--ink-2);font-weight:500}
+th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--rule)}
+thead th{font-size:.8125rem;font-weight:500;color:var(--muted);border-bottom:1px solid var(--ink)}
+tbody th{font-weight:400;color:var(--ink-2)}
 td.r,th.r{text-align:right;white-space:nowrap}
-td.pos{color:var(--good)} td.neg{color:var(--bad)}
-.years td,.years th{padding:12px 8px}
-.tabs{display:inline-flex;gap:4px;padding:4px;margin-bottom:16px;background:var(--surface-2);border-radius:var(--r-sm);flex-wrap:wrap}
-.tabs button{font:inherit;font-size:.875rem;font-weight:500;min-height:36px;padding:0 12px;border-radius:6px;border:0;background:transparent;color:var(--muted);cursor:pointer}
-.tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(14,23,38,.06)}
-.disclaimer{margin-top:24px;font-size:.75rem;line-height:1.5;color:var(--muted);max-width:90ch}
-.stack-16{margin-top:16px}
+td.pos{color:var(--pos)} td.neg{color:var(--neg)}
+.table-wrap{overflow-x:auto}
+.head .big-figure,.big-figure{font-family:var(--display);font-size:clamp(3.5rem,8vw,6rem);line-height:1;color:var(--green)}
+.years{margin-top:56px}
+.years h3{margin-bottom:12px}
+.years td,.years th{padding:12px 6px}
+.footnote{margin-top:24px;max-width:90ch}
 
-/* Live */
-.live{display:grid;gap:16px}
-.live-empty{background:var(--surface);border:1px dashed var(--line-strong);border-radius:var(--r);padding:32px;display:grid;gap:8px;justify-items:start}
-.live-empty p{color:var(--ink-2)}
-.live-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.live-kpis div{padding:20px 24px;display:grid;gap:4px;border-left:1px solid var(--line)}
-.live-kpis div:first-child{border-left:0}
-.live-kpis b{font-family:var(--display);font-weight:400;font-size:2rem;line-height:1.1}
-.live-kpis span{font-size:.75rem;color:var(--muted)}
-.tag{font-size:.75rem;font-weight:500;white-space:nowrap}
-.tag.taken{color:var(--good)} .tag.skipped{color:var(--warn)} .tag.ignored{color:var(--muted)}
+/* Live portfolio */
+.live{display:grid;gap:24px}
+.live-empty{border:1px dashed var(--rule-strong);padding:32px;display:grid;gap:8px;justify-items:start;background:var(--surface)}
+.live-empty p{color:var(--ink-2);max-width:64ch}
+.live-dot{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:500;color:var(--ink-2)}
+.live-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--seal)}
+.live-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.live-kpis div{padding:16px 16px 20px 0;display:grid;gap:4px}
+.live-kpis div + div{padding-left:16px;border-left:1px solid var(--rule)}
+.live-kpis b{font-family:var(--display);font-weight:400;font-size:2.25rem;line-height:1.1}
+.live-kpis span{font-size:.8125rem;color:var(--muted)}
+@media (max-width:760px){.live-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.live-kpis div:nth-child(3){padding-left:0;border-left:0}.live-kpis div:nth-child(n+3){border-top:1px solid var(--rule)}}
+.decision{font-weight:500;white-space:nowrap}
+.decision.taken{color:var(--pos)} .decision.skipped{color:var(--seal)} .decision.ignored{color:var(--muted)}
 
-/* Facts + risk */
-.risk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:40px;align-items:start}
-.risk-side{display:grid;gap:32px}
-@media (max-width:960px){.risk{grid-template-columns:minmax(0,1fr)}}
-.facts{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.facts-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:16px 20px;border-bottom:1px solid var(--line)}
-.facts dl{margin:0;display:grid}
-.facts dl div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px;padding:12px 20px;border-bottom:1px solid var(--line)}
-.facts dl div:last-child{border-bottom:0}
-.facts dt{color:var(--muted);font-size:.875rem}
-.facts dd{margin:0;font-size:.875rem;font-weight:500;min-width:0}
-.facts .status{color:var(--warn)}
-.scale{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:16px 0 8px}
-.scale span{display:grid;place-items:center;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);font-family:var(--mono);font-size:.875rem;color:var(--muted);background:var(--surface)}
-.scale span.on{background:var(--ink);border-color:var(--ink);color:var(--canvas);font-weight:500}
-.scale-ends{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
-.risks{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.risks div{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:16px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.risks div:last-child{border-bottom:0}
-.risks dt{font-weight:600;font-size:.9375rem}
-.risks dd{margin:0;color:var(--ink-2);font-size:.9375rem}
-@media (max-width:520px){.risks div{grid-template-columns:minmax(0,1fr);gap:4px}}
+/* Risk */
+.risks{margin:0;border-top:1px solid var(--ink)}
+.risks > div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--rule)}
+.risks dt{font-weight:600}
+.risks dd{margin:0;color:var(--ink-2)}
+@media (max-width:640px){.risks > div{grid-template-columns:minmax(0,1fr);gap:4px}}
+.scale{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:16px 0 8px;max-width:420px}
+.scale span{display:grid;place-items:center;height:44px;border:1px solid var(--rule-strong);font-size:.9375rem;color:var(--muted)}
+.scale span.on{background:var(--ink);border-color:var(--ink);color:var(--paper);font-weight:600}
+.scale-ends{display:flex;justify-content:space-between;max-width:420px}
 
-/* Invest */
-.status-box{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:16px}
-.status-box .big{font-family:var(--display);font-size:2rem;line-height:1;color:var(--warn);white-space:nowrap}
-.status-box p{color:var(--ink-2)}
-@media (max-width:620px){.status-box{grid-template-columns:minmax(0,1fr);gap:12px}}
-.ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-@media (max-width:960px){.ways{grid-template-columns:minmax(0,1fr)}}
-.way{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:12px;align-content:start}
-.way p{color:var(--ink-2);font-size:.9375rem}
-.way a.more{font-weight:500;font-size:.9375rem}
-.way a.more::after{content:" →"}
-.checklist{list-style:none;margin:16px 0 0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.checklist li{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:16px;align-items:start;padding:16px 20px;border-bottom:1px solid var(--line)}
-.checklist li:last-child{border-bottom:0}
-.checklist .mark{width:20px;height:20px;border-radius:50%;border:2px solid var(--line-strong);margin-top:2px}
-.checklist .mark.done{background:var(--good);border-color:var(--good)}
-.checklist b{font-weight:600}
-.checklist .st{font-size:.75rem;font-weight:500;color:var(--muted);white-space:nowrap}
-.checklist .st.done{color:var(--good)}
-.checklist p{color:var(--ink-2);font-size:.875rem}
-@media (max-width:520px){.checklist li{grid-template-columns:24px minmax(0,1fr)}.checklist .st{grid-column:2}}
-.sub-h{margin-top:40px}
+/* Investing */
+.not-open{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:baseline;padding:28px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.not-open .stamp{font-family:var(--display);font-size:2rem;line-height:1;color:var(--seal);white-space:nowrap}
+.not-open p{color:var(--ink-2);max-width:70ch}
+@media (max-width:640px){.not-open{grid-template-columns:minmax(0,1fr);gap:12px}}
+.ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;margin-top:48px}
+.ways article{display:grid;gap:12px;align-content:start}
+.ways p{color:var(--ink-2);font-size:.9375rem}
+@media (max-width:900px){.ways{grid-template-columns:minmax(0,1fr);gap:32px}}
+.checklist{list-style:none;margin:24px 0 0;padding:0;border-top:1px solid var(--ink)}
+.checklist li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--rule)}
+.checklist .mark{width:18px;height:18px;border:1.5px solid var(--rule-strong);border-radius:50%;margin-top:3px}
+.checklist .mark.done{background:var(--green);border-color:var(--green)}
+.checklist p{color:var(--ink-2);font-size:.9375rem}
+.checklist .state{font-size:.8125rem;color:var(--muted);white-space:nowrap}
+.checklist .state.done{color:var(--pos)}
+@media (max-width:560px){.checklist li{grid-template-columns:28px minmax(0,1fr)}.checklist .state{grid-column:2}}
+.subhead{margin-top:64px}
 
 /* FAQ */
-.faq{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.faq details{border-bottom:1px solid var(--line)}
-.faq details:last-child{border-bottom:0}
-.faq summary{cursor:pointer;list-style:none;padding:20px 56px 20px 24px;position:relative;font-weight:500;font-size:1rem;min-height:44px;display:flex;align-items:center}
+.faq{border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px 0;font-size:1.0625rem;font-weight:500;min-height:44px}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"";position:absolute;right:24px;top:50%;width:10px;height:10px;margin-top:-7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);transition:transform .2s ease}
-.faq details[open] summary::after{transform:rotate(-135deg);margin-top:-2px}
-.faq .ans{padding:0 24px 24px;color:var(--ink-2);max-width:74ch;display:grid;gap:12px}
+.faq summary::after{content:"+";font-family:var(--display);font-size:1.75rem;line-height:1;color:var(--green);flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq .answer{padding:0 0 24px;color:var(--ink-2);max-width:72ch;display:grid;gap:12px}
 
-/* CTA band */
-.cta-band{margin:96px 0 0;background:var(--band);color:var(--band-ink);border-radius:16px;padding:48px;display:flex;flex-wrap:wrap;gap:24px 48px;align-items:center;justify-content:space-between}
-.cta-band h2{color:var(--band-ink)}
-.cta-band p{color:var(--band-muted);margin-top:8px;max-width:52ch}
-.cta-band .btn.ghost{background:transparent;color:var(--band-ink);border-color:var(--band-line)}
-.cta-band .btn.primary{background:var(--band-ink);color:var(--band)}
-@media (max-width:640px){.cta-band{padding:32px 24px;margin-top:64px}}
+/* Closing call to action */
+.closing{margin-top:112px;padding:56px 0;border-top:1px solid var(--ink);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:end}
+.closing p{color:var(--ink-2);margin-top:12px;max-width:52ch}
+.closing .actions{justify-content:flex-end}
+@media (max-width:900px){.closing{grid-template-columns:minmax(0,1fr)}.closing .actions{justify-content:flex-start}}
 
 /* Footer */
-footer{margin-top:96px;background:var(--band);color:var(--band-muted);font-size:.875rem}
-.meander{height:12px;background-color:var(--band);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='12' viewBox='0 0 16 12'%3E%3Cpath d='M0 11.5H16M3 11.5V1.5H13V8.5H6V4.5H10V6.5' fill='none' stroke='%239AA6B8' stroke-opacity='.45' stroke-width='1'/%3E%3C/svg%3E");background-repeat:repeat-x;background-position:center}
-footer .wrap{padding-block:48px;display:grid;gap:32px}
-.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:32px}
+.site-foot{background:var(--foot-bg);color:color-mix(in srgb,var(--foot-ink) 72%,transparent);font-size:.875rem}
+.site-foot .wrap{padding-block:56px;display:grid;gap:40px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:40px}
 @media (max-width:760px){.foot-grid{grid-template-columns:minmax(0,1fr)}}
-footer h4{color:var(--band-ink);font-size:.875rem;margin-bottom:12px}
-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-footer a{color:var(--band-ink)}
-footer .brand{color:var(--band-ink)}
-.legal{border-top:1px solid var(--band-line);padding-top:24px;display:grid;gap:8px;max-width:100ch;font-size:.75rem;line-height:1.5}
-.legal b{color:var(--band-ink);font-weight:600}
+.site-foot h3{color:var(--foot-ink);font-size:.9375rem;margin-bottom:12px}
+.site-foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.site-foot a{color:var(--foot-ink)}
+.site-foot .brand{color:var(--foot-ink)}
+.legal{border-top:1px solid color-mix(in srgb,var(--foot-ink) 16%,transparent);padding-top:24px;display:grid;gap:8px;max-width:100ch;font-size:.75rem;line-height:1.6}
+.legal b{color:var(--foot-ink);font-weight:600}
 
-.mk-bg{fill:var(--ink)}.mk-roof{fill:var(--accent)}.mk-col{stroke:var(--canvas);stroke-width:1.6;fill:none}footer .mk-bg{fill:var(--band-ink)}footer .mk-col{stroke:var(--band)}
+/* Logo mark */
+.mk-bg{fill:var(--ink)}.mk-roof{fill:var(--green)}.mk-col{stroke:var(--paper);stroke-width:1.6;fill:none}
+.site-foot .mk-bg{fill:var(--foot-ink)}.site-foot .mk-roof{fill:var(--green)}.site-foot .mk-col{stroke:var(--foot-bg)}
 
-/* Research page: map its old tokens onto the shared design system */
-:root{--paper:var(--canvas);--sheet:var(--surface);--rule:var(--line);
-  --step--1:.75rem;--step0:1rem;--step1:1.125rem;--step2:1.5rem;--step3:clamp(2rem,3.8vw,3rem);--step4:clamp(2.6rem,6vw,4.4rem)}
-h1,h2,h3{font-stretch:normal}
-h1,h2{font-family:var(--display);font-weight:400;letter-spacing:-.01em}
-h3{font-family:var(--body);font-weight:600}
-.figures b,.alpha b,.record-fields b{font-family:var(--display);font-weight:400;font-stretch:normal}
-.record-fields b{font-family:var(--mono);font-weight:500}
-b,strong{font-weight:600}
-.r-hero{padding-block:64px 48px}
-.figures,.record,.chart-box,.stage,.pending,.alpha{border-radius:var(--r)}
-.figures{background:var(--line)}
-#equity text,#yearly text,#xchart text,#buys text{font-size:8px}
-@media (max-width:640px){#equity text,#yearly text,#xchart text,#buys text{font-size:12px}}
-.status{font-size:.75rem}
-section{border-top:0}
+/* Research: the disclosure record */
+.record{margin:56px 0 0;background:var(--surface);border:1px solid var(--rule)}
+.record-line{overflow-x:auto;white-space:nowrap;padding:20px 24px;font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:.875rem;color:var(--ink-2);border-bottom:1px solid var(--rule)}
+.record-line .hl{background:var(--green-tint);color:var(--ink);padding:2px 4px}
+.record-fields{margin:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.record-fields div{padding:16px 24px;display:grid;gap:4px;border-right:1px solid var(--rule);min-width:0}
+.record-fields div:last-child{border-right:0}
+.record-fields dt{font-size:.8125rem;color:var(--muted)}
+.record-fields dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.record figcaption{padding:16px 24px;border-top:1px solid var(--rule)}
+@media (max-width:900px){.record-fields{grid-template-columns:repeat(3,minmax(0,1fr))}.record-fields div:nth-child(3){border-right:0}.record-fields div:nth-child(n+4){border-top:1px solid var(--rule)}}
+@media (max-width:520px){.record-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.record-fields div{border-right:0}.record-fields div:nth-child(n+3){border-top:1px solid var(--rule)}}
+.steps.steps-4{grid-template-columns:minmax(0,1fr)}
+.steps.steps-4 li,.steps.steps-4 li + li{padding:20px 0;border-left:0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:16px}
+.steps.steps-4 li::before{grid-row:span 3}
 
 </style>
 </head>
 <body>
-<a class="skip" href="#indhold">Spring til indhold</a>
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="index.html" aria-label="Ekklesia Capital, forside"><svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="6"/><path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/><path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg><span>Ekklesia Capital</span></a>
-    <nav class="nav-links" aria-label="Hovedmenu"><ul>
-      <li><a href="index.html#strategi">Strategien</a></li>
-      <li><a href="index.html#resultater">Resultater</a></li>
-      <li><a href="index.html#live">Live portefølje</a></li>
-      <li><a href="index.html#investering">Investering</a></li>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Ekklesia Capital, home"><svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="6"/><path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/><path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg>Ekklesia Capital</a>
+    <nav class="nav" aria-label="Main"><ul>
+      <li><a href="index.html#strategy">Strategy</a></li>
+      <li><a href="index.html#performance">Performance</a></li>
+      <li><a href="index.html#portfolio">Live portfolio</a></li>
+      <li><a href="index.html#investing">Investing</a></li>
       <li><a href="research.html" aria-current="page">Research</a></li>
     </ul></nav>
-    <a class="btn primary sm nav-cta" href="index.html#live">Følg porteføljen</a>
+    <a class="button solid compact head-cta" href="index.html#portfolio">Follow the portfolio</a>
     <details class="menu">
-      <summary aria-label="Åbn menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></summary>
+      <summary>Menu</summary>
       <ul>
-        <li><a href="index.html#strategi">Strategien</a></li>
-        <li><a href="index.html#resultater">Resultater</a></li>
-        <li><a href="index.html#live">Live portefølje</a></li>
-        <li><a href="index.html#risiko">Risiko</a></li>
-        <li><a href="index.html#investering">Investering</a></li>
-        <li><a href="research.html" aria-current="page">Research</a></li>
+        <li><a href="index.html#strategy">Strategy</a></li>
+        <li><a href="index.html#performance">Performance</a></li>
+        <li><a href="index.html#portfolio">Live portfolio</a></li>
+        <li><a href="index.html#risks">Risks</a></li>
+        <li><a href="index.html#investing">Investing</a></li>
+        <li><a href="research.html">Research</a></li>
       </ul>
     </details>
   </div>
 </header>
 
-<main id="indhold">
+<main id="content">
 <div class="wrap">
-<div class="r-hero">
-  <h1>Kan man tjene penge på at kopiere kongresmedlemmers aktiekøb?</h1>
-  <p class="lede">Medlemmer af det amerikanske Repræsentanternes Hus skal indberette deres aktiehandler, men først op til 45 dage senere. Projektet bygger hele kæden fra rå PDF-indberetninger til en backtest, der kun handler på det, man <mark>faktisk kunne vide den dag</mark>. Over hele perioden gav strategien +400 % mod indeksets +338 %, men med større udsving. I testperioden efter at reglerne var låst, fulgte den markedet. Nu kører den videre som <a href="index.html#live">live papirfond</a>.</p>
-
-  <figure class="record" aria-label="Eksempel på en indberetningslinje og de felter, parseren udleder">
-    <div class="record-head"><span class="label">Periodic Transaction Report · én linje</span><span class="label">Eksempel i PTR-format</span></div>
-    <div class="record-line"><span class="hl">SP</span> &nbsp;Example Corp. Common Stock (<span class="hl">EXMP</span>) [<span class="hl">ST</span>] &nbsp;<span class="hl">P</span> &nbsp;<span class="hl">01/14/2025</span> &nbsp;02/03/2025 &nbsp;<span class="hl">$1,001 - $15,000</span></div>
-    <div class="record-fields">
-      <div><span class="label">Ejer</span><b>spouse</b></div>
-      <div><span class="label">Ticker</span><b>EXMP</b></div>
-      <div><span class="label">Type</span><b>aktie (ST)</b></div>
-      <div><span class="label">Handel</span><b>køb (P)</b></div>
-      <div><span class="label">Handelsdato</span><b class="num">2025-01-14</b></div>
-      <div><span class="label">Beløb</span><b class="num">1.001–15.000 $</b></div>
+  <section class="hero" aria-labelledby="h-r">
+    <div class="hero-top">
+      <h1 id="h-r">Can you make money copying Congress's stock purchases?</h1>
+      <div class="intro">
+        <p>The research behind Ekklesia Capital: how the data was collected, how the backtest avoids knowing the future, what an independent review found, and what the data cannot tell us.</p>
+        <div class="actions"><a class="button line" href="https://github.com/Oleo007pat/congress-fund">View the code</a></div>
+      </div>
     </div>
-    <p class="record-note">Linjen er et konstrueret eksempel, der viser formatet. Parseren læser tre forskellige skabeloner fra 2016 til i dag og er kontrolleret mod 26 manuelt aflæste indberetninger.</p>
-  </figure>
-
-  <div class="figures">
-    <div><b class="num">7.004</b><span>indberetninger hentet fra House Clerk, 2016–2026</span></div>
-    <div><b class="num">41.998</b><span>aktie- og ETF-handler klar til backtest</span></div>
-    <div><b class="num">20.567</b><span>køb fra 193 medlemmer</span></div>
-    <div><b class="num">94,8 %</b><span>af købene har en kurs på indgangsdagen</span></div>
-  </div>
-</div>
-
-<section aria-labelledby="h-time">
-  <div class="sec-head prose">
-    <span class="label">Hvornår kan man handle?</span>
-    <h2 id="h-time">Strategien må aldrig kende handelsdatoen før offentligheden</h2>
-    <p>Den største fejlkilde i den slags analyser er at handle på medlemmets handelsdato. Den er først kendt, når indberetningen bliver offentlig. Backtesten køber derfor tidligst ved åbningen dagen efter indleveringen.</p>
-  </div>
-  <div class="timeline">
-    <div class="tl-step"><h3>Medlemmet handler</h3><p>Handelsdatoen står i indberetningen, men er ukendt for alle andre.</p></div>
-    <div class="tl-step"><h3>Indberetning</h3><p>Lovens frist (STOCK Act) er 45 dage. 19 % af købene kom senere.</p><p class="tl-gap num">median 28 dage · 90 % inden 226 dage</p></div>
-    <div class="tl-step key"><h3>Offentlig</h3><p>Indleveringsdatoen fra Husets eget indeks. Først nu er handlen kendt.</p></div>
-    <div class="tl-step key"><h3>Vi køber</h3><p>Ved åbningskursen næste handelsdag, med 0,1 % i handelsomkostning.</p></div>
-  </div>
-</section>
-
-<section aria-labelledby="h-pipe">
-  <div class="sec-head prose">
-    <span class="label">Sådan er det bygget</span>
-    <h2 id="h-pipe">Fra PDF til backtest i fem trin</h2>
-    <p>Hvert trin er et selvstændigt Python-modul med egne tests. Alle data kommer fra offentlige, gratis kilder.</p>
-  </div>
-  <div class="pipeline">
-    <article class="stage"><span class="label">Indsamling</span><h3>Hent indberetninger</h3><p>Husets årlige indeks og alle PTR-PDF'er fra 2016. Kørslen kan genoptages og fejlede 0 af 7.004 gange.</p><span class="tech">requests · XML · 19 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Parsing</span><h3>Læs PDF'erne</h3><p>Tre skabeloner, sideskift midt i handler, små bogstaver i tickere og ændringsindberetninger. Dubletter og slettede handler markeres.</p><span class="tech">pypdf · regex · 46 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Kurser</span><h3>Kobl tickere til kurser</h3><p>Daglige kurser justeret for splits og udbytte. Tickerskift findes via historik, og afnoterede aktier beholdes.</p><span class="tech">Alpaca SIP · 12 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Backtest</span><h3>Simulér strategien</h3><p>136 kombinationer af tærskel, exit og vægtning. Valgt på 2016–2021 og testet uændret på 2022–2026.</p><span class="tech">pandas · numpy · 42 tests</span><span class="status done">Færdig</span></article>
-    <article class="stage"><span class="label">Kontrol</span><h3>Uafhængig fejljagt</h3><p>En separat gennemgang fandt to alvorlige fejl i første runde. De blev rettet, og anden runde godkendte resultatet.</p><span class="tech">Newey-West · stikprøver</span><span class="status done">2 runder</span></article>
-  </div>
-</section>
-
-<section aria-labelledby="h-rules">
-  <div class="sec-head prose">
-    <span class="label">Regler, låst før resultaterne</span>
-    <h2 id="h-rules">Hvad backtesten tester</h2>
-    <p>Reglerne blev skrevet ned, før nogen resultater blev set. Ved tvivl vælges den mest konservative fortolkning, og den noteres.</p>
-  </div>
-  <dl class="rules">
-    <div class="rule"><dt>Signal</dt><dd>Hvert køb af aktie eller ETF, også ægtefællers og børns. Ingen optioner, obligationer eller krypto.</dd></div>
-    <div class="rule"><dt>Spring over</dt><dd>Kun hvis kursen er steget mere end X % siden medlemmets handel. Et fald fører aldrig til, at et køb springes over.</dd></div>
-    <div class="rule"><dt>Tærskel X</dt><dd class="num">0, 2, 4 … 30 % og "ingen tærskel"</dd></div>
-    <div class="rule"><dt>Exit</dt><dd>Når medlemmet sælger, eller efter faste 3, 6 eller 12 måneder</dd></div>
-    <div class="rule"><dt>Vægtning</dt><dd>Lige vægt pr. handel, eller efter midten af det indberettede beløbsinterval</dd></div>
-    <div class="rule"><dt>Benchmark</dt><dd>S&amp;P 500 (SPY inkl. udbytte) i samme periode</dd></div>
-    <div class="rule"><dt>Overfitting</dt><dd>X vælges kun på 2016–2021 og testes uændret på 2022–i dag</dd></div>
-    <div class="rule"><dt>Omkostninger</dt><dd class="num">0,1 % ved køb og ved salg</dd></div>
-  </dl>
-</section>
-
-<section aria-labelledby="h-data">
-  <div class="sec-head prose">
-    <span class="label">Datagrundlaget</span>
-    <h2 id="h-data">Køb pr. år, delt i kalibrering og test</h2>
-  </div>
-  <div class="two">
-    <figure class="chart-box" style="margin:0">
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Kalibrering 2016–2021 · 12.176 køb</span><span><i style="background:var(--ink-2)"></i>Test 2022–2026 · 8.391 køb</span></div>
-      <div class="chart-scroll"><svg id="buys" viewBox="0 0 640 270" role="img" aria-label="Søjlediagram over antal køb pr. indleveringsår 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
-      <p class="label" style="margin-top:6px">2026 dækker 1. jan.–16. nov.</p>
+    <figure class="record" aria-label="Example of one line in a disclosure report and the fields the parser extracts">
+      <div class="record-line"><span class="hl">SP</span>&nbsp; Example Corp. Common Stock (<span class="hl">EXMP</span>) [<span class="hl">ST</span>]&nbsp; <span class="hl">P</span>&nbsp; <span class="hl">01/14/2025</span>&nbsp; 02/03/2025&nbsp; <span class="hl">$1,001 - $15,000</span></div>
+      <dl class="record-fields">
+        <div><dt>Owner</dt><dd>spouse</dd></div>
+        <div><dt>Ticker</dt><dd>EXMP</dd></div>
+        <div><dt>Asset</dt><dd>stock (ST)</dd></div>
+        <div><dt>Transaction</dt><dd>purchase (P)</dd></div>
+        <div><dt>Trade date</dt><dd class="num">14 Jan 2025</dd></div>
+        <div><dt>Amount</dt><dd class="num">$1,001–15,000</dd></div>
+      </dl>
+      <figcaption class="fine">One line from a Periodic Transaction Report, using an invented company to show the format, and the fields the parser reads from it. The parser handles three report templates from 2016 to today and was checked against 26 filings read by hand.</figcaption>
     </figure>
+    <dl class="facts">
+      <div><dt>Filings collected</dt><dd class="num">7,004</dd></div>
+      <div><dt>Trades in the backtest</dt><dd class="num">41,998</dd></div>
+      <div><dt>Purchases</dt><dd class="num">20,567</dd></div>
+      <div><dt>Members with purchases</dt><dd class="num">193</dd></div>
+      <div><dt>Purchases with a price</dt><dd class="num">94.8%</dd></div>
+      <div><dt>Data up to</dt><dd class="num">16 Nov 2026</dd></div>
+    </dl>
+  </section>
+
+  <section class="section split" aria-labelledby="h-time">
+    <div class="lead">
+      <h2 id="h-time">The backtest never knows a trade before the public does</h2>
+      <p>The most common error in this kind of analysis is trading on the member's trade date. That date only becomes known when the filing is published. The backtest therefore buys at the earliest at the open on the day after the filing.</p>
+    </div>
+    <ol class="steps steps-4">
+      <li><h3>The member trades</h3><p>The trade date is in the filing, but nobody else knows it yet.</p></li>
+      <li><h3>The filing</h3><p>The STOCK Act deadline is 45 days. 19% of purchases were filed later.</p><span class="rule-tag">Median 28 days; 90% within 226 days</span></li>
+      <li><h3>Made public</h3><p>The filing date from the House's own index. Only now is the trade known.</p></li>
+      <li><h3>The fund buys</h3><p>At the next day's opening price, with a trading cost of 0.1%.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" aria-labelledby="h-pipe">
+    <div class="head">
+      <h2 id="h-pipe">From PDF to backtest in five stages</h2>
+      <p>Each stage is a separate Python module with its own tests. All data comes from free, public sources.</p>
+    </div>
+    <dl class="principles">
+      <div><dt>Collect</dt><dd><p>The House's yearly index and every transaction report PDF since 2016. The download can resume after interruptions and failed on 0 of 7,004 files. <span class="small">requests, XML; 19 tests</span></p></dd></div>
+      <div><dt>Parse</dt><dd><p>Three templates, page breaks in the middle of a trade, lower-case tickers and amended filings. Duplicates and deleted trades are flagged. <span class="small">pypdf, regular expressions; 46 tests</span></p></dd></div>
+      <div><dt>Price</dt><dd><p>Daily prices adjusted for splits and dividends. Ticker changes are traced through history, and delisted stocks are kept. <span class="small">Alpaca SIP feed; 12 tests</span></p></dd></div>
+      <div><dt>Simulate</dt><dd><p>136 combinations of skip threshold, exit rule and weighting, chosen on 2016–2021 and then tested unchanged on 2022–2026. <span class="small">pandas, numpy; 42 tests</span></p></dd></div>
+      <div><dt>Review</dt><dd><p>An independent review in two rounds. The first found two serious errors, which were fixed; the second found none. <span class="small">Newey-West statistics, hand-checked samples</span></p></dd></div>
+    </dl>
+  </section>
+
+  <section class="section split" aria-labelledby="h-rules">
+    <div class="lead">
+      <h2 id="h-rules">The rules, fixed before the results</h2>
+      <p>The rules were written down before any result was seen. Where a rule was unclear, the most conservative reading was chosen and recorded.</p>
+    </div>
+    <dl class="risks">
+      <div><dt>Signal</dt><dd>Every purchase of a stock or ETF, including those of spouses and children. No options, bonds or crypto.</dd></div>
+      <div><dt>Skip rule</dt><dd>Skip a purchase only if the price has risen more than X% since the member's trade. A fall never causes a skip.</dd></div>
+      <div><dt>Threshold X</dt><dd class="num">0, 2, 4 … 30%, and no threshold</dd></div>
+      <div><dt>Exit</dt><dd>When the member sells, or after a fixed 3, 6 or 12 months</dd></div>
+      <div><dt>Weighting</dt><dd>Equal per trade, or by the midpoint of the disclosed amount range</dd></div>
+      <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY with dividends) over the same period</dd></div>
+      <div><dt>Overfitting guard</dt><dd>Rules chosen on 2016–2021 only, then tested unchanged on 2022 to today</dd></div>
+      <div><dt>Costs</dt><dd>0.1% on each purchase and each sale</dd></div>
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="h-data">
+    <div class="head"><h2 id="h-data">The data</h2></div>
+    <div class="perf">
+      <figure style="margin:0">
+        <h3>Purchases per filing year</h3>
+        <div class="chart-wide"><svg id="buys" viewBox="0 0 640 280" role="img" aria-label="Bar chart of purchases per filing year from 2016 to 2026" style="width:100%;min-width:480px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">2016–2021 (green) was used to choose the rules: 12,176 purchases. 2022–2026 (grey) was the test: 8,391 purchases. 2026 runs to 16 November.</figcaption>
+      </figure>
+      <div>
+        <h3>Purchases with a price</h3>
+        <div class="table-wrap"><table style="margin-top:12px">
+          <thead><tr><th>Point in time</th><th class="r">Coverage</th></tr></thead>
+          <tbody class="num">
+            <tr><th>Entry, the day after filing</th><td class="r">94.8%</td></tr>
+            <tr><th>After 3 months</th><td class="r">94.4%</td></tr>
+            <tr><th>After 6 months</th><td class="r">93.9%</td></tr>
+            <tr><th>After 12 months</th><td class="r">92.6%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small" style="margin-top:16px">2,848 of 3,418 tickers are matched to price data. Most of the rest are over-the-counter and delisted stocks that the price feed does not cover.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-res">
+    <div class="head">
+      <h2 id="h-res">Ten years of results</h2>
+      <p>The rule chosen on 2016–2021 holds each purchase for six months, weights it by the disclosed amount and skips it if the price has already risen more than 10%. Over the full period it returned +400% against +338% for the S&amp;P 500, with more volatility.</p>
+    </div>
+    <figure style="margin:0">
+      <div class="chart-wide"><svg id="equity" viewBox="0 0 1136 400" role="img" aria-label="Growth of one dollar for the strategy and the S&amp;P 500, 2016 to 2026" style="width:100%;min-width:560px;height:auto"></svg></div>
+      <figcaption class="small" style="margin-top:12px">Growth of $1, January 2016 to November 2026. The shaded area is the test period, after the rules were fixed.</figcaption>
+    </figure>
+    <div class="perf" style="margin-top:56px">
+      <div>
+        <h3>The test period on its own</h3>
+        <p class="small" style="margin-top:8px">From 3 January 2022, after the rules were fixed, the strategy was close to the index. Its excess return was not statistically different from zero.</p>
+        <div class="table-wrap"><table style="margin-top:12px">
+          <thead><tr><th>3 Jan 2022 – 16 Nov 2026</th><th class="r">Strategy</th><th class="r">S&amp;P 500</th></tr></thead>
+          <tbody class="num">
+            <tr><th>Total return</th><td class="r">+63.9%</td><td class="r">+66.0%</td></tr>
+            <tr><th>Annual return (CAGR)</th><td class="r">10.7%</td><td class="r">11.0%</td></tr>
+            <tr><th>Volatility</th><td class="r">22.9%</td><td class="r">17.4%</td></tr>
+            <tr><th>Sharpe ratio (rf = 0)</th><td class="r">0.56</td><td class="r">0.69</td></tr>
+            <tr><th>Maximum drawdown</th><td class="r">−22.4%</td><td class="r">−24.5%</td></tr>
+            <tr><th>Alpha a year (Newey-West t)</th><td class="r">−0.3% (−0.06)</td><td class="r">–</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <figure style="margin:0">
+        <h3>Excess return by year</h3>
+        <div class="chart-wide"><svg id="yearly" viewBox="0 0 560 280" role="img" aria-label="Bars of the strategy's excess return over the S&amp;P 500 for each year from 2016 to 2026" style="width:100%;min-width:440px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">Percentage points against the S&amp;P 500. 2020, 2021 and 2022 were positive.</figcaption>
+      </figure>
+    </div>
+    <div class="perf" style="margin-top:56px">
+      <figure style="margin:0">
+        <h3>Sharpe ratio by skip threshold</h3>
+        <div class="chart-wide"><svg id="xchart" viewBox="0 0 560 280" role="img" aria-label="Sharpe ratio for each skip threshold, for 2016 to 2021 and 2022 to 2026" style="width:100%;min-width:440px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">Green: 2016–2021. Grey: 2022–2026. Dashed lines: the S&amp;P 500. Above 4% the curves are flat, so skipping purchases after a rise adds nothing reliable.</figcaption>
+      </figure>
+      <div>
+        <h3>What the independent review found</h3>
+        <dl class="risks" style="margin-top:12px">
+          <div><dt>Round 1: two serious errors</dt><dd>The first version showed +106% against +66% for the test period. The review showed this came from the test portfolio starting empty and holding almost only one member's energy purchases in 2022. Measured as one continuous portfolio, the lead disappeared.</dd></div>
+          <div><dt>Round 2: no serious errors</dt><dd>All 18,068 trades were recomputed from the raw data with no differences, and ten random trades were checked by hand. The choice of rule is fragile: several variants score almost the same.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section split" aria-labelledby="h-ms">
+    <div class="lead">
+      <h2 id="h-ms">Following only the best members</h2>
+      <p>The next idea was to copy only members whose earlier purchases had beaten the market, judging each member only on trades that had closed before the purchase. 128 variants were tested, and the best on 2016–2021 was chosen by a rule fixed in advance: copy the top 20% of members over the last 24 months.</p>
+    </div>
     <div>
-      <h3 style="margin-bottom:10px">Andel af købene med kurs</h3>
-      <div class="table-scroll"><table>
-        <thead><tr><th>Tidspunkt</th><th class="r">Dækning</th></tr></thead>
+      <div class="table-wrap"><table>
+        <thead><tr><th>2022 – 16 Nov 2026</th><th class="r">Best members</th><th class="r">All purchases</th><th class="r">S&amp;P 500</th></tr></thead>
         <tbody class="num">
-          <tr><td>Indgang (dagen efter indlevering)</td><td class="r">94,8 %</td></tr>
-          <tr><td>+3 måneder</td><td class="r">94,4 %</td></tr>
-          <tr><td>+6 måneder</td><td class="r">93,9 %</td></tr>
-          <tr><td>+12 måneder</td><td class="r">92,6 %</td></tr>
+          <tr><th>Total return</th><td class="r">+89.6%</td><td class="r">+63.9%</td><td class="r">+66.0%</td></tr>
+          <tr><th>Sharpe ratio</th><td class="r">0.72</td><td class="r">0.56</td><td class="r">0.69</td></tr>
+          <tr><th>Alpha a year (t)</th><td class="r">+4.9% (0.69)</td><td class="r">−0.3% (−0.06)</td><td class="r">–</td></tr>
+          <tr><th>Without the largest member</th><td class="r">+19.2%</td><td class="r">–</td><td class="r">+66.0%</td></tr>
+          <tr><th>Deflated Sharpe ratio (128 tests)</th><td class="r">0.27</td><td class="r">–</td><td class="r">–</td></tr>
         </tbody>
       </table></div>
-      <p style="margin-top:14px;color:var(--muted);font-size:.93rem">2.848 af 3.418 tickere er koblet til kursdata. De fleste af resten er OTC-papirer og afnoterede selskaber, som det gratis kursfeed ikke dækker.</p>
+      <p class="small" style="margin-top:16px">Two members made up 75% of the portfolio: Mark Green's energy purchases and some very large Microsoft purchases by Suzan DelBene's spouse. Per trade, the selected members did 1.8 percentage points worse than the market over six months, against 0.9 for those not selected. Past winners did not keep winning. A deflated Sharpe ratio would need to exceed 0.95 to count as evidence.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section aria-labelledby="h-res">
-  <div class="sec-head prose">
-    <span class="label">Resultat · testperioden 2022–2026</span>
-    <h2 id="h-res">Strategien slår ikke markedet</h2>
-    <p>Reglen blev valgt på 2016–2021 efter et kriterium, der var skrevet ned på forhånd: hold hvert køb i 6 måneder, vægt efter det indberettede beløb, og spring købet over, hvis kursen allerede er steget mere end 10 %. Fra 3. januar 2022 gav den samme afkast som S&amp;P 500, men med større udsving.</p>
-  </div>
-  <div class="verdict">
-    <div class="table-scroll"><table class="cmp">
-      <thead><tr><th>3. jan. 2022 – 16. nov. 2026</th><th class="r">Strategi</th><th class="r">S&amp;P 500</th></tr></thead>
-      <tbody class="num">
-        <tr><td>Samlet afkast</td><td class="r">+63,9 %</td><td class="r">+66,0 %</td></tr>
-        <tr><td>Årligt afkast (CAGR)</td><td class="r">10,7 %</td><td class="r">11,0 %</td></tr>
-        <tr><td>Volatilitet</td><td class="r">22,9 %</td><td class="r">17,4 %</td></tr>
-        <tr><td>Sharpe (rf = 0)</td><td class="r">0,56</td><td class="r">0,69</td></tr>
-        <tr><td>Største fald</td><td class="r">−22,4 %</td><td class="r">−24,5 %</td></tr>
-      </tbody>
-    </table></div>
-    <div class="alpha">
-      <span class="label">Merafkast i forhold til markedet</span>
-      <b class="num">−0,3 %</b>
-      <span>om året · t = −0,06 (Newey-West) · beta 1,10</span>
-      <p>Et t-tal tæt på nul betyder, at der ikke er noget at skelne fra tilfældighed.</p>
+  <section class="section split" aria-labelledby="h-ov">
+    <div class="lead">
+      <h2 id="h-ov">Trying to reduce the risk</h2>
+      <p>Eighteen fixed variants of known risk techniques were tested on top of the same signal: equal, amount and square-root weighting; caps of 5% per stock or 15% per member; and volatility targeting.</p>
     </div>
-  </div>
-
-  <figure class="chart-box fig">
-    <div class="fig-head"><h3>Formue for 1 krone investeret i 2016</h3>
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>Strategi</span><span><i style="background:var(--muted)"></i>S&amp;P 500 (SPY)</span><span><i class="shade"></i>Testperiode</span></div></div>
-    <div class="chart-scroll"><svg id="equity" viewBox="0 0 680 300" role="img" aria-label="Formuekurve for strategien og S&amp;P 500 fra 2016 til 2026" style="width:100%;min-width:520px;height:auto"></svg></div>
-    <figcaption>Forspringet blev skabt i 2020, altså i kalibreringsperioden. I testperioden steg strategien en smule mindre end markedet.</figcaption>
-  </figure>
-
-  <div class="two">
-    <figure class="chart-box fig">
-      <h3>Merafkast pr. år</h3>
-      <div class="chart-scroll"><svg id="yearly" viewBox="0 0 420 250" role="img" aria-label="Søjler med strategiens merafkast i forhold til SPY pr. år 2016 til 2026" style="width:100%;min-width:360px;height:auto"></svg></div>
-      <figcaption>Kun 2020, 2021 og 2022 var positive. Procentpoint i forhold til SPY.</figcaption>
-    </figure>
-    <figure class="chart-box fig">
-      <h3>Sharpe som funktion af tærsklen X</h3>
-      <div class="chart-legend"><span><i style="background:var(--accent)"></i>2016–2021</span><span><i style="background:var(--ink-2)"></i>2022–2026</span><span><i class="dash"></i>SPY</span></div>
-      <div class="chart-scroll"><svg id="xchart" viewBox="0 0 420 250" role="img" aria-label="Sharpe-ratio for hver tærskel X i begge perioder" style="width:100%;min-width:360px;height:auto"></svg></div>
-      <figcaption>Over 4 % ligger kurverne fladt. At springe køb over efter en stigning tilføjer ikke noget pålideligt.</figcaption>
-    </figure>
-  </div>
-
-  <div class="review">
-    <h3>Hvad den uafhængige kontrol fandt</h3>
-    <div class="review-grid">
-      <div><span class="label">Runde 1 · 2 alvorlige fejl</span><p>Den første version viste +106 % mod markedets +66 %. Kontrollen viste, at tallet kom af, at testporteføljen startede tom og i 2022 næsten kun bestod af ét medlems energikøb. Målt som én sammenhængende portefølje forsvandt forspringet.</p></div>
-      <div><span class="label">Runde 2 · ingen alvorlige fejl</span><p>Alle 18.068 handler blev regnet om fra rådata uden afvigelser, og 10 tilfældige handler blev kontrolleret i hånden. Valget af regel er skrøbeligt: flere varianter scorer næsten ens.</p></div>
+    <div>
+      <p class="measure" style="color:var(--ink-2)">None improved the original rule on 2016–2021, so the live fund keeps it. Volatility targeting lowered the swings (22.9% to 15.5% a year since 2022) but also the return (+63.9% to +52.4%), and it helped the S&amp;P 500 just as much, so it says nothing about this strategy in particular. A 5% cap per stock would have looked better after 2022, but it was worse before, and picking it now would mean choosing with hindsight.</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<section aria-labelledby="h-ms">
-  <div class="sec-head prose">
-    <span class="label">Opfølgning · kun de bedste medlemmer</span>
-    <h2 id="h-ms">At vælge tidligere vindere ser godt ud, men holder ikke</h2>
-    <p>Næste idé var at kopiere kun de medlemmer, hvis tidligere køb havde slået markedet. Hvert medlem blev kun bedømt på handler, der var afsluttet før købet. 128 varianter blev afprøvet, og den bedste på 2016–2021 blev valgt efter et kriterium fastlagt på forhånd: kopiér de 20 % bedste medlemmer målt over de seneste 24 måneder.</p>
-  </div>
-  <div class="verdict">
-    <div class="table-scroll"><table class="cmp">
-      <thead><tr><th>2022 – 16. nov. 2026</th><th class="r">Bedste medlemmer</th><th class="r">Alle køb (v1)</th><th class="r">S&amp;P 500</th></tr></thead>
-      <tbody class="num">
-        <tr><td>Samlet afkast</td><td class="r">+89,6 %</td><td class="r">+63,9 %</td><td class="r">+66,0 %</td></tr>
-        <tr><td>Sharpe</td><td class="r">0,72</td><td class="r">0,56</td><td class="r">0,69</td></tr>
-        <tr><td>Alfa pr. år (t)</td><td class="r">+4,9 % (0,69)</td><td class="r">−0,3 % (−0,06)</td><td class="r">–</td></tr>
-        <tr><td>Uden største medlem</td><td class="r">+19,2 %</td><td class="r">–</td><td class="r">+66,0 %</td></tr>
-      </tbody>
-    </table></div>
-    <div class="alpha">
-      <span class="label">Deflated Sharpe ratio</span>
-      <b class="num">0,27</b>
-      <span>justeret for 128 afprøvede varianter · skal over 0,95</span>
-      <p>Tallet tager højde for, at man finder en flot variant ved et tilfælde, når man prøver mange.</p>
+  <section class="section" aria-labelledby="h-gaps">
+    <div class="head">
+      <h2 id="h-gaps">What the data cannot tell us</h2>
+      <p>Gaps are reported as gaps. Nothing is filled in with estimates.</p>
     </div>
-  </div>
-  <div class="review-grid">
-    <div><span class="label">Koncentration</span><p>To medlemmer udgør 75 % af porteføljen: Mark Greens energikøb og nogle meget store Microsoft-køb fra Suzan DelBenes ægtefælle. Uden Mark Green falder afkastet fra +89,6 % til +19,2 %.</p></div>
-    <div><span class="label">Ingen vedholdenhed</span><p>Pr. handel klarede de udvalgte medlemmer sig 1,8 procentpoint dårligere end markedet over 6 måneder i testperioden, mod 0,9 for dem, der ikke blev valgt. De, der havde klaret sig godt før, fortsatte ikke med det.</p></div>
-  </div>
-</section>
-
-<section aria-labelledby="h-gaps">
-  <div class="sec-head prose">
-    <span class="label">Begrænsninger</span>
-    <h2 id="h-gaps">Hvad data ikke kan sige</h2>
-    <p>Huller rapporteres som huller. Intet er udfyldt med skøn.</p>
-  </div>
-  <div class="gaps">
-    <div class="gap"><span class="sev high">Stor</span><div><h3>Scannede indberetninger mangler</h3><p>1.692 af 7.004 indberetninger (24 %) er scannet papir uden tekst. De rammer især 2016–2018 og nogle af de mest aktive handlere. En stikprøve læst af to uafhængige læsere stemte 254 af 254 handler, men resten er ikke med i v1.</p></div></div>
-    <div class="gap"><span class="sev high">Middel</span><div><h3>Survivorship bias</h3><p>5,2 % af købene har ingen kurs ved indgang, mest afnoterede selskaber. Det kan gøre resultatet for pænt. Antallet rapporteres i hver beregning.</p></div></div>
-    <div class="gap"><span class="sev">Lille</span><div><h3>Ændringsindberetninger uden original</h3><p>324 rækker kan ikke kobles til en original og kan derfor tælle dobbelt.</p></div></div>
-    <div class="gap"><span class="sev">Afgrænset</span><div><h3>Kun Repræsentanternes Hus</h3><p>Senatets database blokerer automatiske hentninger. Senatet tages op i en senere version med en anden datakilde.</p></div></div>
-  </div>
-</section>
-
+    <dl class="risks">
+      <div><dt>Scanned filings are missing</dt><dd>1,692 of 7,004 filings (24%) are scanned paper without text. They are concentrated in 2016–2018 and among some of the most active traders. Two independent readers agreed on 254 of 254 trades in a sample, but the rest are not in this version.</dd></div>
+      <div><dt>Survivorship bias</dt><dd>5.2% of purchases have no price at entry, mostly delisted companies. This can flatter the result. The number is reported in every calculation.</dd></div>
+      <div><dt>Amended filings</dt><dd>324 amended rows cannot be matched to an original and may be counted twice.</dd></div>
+      <div><dt>House only</dt><dd>The Senate's database blocks automated downloads. The Senate will be added later if a suitable data source is found.</dd></div>
+    </dl>
+  </section>
 </div>
 </main>
-<footer>
-  <div class="meander" aria-hidden="true"></div>
+<footer class="site-foot">
   <div class="wrap">
     <div class="foot-grid">
-      <div style="display:grid;gap:10px;align-content:start">
+      <div style="display:grid;gap:12px;align-content:start">
         <a class="brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><rect class="mk-bg" x="1" y="1" width="26" height="26" rx="6"/><path class="mk-roof" d="M6 11.5 14 6l8 5.5z"/><path class="mk-col" d="M8.5 13.5v7.5M12.2 13.5v7.5M15.8 13.5v7.5M19.5 13.5v7.5M6 22.4h16"/></svg>Ekklesia Capital</a>
-        <p>En regelbaseret papirfond, der følger amerikanske kongresmedlemmers offentliggjorte aktiekøb.</p>
+        <p>A rule-based paper fund that follows the stock purchases disclosed by members of the U.S. House of Representatives.</p>
       </div>
-      <div><h4>Fonden</h4><ul><li><a href="index.html#strategi">Strategien</a></li><li><a href="index.html#resultater">Resultater</a></li><li><a href="index.html#live">Live portefølje</a></li><li><a href="index.html#risiko">Risiko</a></li></ul></div>
-      <div><h4>Dokumentation</h4><ul><li><a href="research.html">Research og metode</a></li><li><a href="https://github.com/Oleo007pat/congress-fund/blob/main/reports/backtest_v1.md">Backtest-rapport</a></li><li><a href="https://github.com/Oleo007pat/congress-fund">Kode på GitHub</a></li><li><a href="https://disclosures-clerk.house.gov/FinancialDisclosure">Kilde: House Clerk</a></li></ul></div>
+      <div><h3>The fund</h3><ul>
+        <li><a href="index.html#strategy">Strategy</a></li>
+        <li><a href="index.html#performance">Performance</a></li>
+        <li><a href="index.html#portfolio">Live portfolio</a></li>
+        <li><a href="index.html#risks">Risks</a></li>
+      </ul></div>
+      <div><h3>Documentation</h3><ul>
+        <li><a href="research.html">Research and method</a></li>
+        <li><a href="https://github.com/Oleo007pat/congress-fund">Source code on GitHub</a></li>
+        <li><a href="https://disclosures-clerk.house.gov/FinancialDisclosure">Source: Office of the Clerk</a></li>
+      </ul></div>
     </div>
     <div class="legal">
-      <p><b>Vigtig information.</b> Ekklesia Capital er en papirfond, der handler med fiktive penge. Den er ikke en investeringsforening, en alternativ investeringsfond eller et finansielt produkt, og den tager ikke imod penge. Intet på denne side er investeringsrådgivning eller en opfordring til at købe eller sælge værdipapirer.</p>
-      <p>Historiske og simulerede afkast er ingen garanti for fremtidige afkast. Simulerede resultater har kendte begrænsninger, som er beskrevet i research-afsnittet. Kilder: U.S. House of Representatives, Office of the Clerk; Alpaca Market Data.</p>
+      <p><b>Important information.</b> Ekklesia Capital is a paper fund that trades with simulated money. It is not an investment fund, a collective investment scheme or a financial product, and it does not accept money. Nothing on this site is investment advice or an offer to buy or sell securities.</p>
+      <p>Past and simulated performance does not predict future returns. Simulated results have known limitations, described on the research page. Data: U.S. House of Representatives, Office of the Clerk; Alpaca Markets.</p>
     </div>
   </div>
 </footer>
-<script>
-(function(){
-  var data=[[2016,1370],[2017,1564],[2018,1745],[2019,2015],[2020,3049],[2021,2433],[2022,1347],[2023,1265],[2024,1072],[2025,3300],[2026,1407]];
-  var svg=document.getElementById('buys'); if(!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  var L=52,R=628,T=22,B=232,max=3500;
-  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
-  function y(v){return B-(v/max)*(B-T);}
-  [0,1000,2000,3000].forEach(function(v){
-    el('line',{x1:L,x2:R,y1:y(v),y2:y(v),stroke:'var(--rule)','stroke-width':1});
-    el('text',{x:L-8,y:y(v)+4,'text-anchor':'end'},v.toLocaleString('da-DK'));
-  });
-  var slot=(R-L)/data.length,bw=slot*0.64;
-  data.forEach(function(d,i){
-    var x=L+i*slot+(slot-bw)/2, oos=d[0]>=2022;
-    el('rect',{x:x,y:y(d[1]),width:bw,height:B-y(d[1]),fill:oos?'var(--ink-2)':'var(--accent)',rx:2});
-    el('text',{x:x+bw/2,y:y(d[1])-6,'text-anchor':'middle','class':'val'},d[1].toLocaleString('da-DK'));
-    el('text',{x:x+bw/2,y:B+18,'text-anchor':'middle'},d[0]);
-  });
-  var split=L+6*slot;
-  el('line',{x1:split,x2:split,y1:T-10,y2:B,stroke:'var(--muted)','stroke-dasharray':'3 3'});
-})();
-</script>
+
+
 <script id="res-data" type="application/json">{"dates":["2016-01-08","2016-01-15","2016-01-22","2016-01-29","2016-02-05","2016-02-12","2016-02-19","2016-02-26","2016-03-04","2016-03-11","2016-03-18","2016-03-24","2016-04-01","2016-04-08","2016-04-15","2016-04-22","2016-04-29","2016-05-06","2016-05-13","2016-05-20","2016-05-27","2016-06-03","2016-06-10","2016-06-17","2016-06-24","2016-07-01","2016-07-08","2016-07-15","2016-07-22","2016-07-29","2016-08-05","2016-08-12","2016-08-19","2016-08-26","2016-09-02","2016-09-09","2016-09-16","2016-09-23","2016-09-30","2016-10-07","2016-10-14","2016-10-21","2016-10-28","2016-11-04","2016-11-11","2016-11-18","2016-11-25","2016-12-02","2016-12-09","2016-12-16","2016-12-23","2016-12-30","2017-01-06","2017-01-13","2017-01-20","2017-01-27","2017-02-03","2017-02-10","2017-02-17","2017-02-24","2017-03-03","2017-03-10","2017-03-17","2017-03-24","2017-03-31","2017-04-07","2017-04-13","2017-04-21","2017-04-28","2017-05-05","2017-05-12","2017-05-19","2017-05-26","2017-06-02","2017-06-09","2017-06-16","2017-06-23","2017-06-30","2017-07-07","2017-07-14","2017-07-21","2017-07-28","2017-08-04","2017-08-11","2017-08-18","2017-08-25","2017-09-01","2017-09-08","2017-09-15","2017-09-22","2017-09-29","2017-10-06","2017-10-13","2017-10-20","2017-10-27","2017-11-03","2017-11-10","2017-11-17","2017-11-24","2017-12-01","2017-12-08","2017-12-15","2017-12-22","2017-12-29","2018-01-05","2018-01-12","2018-01-19","2018-01-26","2018-02-02","2018-02-09","2018-02-16","2018-02-23","2018-03-02","2018-03-09","2018-03-16","2018-03-23","2018-03-29","2018-04-06","2018-04-13","2018-04-20","2018-04-27","2018-05-04","2018-05-11","2018-05-18","2018-05-25","2018-06-01","2018-06-08","2018-06-15","2018-06-22","2018-06-29","2018-07-06","2018-07-13","2018-07-20","2018-07-27","2018-08-03","2018-08-10","2018-08-17","2018-08-24","2018-08-31","2018-09-07","2018-09-14","2018-09-21","2018-09-28","2018-10-05","2018-10-12","2018-10-19","2018-10-26","2018-11-02","2018-11-09","2018-11-16","2018-11-23","2018-11-30","2018-12-07","2018-12-14","2018-12-21","2018-12-28","2019-01-04","2019-01-11","2019-01-18","2019-01-25","2019-02-01","2019-02-08","2019-02-15","2019-02-22","2019-03-01","2019-03-08","2019-03-15","2019-03-22","2019-03-29","2019-04-05","2019-04-12","2019-04-18","2019-04-26","2019-05-03","2019-05-10","2019-05-17","2019-05-24","2019-05-31","2019-06-07","2019-06-14","2019-06-21","2019-06-28","2019-07-05","2019-07-12","2019-07-19","2019-07-26","2019-08-02","2019-08-09","2019-08-16","2019-08-23","2019-08-30","2019-09-06","2019-09-13","2019-09-20","2019-09-27","2019-10-04","2019-10-11","2019-10-18","2019-10-25","2019-11-01","2019-11-08","2019-11-15","2019-11-22","2019-11-29","2019-12-06","2019-12-13","2019-12-20","2019-12-27","2020-01-03","2020-01-10","2020-01-17","2020-01-24","2020-01-31","2020-02-07","2020-02-14","2020-02-21","2020-02-28","2020-03-06","2020-03-13","2020-03-20","2020-03-27","2020-04-03","2020-04-09","2020-04-17","2020-04-24","2020-05-01","2020-05-08","2020-05-15","2020-05-22","2020-05-29","2020-06-05","2020-06-12","2020-06-19","2020-06-26","2020-07-02","2020-07-10","2020-07-17","2020-07-24","2020-07-31","2020-08-07","2020-08-14","2020-08-21","2020-08-28","2020-09-04","2020-09-11","2020-09-18","2020-09-25","2020-10-02","2020-10-09","2020-10-16","2020-10-23","2020-10-30","2020-11-06","2020-11-13","2020-11-20","2020-11-27","2020-12-04","2020-12-11","2020-12-18","2020-12-24","2020-12-31","2021-01-08","2021-01-15","2021-01-22","2021-01-29","2021-02-05","2021-02-12","2021-02-19","2021-02-26","2021-03-05","2021-03-12","2021-03-19","2021-03-26","2021-04-01","2021-04-09","2021-04-16","2021-04-23","2021-04-30","2021-05-07","2021-05-14","2021-05-21","2021-05-28","2021-06-04","2021-06-11","2021-06-18","2021-06-25","2021-07-02","2021-07-09","2021-07-16","2021-07-23","2021-07-30","2021-08-06","2021-08-13","2021-08-20","2021-08-27","2021-09-03","2021-09-10","2021-09-17","2021-09-24","2021-10-01","2021-10-08","2021-10-15","2021-10-22","2021-10-29","2021-11-05","2021-11-12","2021-11-19","2021-11-26","2021-12-03","2021-12-10","2021-12-17","2021-12-23","2021-12-31","2022-01-07","2022-01-14","2022-01-21","2022-01-28","2022-02-04","2022-02-11","2022-02-18","2022-02-25","2022-03-04","2022-03-11","2022-03-18","2022-03-25","2022-04-01","2022-04-08","2022-04-14","2022-04-22","2022-04-29","2022-05-06","2022-05-13","2022-05-20","2022-05-27","2022-06-03","2022-06-10","2022-06-17","2022-06-24","2022-07-01","2022-07-08","2022-07-15","2022-07-22","2022-07-29","2022-08-05","2022-08-12","2022-08-19","2022-08-26","2022-09-02","2022-09-09","2022-09-16","2022-09-23","2022-09-30","2022-10-07","2022-10-14","2022-10-21","2022-10-28","2022-11-04","2022-11-11","2022-11-18","2022-11-25","2022-12-02","2022-12-09","2022-12-16","2022-12-23","2022-12-30","2023-01-06","2023-01-13","2023-01-20","2023-01-27","2023-02-03","2023-02-10","2023-02-17","2023-02-24","2023-03-03","2023-03-10","2023-03-17","2023-03-24","2023-03-31","2023-04-06","2023-04-14","2023-04-21","2023-04-28","2023-05-05","2023-05-12","2023-05-19","2023-05-26","2023-06-02","2023-06-09","2023-06-16","2023-06-23","2023-06-30","2023-07-07","2023-07-14","2023-07-21","2023-07-28","2023-08-04","2023-08-11","2023-08-18","2023-08-25","2023-09-01","2023-09-08","2023-09-15","2023-09-22","2023-09-29","2023-10-06","2023-10-13","2023-10-20","2023-10-27","2023-11-03","2023-11-10","2023-11-17","2023-11-24","2023-12-01","2023-12-08","2023-12-15","2023-12-22","2023-12-29","2024-01-05","2024-01-12","2024-01-19","2024-01-26","2024-02-02","2024-02-09","2024-02-16","2024-02-23","2024-03-01","2024-03-08","2024-03-15","2024-03-22","2024-03-28","2024-04-05","2024-04-12","2024-04-19","2024-04-26","2024-05-03","2024-05-10","2024-05-17","2024-05-24","2024-05-31","2024-06-07","2024-06-14","2024-06-21","2024-06-28","2024-07-05","2024-07-12","2024-07-19","2024-07-26","2024-08-02","2024-08-09","2024-08-16","2024-08-23","2024-08-30","2024-09-06","2024-09-13","2024-09-20","2024-09-27","2024-10-04","2024-10-11","2024-10-18","2024-10-25","2024-11-01","2024-11-08","2024-11-15","2024-11-22","2024-11-29","2024-12-06","2024-12-13","2024-12-20","2024-12-27","2025-01-03","2025-01-10","2025-01-17","2025-01-24","2025-01-31","2025-02-07","2025-02-14","2025-02-21","2025-02-28","2025-03-07","2025-03-14","2025-03-21","2025-03-28","2025-04-04","2025-04-11","2025-04-17","2025-04-25","2025-05-02","2025-05-09","2025-05-16","2025-05-23","2025-05-30","2025-06-06","2025-06-13","2025-06-20","2025-06-27","2025-07-03","2025-07-11","2025-07-18","2025-07-25","2025-08-01","2025-08-08","2025-08-15","2025-08-22","2025-08-29","2025-09-05","2025-09-12","2025-09-19","2025-09-26","2025-10-03","2025-10-10","2025-10-17","2025-10-24","2025-10-31","2025-11-07","2025-11-14","2025-11-21","2025-11-28","2025-12-05","2025-12-12","2025-12-19","2025-12-26","2026-01-02","2026-01-09","2026-01-16","2026-01-23","2026-01-30","2026-02-06","2026-02-13","2026-02-20","2026-02-27","2026-03-06","2026-03-13","2026-03-20","2026-03-27","2026-04-02","2026-04-10","2026-04-17","2026-04-24","2026-05-01","2026-05-08","2026-05-15","2026-05-22","2026-05-29","2026-06-05","2026-06-12","2026-06-18","2026-06-26","2026-07-02","2026-07-10","2026-07-17","2026-07-24","2026-07-31","2026-08-07","2026-08-14","2026-08-21","2026-08-28","2026-09-04","2026-09-11","2026-09-18","2026-09-25","2026-10-02","2026-10-09","2026-10-16","2026-10-23","2026-10-30","2026-11-06","2026-11-13","2026-11-16"],"s":[0.9569,0.9277,0.9233,0.911,0.8882,0.8767,0.91,0.9271,0.9602,0.9691,0.9808,0.9672,0.9782,0.9723,0.9904,1.0076,0.9913,0.9764,0.9648,0.9699,0.9896,0.9976,0.9933,0.9863,0.9715,1.0035,1.0128,1.0273,1.0342,1.0318,1.0346,1.0406,1.0433,1.0332,1.0414,1.0167,1.0197,1.0359,1.0373,1.0226,1.0129,1.0225,1.013,0.99,1.0287,1.0399,1.053,1.0441,1.0773,1.0736,1.0776,1.0675,1.085,1.0771,1.0783,1.0847,1.0878,1.0977,1.1135,1.1176,1.1262,1.1199,1.1235,1.1083,1.1235,1.1186,1.1097,1.1171,1.1342,1.135,1.1302,1.1337,1.143,1.1506,1.1451,1.1446,1.149,1.1516,1.151,1.166,1.17,1.1753,1.1788,1.1577,1.1487,1.1576,1.173,1.1626,1.1823,1.1812,1.1898,1.2032,1.2115,1.2141,1.2204,1.2247,1.2199,1.226,1.2382,1.2498,1.249,1.2606,1.2736,1.2741,1.3068,1.3258,1.336,1.3631,1.305,1.239,1.2979,1.2967,1.2707,1.3132,1.2994,1.2326,1.2597,1.2455,1.2612,1.2664,1.2725,1.2761,1.3006,1.296,1.3022,1.3028,1.3257,1.3387,1.3338,1.3048,1.3266,1.3397,1.3358,1.3314,1.3415,1.3376,1.3418,1.3539,1.3652,1.3498,1.3583,1.3617,1.3572,1.3279,1.2866,1.2771,1.2409,1.2544,1.2745,1.262,1.2114,1.2847,1.2219,1.2217,1.1315,1.1603,1.1869,1.2173,1.2604,1.2552,1.2452,1.2597,1.2952,1.3223,1.3327,1.3039,1.3494,1.342,1.3582,1.3868,1.388,1.382,1.3885,1.3989,1.3494,1.3356,1.3161,1.2808,1.3249,1.33,1.3565,1.3636,1.3844,1.3893,1.369,1.3936,1.3499,1.3373,1.326,1.3016,1.3374,1.3621,1.389,1.3885,1.3608,1.3526,1.3554,1.3461,1.3748,1.4029,1.423,1.4451,1.4457,1.4631,1.4618,1.4799,1.5084,1.5202,1.518,1.5357,1.5859,1.5646,1.575,1.6673,1.6933,1.6563,1.4935,1.4805,1.3792,1.1934,1.3078,1.2991,1.423,1.515,1.4955,1.5146,1.5844,1.5324,1.6083,1.6615,1.7822,1.6848,1.72,1.6701,1.7285,1.7513,1.7806,1.7905,1.7993,1.8668,1.8809,1.8585,1.9134,1.8501,1.7948,1.8126,1.7653,1.8115,1.9045,1.897,1.9466,1.8101,1.8872,2.001,2.0742,2.1546,2.2509,2.2663,2.2573,2.2353,2.2279,2.3299,2.4137,2.4032,2.3412,2.475,2.5444,2.5199,2.4847,2.5776,2.6749,2.6339,2.607,2.637,2.6673,2.6762,2.7032,2.723,2.7933,2.7788,2.8035,2.8228,2.8724,2.9334,2.8257,2.8994,2.928,2.9153,2.8196,2.8565,2.8628,2.8475,2.8538,2.7763,2.8767,2.9055,2.8459,2.8433,2.8537,2.8219,2.8577,2.9297,2.9772,3.0309,3.0775,3.08,3.0581,2.9803,2.9165,3.0308,2.9359,3.0083,3.0422,2.9862,2.9945,2.8425,2.8952,2.9429,2.9123,2.8513,2.8839,2.8958,2.8251,2.9384,3.077,3.0865,3.0681,3.0964,3.0167,2.9322,3.0059,2.8932,2.8724,3.0799,3.0943,2.9816,2.5701,2.6724,2.6687,2.67,2.6412,2.7368,2.9352,2.9276,3.0845,3.0265,2.9597,2.8557,2.9552,2.8154,2.6366,2.5999,2.6599,2.618,2.7431,2.8519,2.8009,2.9617,2.9027,2.9528,2.9888,2.8908,2.8362,2.8152,2.8113,2.8603,2.9728,2.9629,3.0383,3.0832,3.0191,3.0695,2.993,3.0619,2.875,2.8851,2.9008,3.0138,2.9692,2.9943,2.9858,2.9922,2.9793,2.9533,2.992,2.9744,3.039,3.0787,3.1645,3.076,3.1667,3.1636,3.2426,3.2761,3.3174,3.2409,3.2084,3.1043,3.1237,3.193,3.1527,3.1778,3.0792,3.0692,3.0388,3.0554,2.9929,2.9079,3.0938,3.0442,3.1565,3.1782,3.2544,3.2639,3.3921,3.44,3.4671,3.4356,3.4566,3.4486,3.5069,3.5324,3.5721,3.596,3.6231,3.659,3.6595,3.6395,3.6943,3.7287,3.6763,3.595,3.5198,3.5822,3.6109,3.6932,3.7579,3.7167,3.695,3.7075,3.6808,3.722,3.7135,3.8069,3.8759,3.6752,3.6047,3.388,3.3434,3.8155,3.9297,3.7435,3.3787,3.7334,3.6899,3.8075,3.8659,4.061,4.1323,4.1647,4.0487,4.333,4.2009,4.2388,4.1849,4.2581,4.0978,4.063,4.1143,4.2386,4.0851,4.1801,4.2804,3.9922,3.974,4.0173,4.0027,3.9929,3.9184,3.8236,3.8533,3.8191,3.5095,3.6186,3.6027,3.7593,3.8619,3.8735,4.0496,3.9463,3.9955,4.0634,4.0408,4.0271,4.1457,4.2854,4.3079,4.351,4.4104,4.2974,4.4364,4.5113,4.5286,4.503,4.4901,4.5959,4.636,4.6278,4.7511,4.6308,4.6976,4.8007,4.924,4.7724,4.7606,4.6053,4.7504,4.7961,4.7218,4.7296,4.8279,4.7879,4.8823,4.9107,4.8982,4.8623,4.8336,4.8185,4.8798,4.8896,4.7782,4.6899,4.5934,4.5358,4.686,4.83,5.0418,5.0709,5.1291,5.1894,5.1335,5.2312,5.328,5.1937,5.3156,5.3438,5.3522,5.4072,5.3954,5.2871,5.2657,5.2963,5.5418,5.6013,5.5097,5.6172,5.917,6.033,5.9368,6.1787,6.16,6.0695,5.5017,5.291,5.2884,4.9604,5.1911,4.9863],"m":[0.9677,0.947,0.9606,0.9768,0.9477,0.941,0.9681,0.9837,1.0106,1.0223,1.0305,1.0242,1.0434,1.0311,1.0477,1.0537,1.0404,1.0373,1.0324,1.0361,1.0601,1.0603,1.0592,1.0467,1.0301,1.064,1.0778,1.0939,1.1011,1.1005,1.1058,1.1073,1.1077,1.1013,1.1068,1.081,1.0869,1.1004,1.1021,1.0954,1.0853,1.0896,1.0825,1.0624,1.1026,1.113,1.1285,1.1187,1.1539,1.1532,1.1565,1.1453,1.1644,1.1634,1.1618,1.1733,1.1752,1.1862,1.2043,1.2132,1.2217,1.2178,1.2202,1.2036,1.2129,1.2103,1.1969,1.2073,1.2254,1.2335,1.2302,1.2262,1.244,1.2564,1.2532,1.2548,1.2575,1.2504,1.252,1.2697,1.2764,1.2768,1.2794,1.2624,1.2552,1.2645,1.2815,1.275,1.2953,1.2964,1.3053,1.3223,1.3247,1.336,1.3392,1.3432,1.3414,1.3402,1.3532,1.3744,1.3797,1.3922,1.3973,1.3944,1.4282,1.4519,1.4647,1.4969,1.4392,1.3672,1.4269,1.4347,1.4056,1.4561,1.4382,1.3532,1.3816,1.362,1.3904,1.3985,1.3981,1.3946,1.4299,1.4231,1.4276,1.435,1.4592,1.4529,1.441,1.4231,1.4441,1.4662,1.467,1.4762,1.4875,1.4851,1.4948,1.5079,1.5224,1.508,1.5257,1.5386,1.5308,1.5163,1.4541,1.455,1.3973,1.4319,1.4636,1.4421,1.3873,1.4524,1.389,1.3728,1.275,1.3127,1.3374,1.3715,1.4118,1.4084,1.4312,1.4336,1.4699,1.4793,1.4859,1.4545,1.4974,1.4868,1.5034,1.5357,1.5442,1.5434,1.5617,1.5647,1.533,1.5219,1.506,1.4656,1.5306,1.5394,1.5724,1.5676,1.5952,1.608,1.5898,1.615,1.5651,1.5596,1.5446,1.5236,1.5641,1.5941,1.6098,1.6016,1.5873,1.5813,1.5918,1.6016,1.6205,1.645,1.6599,1.6753,1.6711,1.6889,1.6916,1.7048,1.7325,1.7432,1.741,1.7583,1.7927,1.7751,1.7373,1.7939,1.8229,1.8005,1.5996,1.606,1.4589,1.2459,1.3795,1.3466,1.5111,1.5563,1.5364,1.5361,1.5887,1.5549,1.6048,1.6537,1.7347,1.6531,1.6831,1.637,1.703,1.7328,1.7549,1.7506,1.7806,1.8251,1.8375,1.8517,1.9124,1.8676,1.8225,1.8116,1.8004,1.8286,1.899,1.9023,1.8929,1.7892,1.9179,1.9613,1.9462,1.992,2.0252,2.0053,2.0304,2.0298,2.0585,2.0972,2.0663,2.1056,2.0359,2.1321,2.1601,2.1454,2.0901,2.1097,2.1671,2.1498,2.1848,2.2107,2.2707,2.3026,2.2997,2.3028,2.3294,2.2988,2.29,2.3187,2.3311,2.3415,2.2971,2.3618,2.4012,2.4112,2.388,2.4357,2.4278,2.4498,2.4687,2.4546,2.4927,2.5084,2.4661,2.4516,2.4655,2.4118,2.4319,2.4764,2.5167,2.5507,2.6022,2.5952,2.6043,2.5491,2.5183,2.6145,2.5632,2.623,2.6472,2.5978,2.5902,2.4411,2.4633,2.5009,2.455,2.4202,2.4399,2.4088,2.3413,2.4853,2.531,2.5323,2.5023,2.4477,2.382,2.3035,2.2998,2.246,2.1784,2.3217,2.2953,2.1793,2.0543,2.1903,2.1407,2.1824,2.1625,2.2185,2.3134,2.3217,2.3982,2.3703,2.2758,2.2024,2.2831,2.1738,2.0746,2.0138,2.0455,2.0164,2.1103,2.1934,2.1219,2.2469,2.2329,2.2684,2.2942,2.2174,2.1709,2.1688,2.1661,2.1981,2.2571,2.2423,2.2978,2.3356,2.3112,2.3067,2.2451,2.2893,2.1858,2.2174,2.2501,2.3276,2.3265,2.3451,2.3436,2.3649,2.3461,2.3402,2.3801,2.3881,2.433,2.4443,2.5079,2.4722,2.5297,2.5027,2.5639,2.5805,2.6076,2.5499,2.5433,2.491,2.5108,2.5749,2.5425,2.5392,2.465,2.4481,2.4599,2.4712,2.4121,2.3519,2.4895,2.5234,2.5816,2.6075,2.6293,2.6355,2.6987,2.7236,2.7331,2.6906,2.741,2.774,2.8027,2.8426,2.882,2.8723,2.9202,2.949,2.9425,2.9407,3.0064,3.0171,2.9903,2.9466,2.8561,2.9316,2.9491,3.0042,3.0539,3.0538,3.0419,3.0802,3.1308,3.1509,3.1492,3.2095,3.2405,3.1768,3.1505,3.0837,3.0842,3.2076,3.2529,3.2618,3.1268,3.2522,3.2984,3.317,3.3258,3.3641,3.3932,3.3609,3.3145,3.4721,3.3999,3.4566,3.4974,3.5279,3.507,3.4428,3.4653,3.4475,3.3807,3.4803,3.5408,3.505,3.4988,3.5509,3.494,3.4604,3.3541,3.2777,3.2944,3.2459,2.9515,3.1189,3.075,3.2165,3.3107,3.2966,3.471,3.3828,3.4429,3.4999,3.4873,3.4817,3.6026,3.6637,3.6536,3.6768,3.7326,3.6424,3.7331,3.7697,3.7807,3.7791,3.792,3.8515,3.8992,3.8882,3.9316,3.8365,3.9033,3.9788,4.0071,3.9419,3.9476,3.8718,4.0148,4.0284,4.0053,4.0102,4.0675,4.0254,4.0897,4.0755,4.0612,4.0773,4.0694,4.017,4.0624,4.042,3.9619,3.9024,3.8322,3.7466,3.8751,4.0147,4.196,4.2184,4.2581,4.3583,4.3675,4.4057,4.4698,4.3579,4.3827,4.4236,4.3184,4.412,4.4722,4.4032,4.3773,4.4253,4.5807,4.599,4.536,4.5575,4.5625,4.5276,4.5234,4.5807,4.5706,4.6236,4.5326,4.5132,4.4879,4.3666,4.4799,4.3943],"oos":"2022-01-03","yearly":[[2016,-7.8,"in_sample"],[2017,-2.4,"in_sample"],[2018,-3.1,"in_sample"],[2019,-2.0,"in_sample"],[2020,28.8,"in_sample"],[2021,7.9,"in_sample"],[2022,10.6,"oos"],[2023,-2.8,"oos"],[2024,-8.1,"oos"],[2025,-0.1,"oos"],[2026,-4.7,"oos"]],"x_is":[["0",0.59],["2",0.733],["4",0.993],["6",1.008],["8",1.014],["10",1.015],["12",1.001],["14",0.993],["16",0.996],["18",0.992],["20",0.992],["22",0.996],["24",0.996],["26",0.996],["28",0.993],["30",0.995],["none",1.001]],"x_oos":[["0",0.492],["2",0.496],["4",0.492],["6",0.503],["8",0.545],["10",0.559],["12",0.554],["14",0.552],["16",0.549],["18",0.55],["20",0.552],["22",0.555],["24",0.562],["26",0.561],["28",0.559],["30",0.559],["none",0.562]],"spy_is":1.014,"spy_oos":0.688}</script>
 <script>
 (function(){
-  var D=JSON.parse(document.getElementById('res-data').textContent), NS='http://www.w3.org/2000/svg';
+  var D=JSON.parse(document.getElementById('res-data').textContent),NS='http://www.w3.org/2000/svg';
   function mk(svg,n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
-  function fmt(v,d){return v.toLocaleString('da-DK',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  function fmt(v,d){return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  // purchases per year
+  var sb=document.getElementById('buys');
+  if(sb){var data=[[2016,1370],[2017,1564],[2018,1745],[2019,2015],[2020,3049],[2021,2433],[2022,1347],[2023,1265],[2024,1072],[2025,3300],[2026,1407]];
+    var L=48,R=632,T=24,B=244,max=3500,Y=function(v){return B-(v/max)*(B-T)};
+    [0,1000,2000,3000].forEach(function(v){mk(sb,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sb,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,0));});
+    var slot=(R-L)/data.length,bw=slot*0.62;
+    data.forEach(function(d,i){var x=L+i*slot+(slot-bw)/2;
+      mk(sb,'rect',{x:x,y:Y(d[1]),width:bw,height:B-Y(d[1]),fill:d[0]>=2022?'var(--stone)':'var(--green)'});
+      mk(sb,'text',{x:x+bw/2,y:Y(d[1])-6,'text-anchor':'middle','class':'note'},fmt(d[1],0));
+      mk(sb,'text',{x:x+bw/2,y:B+20,'text-anchor':'middle'},"'"+String(d[0]).slice(2));});
+  }
   // equity
   var sv=document.getElementById('equity');
-  if(sv){var L=44,R=664,T=14,B=270,n=D.dates.length,max=6,min=0.5;
+  if(sv){var L=40,R=1000,T=16,B=360,n=D.dates.length,min=0.6,max=6.4;
     var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
-    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)}, Y=function(v){return B-(v-min)/(max-min)*(B-T)};
-    var xo=X(D.oos);mk(sv,'rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--oos)'});
-    [1,2,3,4,5,6].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sv,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,0));});
-    for(var yr=2016;yr<=2026;yr+=2){var x=X(yr+'-01-04');mk(sv,'text',{x:x,y:B+18,'text-anchor':'middle'},yr);}
-    function path(arr){return arr.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v).toFixed(1)}).join('');}
-    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--muted)','stroke-width':1.6});
-    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--accent)','stroke-width':2});
-    mk(sv,'text',{x:xo+6,y:T+14},'Test fra 3. jan. 2022');
+    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)},Y=function(v){return B-(v-min)/(max-min)*(B-T)};
+    var xo=X(D.oos);mk(sv,'rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--test)'});
+    mk(sv,'text',{x:xo+8,y:T+16,'class':'note'},'Test period');
+    [1,2,3,4,5,6].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sv,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},'$'+v);});
+    for(var yr=2016;yr<=2026;yr+=2){mk(sv,'text',{x:X(yr+'-01-04'),y:B+24,'text-anchor':'middle'},yr);}
+    function path(a){return a.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v).toFixed(1)}).join('');}
+    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--stone)','stroke-width':1.75});
+    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--green)','stroke-width':2.5});
     var ls=D.s[n-1],lm=D.m[n-1];
-    mk(sv,'circle',{cx:R,cy:Y(ls),r:3.5,fill:'var(--accent)'});mk(sv,'circle',{cx:R,cy:Y(lm),r:3.5,fill:'var(--muted)'});
-    mk(sv,'text',{x:R-6,y:Y(ls)-8,'text-anchor':'end','class':'val'},fmt(ls,2));
-    mk(sv,'text',{x:R-6,y:Y(lm)+16,'text-anchor':'end','class':'val'},fmt(lm,2));
+    mk(sv,'circle',{cx:R,cy:Y(ls),r:4.5,fill:'var(--green)'});mk(sv,'circle',{cx:R,cy:Y(lm),r:4,fill:'var(--stone)'});
+    mk(sv,'text',{x:R+14,y:Y(ls)+4,'class':'figure-green',style:'font-size:24px'},'$'+fmt(ls,2));mk(sv,'text',{x:R+14,y:Y(ls)+22},'Strategy');
+    mk(sv,'text',{x:R+14,y:Y(lm)+14,'class':'figure',style:'font-size:22px'},'$'+fmt(lm,2));mk(sv,'text',{x:R+14,y:Y(lm)+32},'S&P 500');
   }
   // yearly excess
   var sy=document.getElementById('yearly');
-  if(sy){var L=36,R=412,T=14,B=212,lo=-10,hi=30,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    [-10,0,10,20,30].forEach(function(v){mk(sy,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===0?'var(--muted)':'var(--rule)'});mk(sy,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},(v>0?'+':'')+v);});
-    var slot=(R-L)/D.yearly.length,bw=slot*0.62;
+  if(sy){var L=40,R=552,T=20,B=244,lo=-10,hi=30,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    [-10,0,10,20,30].forEach(function(v){mk(sy,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===0?'var(--ink-2)':'var(--rule)'});mk(sy,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},(v>0?'+':'')+v);});
+    var slot=(R-L)/D.yearly.length,bw=slot*0.6;
     D.yearly.forEach(function(r,i){var x=L+i*slot+(slot-bw)/2,v=r[1],y0=Y(0),y1=Y(v);
-      mk(sy,'rect',{x:x,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0)),fill:r[2]==='oos'?'var(--ink-2)':'var(--accent)',rx:1.5});
-      mk(sy,'text',{x:x+bw/2,y:v>=0?y1-5:y1+12,'text-anchor':'middle','class':'val'},(v>0?'+':'')+fmt(v,1));
-      mk(sy,'text',{x:x+bw/2,y:B+16,'text-anchor':'middle'},"'"+String(r[0]).slice(2));});
+      mk(sy,'rect',{x:x,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0)),fill:v>=0?'var(--green)':'var(--stone)'});
+      mk(sy,'text',{x:x+bw/2,y:v>=0?y1-6:y1+16,'text-anchor':'middle','class':'note'},(v>0?'+':v<0?'−':'')+fmt(Math.abs(v),1));
+      mk(sy,'text',{x:x+bw/2,y:B+22,'text-anchor':'middle'},"'"+String(r[0]).slice(2));});
   }
-  // sharpe vs X
+  // Sharpe vs X
   var sx=document.getElementById('xchart');
-  if(sx){var L=36,R=392,T=14,B=212,lo=0.4,hi=1.1,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
-    var labs=D.x_is.map(function(p){return p[0]}),slot=(R-L-24)/(labs.length-1),Xp=function(i){return L+8+i*slot+(i===labs.length-1?12:0)};
-    [0.4,0.6,0.8,1.0].forEach(function(v){mk(sx,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sx,'text',{x:L-6,y:Y(v)+4,'text-anchor':'end'},fmt(v,1));});
-    [[D.spy_is,'var(--accent)'],[D.spy_oos,'var(--ink-2)']].forEach(function(r){mk(sx,'line',{x1:L,x2:R,y1:Y(r[0]),y2:Y(r[0]),stroke:r[1],'stroke-dasharray':'4 4','stroke-width':1.2,opacity:.8});});
-    [[D.x_is,'var(--accent)'],[D.x_oos,'var(--ink-2)']].forEach(function(r){
+  if(sx){var L=40,R=520,T=20,B=240,lo=0.4,hi=1.1,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    var labs=D.x_is.map(function(p){return p[0]}),slot=(R-L-32)/(labs.length-1),Xp=function(i){return L+8+i*slot+(i===labs.length-1?16:0)};
+    [0.4,0.6,0.8,1.0].forEach(function(v){mk(sx,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sx,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,1));});
+    [[D.spy_is,'var(--green)'],[D.spy_oos,'var(--stone)']].forEach(function(r){mk(sx,'line',{x1:L,x2:R,y1:Y(r[0]),y2:Y(r[0]),stroke:r[1],'stroke-dasharray':'4 4','stroke-width':1.25});});
+    [[D.x_is,'var(--green)'],[D.x_oos,'var(--stone)']].forEach(function(r){
       var pts=r[0].slice(0,-1).map(function(p,i){return (i?'L':'M')+Xp(i).toFixed(1)+' '+Y(p[1]).toFixed(1)}).join('');
-      mk(sx,'path',{d:pts,fill:'none',stroke:r[1],'stroke-width':2});
+      mk(sx,'path',{d:pts,fill:'none',stroke:r[1],'stroke-width':2.25});
       var last=r[0][r[0].length-1];mk(sx,'circle',{cx:Xp(labs.length-1),cy:Y(last[1]),r:4,fill:r[1]});});
-    labs.forEach(function(l,i){if(l==='none'||(+l)%10===0)mk(sx,'text',{x:Xp(i),y:B+16,'text-anchor':'middle'},l==='none'?'ingen':l+' %');});
-    var ci=labs.indexOf('10');mk(sx,'line',{x1:Xp(ci),x2:Xp(ci),y1:T,y2:B,stroke:'var(--muted)','stroke-dasharray':'2 3'});
-    mk(sx,'text',{x:Xp(ci)+4,y:T+10},'valgt');
+    labs.forEach(function(l,i){if(l==='none'||(+l)%10===0)mk(sx,'text',{x:Xp(i),y:B+22,'text-anchor':'middle'},l==='none'?'none':l+'%');});
+    var ci=labs.indexOf('10');mk(sx,'line',{x1:Xp(ci),x2:Xp(ci),y1:T,y2:B,stroke:'var(--seal)','stroke-dasharray':'2 3'});
+    mk(sx,'text',{x:Xp(ci)+6,y:T+12,'class':'note'},'chosen');
   }
 })();
 </script>
+
 </body>
 </html>

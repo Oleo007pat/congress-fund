@@ -1,0 +1,56 @@
+<script>
+(function(){
+  var root=document.getElementById('live-root'); if(!root||!window.fetch) return;
+  fetch('data/live.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(render).catch(function(){});
+  function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pct(v){if(v==null||isNaN(v))return '–';return (v>0?'+':v<0?'−':'')+Math.abs(Number(v)).toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';}
+  var STATUS={ok:'completed',dry_run:'test run',house_unreachable:'House website unreachable'};
+  // The fund's log is written in Danish; translate the common reasons for this English page.
+  function reason(r){
+    r=String(r||'');var m;
+    if((m=r.match(/^køb[^,]*,[^,]*?kurs steget ([+\-−]?[\d.,]+) %/)))return 'Bought: price moved '+m[1].replace(',','.')+'% since the member\'s trade (limit +10%)';
+    if((m=r.match(/^sprunget over: kursen er steget ([\d.,]+) %/)))return 'Skipped: price already up '+m[1].replace(',','.')+'% (limit 10%)';
+    if((m=r.match(/^for sent: indgang ville ligge (\d+) dage/)))return 'Too late: entry would be '+m[1]+' days after the filing (maximum 7)';
+    if(/^ingen ticker/.test(r))return 'No ticker (fund, bond or private company)';
+    if(/^salg registreret/.test(r))return 'Sale recorded, used for exits only';
+    if((m=r.match(/^ikke medlemmets eget valg \((.*)\)/)))return 'Not the member\'s own decision ('+m[1]+')';
+    if(/^ikke læsbar/.test(r))return 'Scanned paper filing, cannot be read';
+    if(/^ændringsindberetning/.test(r))return 'Amended filing without a known original';
+    return r;
+  }
+  function day(s){if(!s)return '';var d=new Date(String(s).slice(0,10)+'T12:00:00Z');return isNaN(d)?String(s):d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
+  function render(D){
+    var lr=D&&D.last_run||{};
+    if(!D||!D.curve||!D.curve.dates||!D.curve.dates.length){
+      if(D&&D.last_run){root.querySelector('.live-empty p').textContent='Last run: '+String(lr.time_utc||'').slice(0,16).replace('T',' ')+' UTC, '+(STATUS[lr.status]||lr.status||'')+'. The first positions appear after the next market open.';}
+      return;}
+    var tr=D.total_return||{},h='';
+    h+='<div class="live-kpis">'+
+      '<div><b class="num">'+pct(tr.fund_pct)+'</b><span>Ekklesia since '+esc(day(D.start_date))+'</span></div>'+
+      '<div><b class="num">'+pct(tr.spy_pct)+'</b><span>S&amp;P 500 over the same period</span></div>'+
+      '<div><b class="num">'+(D.positions?D.positions.length:0)+'</b><span>open positions</span></div>'+
+      '<div><b class="num" style="font-size:1.25rem;font-family:var(--text);font-weight:500">'+esc(day(lr.time_utc))+'</b><span>last run, '+esc(STATUS[lr.status]||lr.status||'')+'</span></div></div>';
+    h+='<figure style="margin:0"><div class="chart-wide"><svg id="livechart" viewBox="0 0 1136 300" role="img" aria-label="Value of the paper fund against the S&amp;P 500, indexed to 100 at the start" style="width:100%;min-width:560px;height:auto"></svg></div><figcaption class="small" style="margin-top:8px">Value indexed to 100 at the start. Green: Ekklesia. Grey: S&amp;P 500.</figcaption></figure>';
+    if(D.positions&&D.positions.length){
+      h+='<div><h3 style="margin-bottom:8px">Open positions</h3><div class="table-wrap"><table><thead><tr><th>Stock</th><th>Member</th><th>Filed</th><th>Bought</th><th class="r">Return</th><th>Planned sale</th></tr></thead><tbody class="num">';
+      D.positions.forEach(function(p){h+='<tr><td><b>'+esc(p.ticker)+'</b></td><td>'+esc(p.member)+'</td><td>'+esc(day(p.filed))+'</td><td>'+esc(day(p.entered))+'</td><td class="r">'+pct(p.return_pct)+'</td><td>'+esc(/^\d{4}-/.test(p.planned_exit||'')?day(p.planned_exit):'when the member sells')+'</td></tr>';});
+      h+='</tbody></table></div></div>';}
+    if(D.decisions&&D.decisions.length){
+      var lbl={taken:'Bought',skipped:'Skipped',ignored:'Not included'};
+      h+='<div><h3 style="margin-bottom:8px">Latest decisions</h3><div class="table-wrap"><table><thead><tr><th>Member</th><th>Stock</th><th>Filed</th><th>Decision</th><th>Reason</th></tr></thead><tbody>';
+      D.decisions.slice(0,12).forEach(function(d){h+='<tr><td>'+esc(d.member)+'</td><td><b>'+esc(d.ticker||'–')+'</b></td><td class="num">'+esc(day(d.filed))+'</td><td><span class="decision '+esc(d.decision)+'">'+esc(lbl[d.decision]||d.decision)+'</span></td><td class="small">'+esc(reason(d.reason))+'</td></tr>';});
+      h+='</tbody></table></div></div>';}
+    root.innerHTML=h;
+    var sv=document.getElementById('livechart'),NS='http://www.w3.org/2000/svg',c=D.curve;
+    function mk(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;sv.appendChild(e);return e;}
+    var all=c.fund.concat(c.spy).filter(function(v){return v!=null}),lo=Math.min.apply(null,all),hi=Math.max.apply(null,all),pad=Math.max(1,(hi-lo)*0.15);lo-=pad;hi+=pad;
+    var L=56,R=1128,T=16,B=264,n=c.dates.length,X=function(i){return n<2?(L+R)/2:L+i*(R-L)/(n-1)},Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    [lo+pad,100,hi-pad].forEach(function(v){mk('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===100?'var(--rule-strong)':'var(--rule)'});mk('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},hi-lo<12?v.toFixed(1):String(Math.round(v)));});
+    mk('text',{x:L,y:B+24},day(c.dates[0]));if(n>1)mk('text',{x:R,y:B+24,'text-anchor':'end'},day(c.dates[n-1]));
+    function path(a){var d='';a.forEach(function(v,i){if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);});return d;}
+    mk('path',{d:path(c.spy),fill:'none',stroke:'var(--stone)','stroke-width':1.75});
+    mk('path',{d:path(c.fund),fill:'none',stroke:'var(--green)','stroke-width':2.5});
+    if(n===1){mk('circle',{cx:X(0),cy:Y(c.fund[0]),r:5,fill:'var(--green)'});}
+  }
+})();
+</script>

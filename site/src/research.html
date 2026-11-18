@@ -1,0 +1,254 @@
+%%HEADER%%
+<main id="content">
+<div class="wrap">
+  <section class="hero" aria-labelledby="h-r">
+    <div class="hero-top">
+      <h1 id="h-r">Can you make money copying Congress's stock purchases?</h1>
+      <div class="intro">
+        <p>The research behind Ekklesia Capital: how the data was collected, how the backtest avoids knowing the future, what an independent review found, and what the data cannot tell us.</p>
+        <div class="actions"><a class="button line" href="https://github.com/Oleo007pat/congress-fund">View the code</a></div>
+      </div>
+    </div>
+    <figure class="record" aria-label="Example of one line in a disclosure report and the fields the parser extracts">
+      <div class="record-line"><span class="hl">SP</span>&nbsp; Example Corp. Common Stock (<span class="hl">EXMP</span>) [<span class="hl">ST</span>]&nbsp; <span class="hl">P</span>&nbsp; <span class="hl">01/14/2025</span>&nbsp; 02/03/2025&nbsp; <span class="hl">$1,001 - $15,000</span></div>
+      <dl class="record-fields">
+        <div><dt>Owner</dt><dd>spouse</dd></div>
+        <div><dt>Ticker</dt><dd>EXMP</dd></div>
+        <div><dt>Asset</dt><dd>stock (ST)</dd></div>
+        <div><dt>Transaction</dt><dd>purchase (P)</dd></div>
+        <div><dt>Trade date</dt><dd class="num">14 Jan 2025</dd></div>
+        <div><dt>Amount</dt><dd class="num">$1,001–15,000</dd></div>
+      </dl>
+      <figcaption class="fine">One line from a Periodic Transaction Report, using an invented company to show the format, and the fields the parser reads from it. The parser handles three report templates from 2016 to today and was checked against 26 filings read by hand.</figcaption>
+    </figure>
+    <dl class="facts">
+      <div><dt>Filings collected</dt><dd class="num">7,004</dd></div>
+      <div><dt>Trades in the backtest</dt><dd class="num">41,998</dd></div>
+      <div><dt>Purchases</dt><dd class="num">20,567</dd></div>
+      <div><dt>Members with purchases</dt><dd class="num">193</dd></div>
+      <div><dt>Purchases with a price</dt><dd class="num">94.8%</dd></div>
+      <div><dt>Data up to</dt><dd class="num">16 Nov 2026</dd></div>
+    </dl>
+  </section>
+
+  <section class="section split" aria-labelledby="h-time">
+    <div class="lead">
+      <h2 id="h-time">The backtest never knows a trade before the public does</h2>
+      <p>The most common error in this kind of analysis is trading on the member's trade date. That date only becomes known when the filing is published. The backtest therefore buys at the earliest at the open on the day after the filing.</p>
+    </div>
+    <ol class="steps steps-4">
+      <li><h3>The member trades</h3><p>The trade date is in the filing, but nobody else knows it yet.</p></li>
+      <li><h3>The filing</h3><p>The STOCK Act deadline is 45 days. 19% of purchases were filed later.</p><span class="rule-tag">Median 28 days; 90% within 226 days</span></li>
+      <li><h3>Made public</h3><p>The filing date from the House's own index. Only now is the trade known.</p></li>
+      <li><h3>The fund buys</h3><p>At the next day's opening price, with a trading cost of 0.1%.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" aria-labelledby="h-pipe">
+    <div class="head">
+      <h2 id="h-pipe">From PDF to backtest in five stages</h2>
+      <p>Each stage is a separate Python module with its own tests. All data comes from free, public sources.</p>
+    </div>
+    <dl class="principles">
+      <div><dt>Collect</dt><dd><p>The House's yearly index and every transaction report PDF since 2016. The download can resume after interruptions and failed on 0 of 7,004 files. <span class="small">requests, XML; 19 tests</span></p></dd></div>
+      <div><dt>Parse</dt><dd><p>Three templates, page breaks in the middle of a trade, lower-case tickers and amended filings. Duplicates and deleted trades are flagged. <span class="small">pypdf, regular expressions; 46 tests</span></p></dd></div>
+      <div><dt>Price</dt><dd><p>Daily prices adjusted for splits and dividends. Ticker changes are traced through history, and delisted stocks are kept. <span class="small">Alpaca SIP feed; 12 tests</span></p></dd></div>
+      <div><dt>Simulate</dt><dd><p>136 combinations of skip threshold, exit rule and weighting, chosen on 2016–2021 and then tested unchanged on 2022–2026. <span class="small">pandas, numpy; 42 tests</span></p></dd></div>
+      <div><dt>Review</dt><dd><p>An independent review in two rounds. The first found two serious errors, which were fixed; the second found none. <span class="small">Newey-West statistics, hand-checked samples</span></p></dd></div>
+    </dl>
+  </section>
+
+  <section class="section split" aria-labelledby="h-rules">
+    <div class="lead">
+      <h2 id="h-rules">The rules, fixed before the results</h2>
+      <p>The rules were written down before any result was seen. Where a rule was unclear, the most conservative reading was chosen and recorded.</p>
+    </div>
+    <dl class="risks">
+      <div><dt>Signal</dt><dd>Every purchase of a stock or ETF, including those of spouses and children. No options, bonds or crypto.</dd></div>
+      <div><dt>Skip rule</dt><dd>Skip a purchase only if the price has risen more than X% since the member's trade. A fall never causes a skip.</dd></div>
+      <div><dt>Threshold X</dt><dd class="num">0, 2, 4 … 30%, and no threshold</dd></div>
+      <div><dt>Exit</dt><dd>When the member sells, or after a fixed 3, 6 or 12 months</dd></div>
+      <div><dt>Weighting</dt><dd>Equal per trade, or by the midpoint of the disclosed amount range</dd></div>
+      <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY with dividends) over the same period</dd></div>
+      <div><dt>Overfitting guard</dt><dd>Rules chosen on 2016–2021 only, then tested unchanged on 2022 to today</dd></div>
+      <div><dt>Costs</dt><dd>0.1% on each purchase and each sale</dd></div>
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="h-data">
+    <div class="head"><h2 id="h-data">The data</h2></div>
+    <div class="perf">
+      <figure style="margin:0">
+        <h3>Purchases per filing year</h3>
+        <div class="chart-wide"><svg id="buys" viewBox="0 0 640 280" role="img" aria-label="Bar chart of purchases per filing year from 2016 to 2026" style="width:100%;min-width:480px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">2016–2021 (green) was used to choose the rules: 12,176 purchases. 2022–2026 (grey) was the test: 8,391 purchases. 2026 runs to 16 November.</figcaption>
+      </figure>
+      <div>
+        <h3>Purchases with a price</h3>
+        <div class="table-wrap"><table style="margin-top:12px">
+          <thead><tr><th>Point in time</th><th class="r">Coverage</th></tr></thead>
+          <tbody class="num">
+            <tr><th>Entry, the day after filing</th><td class="r">94.8%</td></tr>
+            <tr><th>After 3 months</th><td class="r">94.4%</td></tr>
+            <tr><th>After 6 months</th><td class="r">93.9%</td></tr>
+            <tr><th>After 12 months</th><td class="r">92.6%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small" style="margin-top:16px">2,848 of 3,418 tickers are matched to price data. Most of the rest are over-the-counter and delisted stocks that the price feed does not cover.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-res">
+    <div class="head">
+      <h2 id="h-res">Ten years of results</h2>
+      <p>The rule chosen on 2016–2021 holds each purchase for six months, weights it by the disclosed amount and skips it if the price has already risen more than 10%. Over the full period it returned +400% against +338% for the S&amp;P 500, with more volatility.</p>
+    </div>
+    <figure style="margin:0">
+      <div class="chart-wide"><svg id="equity" viewBox="0 0 1136 400" role="img" aria-label="Growth of one dollar for the strategy and the S&amp;P 500, 2016 to 2026" style="width:100%;min-width:560px;height:auto"></svg></div>
+      <figcaption class="small" style="margin-top:12px">Growth of $1, January 2016 to November 2026. The shaded area is the test period, after the rules were fixed.</figcaption>
+    </figure>
+    <div class="perf" style="margin-top:56px">
+      <div>
+        <h3>The test period on its own</h3>
+        <p class="small" style="margin-top:8px">From 3 January 2022, after the rules were fixed, the strategy was close to the index. Its excess return was not statistically different from zero.</p>
+        <div class="table-wrap"><table style="margin-top:12px">
+          <thead><tr><th>3 Jan 2022 – 16 Nov 2026</th><th class="r">Strategy</th><th class="r">S&amp;P 500</th></tr></thead>
+          <tbody class="num">
+            <tr><th>Total return</th><td class="r">+63.9%</td><td class="r">+66.0%</td></tr>
+            <tr><th>Annual return (CAGR)</th><td class="r">10.7%</td><td class="r">11.0%</td></tr>
+            <tr><th>Volatility</th><td class="r">22.9%</td><td class="r">17.4%</td></tr>
+            <tr><th>Sharpe ratio (rf = 0)</th><td class="r">0.56</td><td class="r">0.69</td></tr>
+            <tr><th>Maximum drawdown</th><td class="r">−22.4%</td><td class="r">−24.5%</td></tr>
+            <tr><th>Alpha a year (Newey-West t)</th><td class="r">−0.3% (−0.06)</td><td class="r">–</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <figure style="margin:0">
+        <h3>Excess return by year</h3>
+        <div class="chart-wide"><svg id="yearly" viewBox="0 0 560 280" role="img" aria-label="Bars of the strategy's excess return over the S&amp;P 500 for each year from 2016 to 2026" style="width:100%;min-width:440px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">Percentage points against the S&amp;P 500. 2020, 2021 and 2022 were positive.</figcaption>
+      </figure>
+    </div>
+    <div class="perf" style="margin-top:56px">
+      <figure style="margin:0">
+        <h3>Sharpe ratio by skip threshold</h3>
+        <div class="chart-wide"><svg id="xchart" viewBox="0 0 560 280" role="img" aria-label="Sharpe ratio for each skip threshold, for 2016 to 2021 and 2022 to 2026" style="width:100%;min-width:440px;height:auto;margin-top:12px"></svg></div>
+        <figcaption class="fine">Green: 2016–2021. Grey: 2022–2026. Dashed lines: the S&amp;P 500. Above 4% the curves are flat, so skipping purchases after a rise adds nothing reliable.</figcaption>
+      </figure>
+      <div>
+        <h3>What the independent review found</h3>
+        <dl class="risks" style="margin-top:12px">
+          <div><dt>Round 1: two serious errors</dt><dd>The first version showed +106% against +66% for the test period. The review showed this came from the test portfolio starting empty and holding almost only one member's energy purchases in 2022. Measured as one continuous portfolio, the lead disappeared.</dd></div>
+          <div><dt>Round 2: no serious errors</dt><dd>All 18,068 trades were recomputed from the raw data with no differences, and ten random trades were checked by hand. The choice of rule is fragile: several variants score almost the same.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section split" aria-labelledby="h-ms">
+    <div class="lead">
+      <h2 id="h-ms">Following only the best members</h2>
+      <p>The next idea was to copy only members whose earlier purchases had beaten the market, judging each member only on trades that had closed before the purchase. 128 variants were tested, and the best on 2016–2021 was chosen by a rule fixed in advance: copy the top 20% of members over the last 24 months.</p>
+    </div>
+    <div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>2022 – 16 Nov 2026</th><th class="r">Best members</th><th class="r">All purchases</th><th class="r">S&amp;P 500</th></tr></thead>
+        <tbody class="num">
+          <tr><th>Total return</th><td class="r">+89.6%</td><td class="r">+63.9%</td><td class="r">+66.0%</td></tr>
+          <tr><th>Sharpe ratio</th><td class="r">0.72</td><td class="r">0.56</td><td class="r">0.69</td></tr>
+          <tr><th>Alpha a year (t)</th><td class="r">+4.9% (0.69)</td><td class="r">−0.3% (−0.06)</td><td class="r">–</td></tr>
+          <tr><th>Without the largest member</th><td class="r">+19.2%</td><td class="r">–</td><td class="r">+66.0%</td></tr>
+          <tr><th>Deflated Sharpe ratio (128 tests)</th><td class="r">0.27</td><td class="r">–</td><td class="r">–</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small" style="margin-top:16px">Two members made up 75% of the portfolio: Mark Green's energy purchases and some very large Microsoft purchases by Suzan DelBene's spouse. Per trade, the selected members did 1.8 percentage points worse than the market over six months, against 0.9 for those not selected. Past winners did not keep winning. A deflated Sharpe ratio would need to exceed 0.95 to count as evidence.</p>
+    </div>
+  </section>
+
+  <section class="section split" aria-labelledby="h-ov">
+    <div class="lead">
+      <h2 id="h-ov">Trying to reduce the risk</h2>
+      <p>Eighteen fixed variants of known risk techniques were tested on top of the same signal: equal, amount and square-root weighting; caps of 5% per stock or 15% per member; and volatility targeting.</p>
+    </div>
+    <div>
+      <p class="measure" style="color:var(--ink-2)">None improved the original rule on 2016–2021, so the live fund keeps it. Volatility targeting lowered the swings (22.9% to 15.5% a year since 2022) but also the return (+63.9% to +52.4%), and it helped the S&amp;P 500 just as much, so it says nothing about this strategy in particular. A 5% cap per stock would have looked better after 2022, but it was worse before, and picking it now would mean choosing with hindsight.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-gaps">
+    <div class="head">
+      <h2 id="h-gaps">What the data cannot tell us</h2>
+      <p>Gaps are reported as gaps. Nothing is filled in with estimates.</p>
+    </div>
+    <dl class="risks">
+      <div><dt>Scanned filings are missing</dt><dd>1,692 of 7,004 filings (24%) are scanned paper without text. They are concentrated in 2016–2018 and among some of the most active traders. Two independent readers agreed on 254 of 254 trades in a sample, but the rest are not in this version.</dd></div>
+      <div><dt>Survivorship bias</dt><dd>5.2% of purchases have no price at entry, mostly delisted companies. This can flatter the result. The number is reported in every calculation.</dd></div>
+      <div><dt>Amended filings</dt><dd>324 amended rows cannot be matched to an original and may be counted twice.</dd></div>
+      <div><dt>House only</dt><dd>The Senate's database blocks automated downloads. The Senate will be added later if a suitable data source is found.</dd></div>
+    </dl>
+  </section>
+</div>
+</main>
+%%FOOTER%%
+
+<script id="res-data" type="application/json">%%RESDATA%%</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('res-data').textContent),NS='http://www.w3.org/2000/svg';
+  function mk(svg,n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
+  function fmt(v,d){return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  // purchases per year
+  var sb=document.getElementById('buys');
+  if(sb){var data=[[2016,1370],[2017,1564],[2018,1745],[2019,2015],[2020,3049],[2021,2433],[2022,1347],[2023,1265],[2024,1072],[2025,3300],[2026,1407]];
+    var L=48,R=632,T=24,B=244,max=3500,Y=function(v){return B-(v/max)*(B-T)};
+    [0,1000,2000,3000].forEach(function(v){mk(sb,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sb,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,0));});
+    var slot=(R-L)/data.length,bw=slot*0.62;
+    data.forEach(function(d,i){var x=L+i*slot+(slot-bw)/2;
+      mk(sb,'rect',{x:x,y:Y(d[1]),width:bw,height:B-Y(d[1]),fill:d[0]>=2022?'var(--stone)':'var(--green)'});
+      mk(sb,'text',{x:x+bw/2,y:Y(d[1])-6,'text-anchor':'middle','class':'note'},fmt(d[1],0));
+      mk(sb,'text',{x:x+bw/2,y:B+20,'text-anchor':'middle'},"'"+String(d[0]).slice(2));});
+  }
+  // equity
+  var sv=document.getElementById('equity');
+  if(sv){var L=40,R=1000,T=16,B=360,n=D.dates.length,min=0.6,max=6.4;
+    var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
+    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)},Y=function(v){return B-(v-min)/(max-min)*(B-T)};
+    var xo=X(D.oos);mk(sv,'rect',{x:xo,y:T,width:R-xo,height:B-T,fill:'var(--test)'});
+    mk(sv,'text',{x:xo+8,y:T+16,'class':'note'},'Test period');
+    [1,2,3,4,5,6].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sv,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},'$'+v);});
+    for(var yr=2016;yr<=2026;yr+=2){mk(sv,'text',{x:X(yr+'-01-04'),y:B+24,'text-anchor':'middle'},yr);}
+    function path(a){return a.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v).toFixed(1)}).join('');}
+    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--stone)','stroke-width':1.75});
+    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--green)','stroke-width':2.5});
+    var ls=D.s[n-1],lm=D.m[n-1];
+    mk(sv,'circle',{cx:R,cy:Y(ls),r:4.5,fill:'var(--green)'});mk(sv,'circle',{cx:R,cy:Y(lm),r:4,fill:'var(--stone)'});
+    mk(sv,'text',{x:R+14,y:Y(ls)+4,'class':'figure-green',style:'font-size:24px'},'$'+fmt(ls,2));mk(sv,'text',{x:R+14,y:Y(ls)+22},'Strategy');
+    mk(sv,'text',{x:R+14,y:Y(lm)+14,'class':'figure',style:'font-size:22px'},'$'+fmt(lm,2));mk(sv,'text',{x:R+14,y:Y(lm)+32},'S&P 500');
+  }
+  // yearly excess
+  var sy=document.getElementById('yearly');
+  if(sy){var L=40,R=552,T=20,B=244,lo=-10,hi=30,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    [-10,0,10,20,30].forEach(function(v){mk(sy,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:v===0?'var(--ink-2)':'var(--rule)'});mk(sy,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},(v>0?'+':'')+v);});
+    var slot=(R-L)/D.yearly.length,bw=slot*0.6;
+    D.yearly.forEach(function(r,i){var x=L+i*slot+(slot-bw)/2,v=r[1],y0=Y(0),y1=Y(v);
+      mk(sy,'rect',{x:x,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0)),fill:v>=0?'var(--green)':'var(--stone)'});
+      mk(sy,'text',{x:x+bw/2,y:v>=0?y1-6:y1+16,'text-anchor':'middle','class':'note'},(v>0?'+':v<0?'−':'')+fmt(Math.abs(v),1));
+      mk(sy,'text',{x:x+bw/2,y:B+22,'text-anchor':'middle'},"'"+String(r[0]).slice(2));});
+  }
+  // Sharpe vs X
+  var sx=document.getElementById('xchart');
+  if(sx){var L=40,R=520,T=20,B=240,lo=0.4,hi=1.1,Y=function(v){return B-(v-lo)/(hi-lo)*(B-T)};
+    var labs=D.x_is.map(function(p){return p[0]}),slot=(R-L-32)/(labs.length-1),Xp=function(i){return L+8+i*slot+(i===labs.length-1?16:0)};
+    [0.4,0.6,0.8,1.0].forEach(function(v){mk(sx,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)'});mk(sx,'text',{x:L-8,y:Y(v)+4,'text-anchor':'end'},fmt(v,1));});
+    [[D.spy_is,'var(--green)'],[D.spy_oos,'var(--stone)']].forEach(function(r){mk(sx,'line',{x1:L,x2:R,y1:Y(r[0]),y2:Y(r[0]),stroke:r[1],'stroke-dasharray':'4 4','stroke-width':1.25});});
+    [[D.x_is,'var(--green)'],[D.x_oos,'var(--stone)']].forEach(function(r){
+      var pts=r[0].slice(0,-1).map(function(p,i){return (i?'L':'M')+Xp(i).toFixed(1)+' '+Y(p[1]).toFixed(1)}).join('');
+      mk(sx,'path',{d:pts,fill:'none',stroke:r[1],'stroke-width':2.25});
+      var last=r[0][r[0].length-1];mk(sx,'circle',{cx:Xp(labs.length-1),cy:Y(last[1]),r:4,fill:r[1]});});
+    labs.forEach(function(l,i){if(l==='none'||(+l)%10===0)mk(sx,'text',{x:Xp(i),y:B+22,'text-anchor':'middle'},l==='none'?'none':l+'%');});
+    var ci=labs.indexOf('10');mk(sx,'line',{x1:Xp(ci),x2:Xp(ci),y1:T,y2:B,stroke:'var(--seal)','stroke-dasharray':'2 3'});
+    mk(sx,'text',{x:Xp(ci)+6,y:T+12,'class':'note'},'chosen');
+  }
+})();
+</script>

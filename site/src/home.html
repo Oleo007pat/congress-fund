@@ -1,0 +1,222 @@
+%%HEADER%%
+<main id="content">
+<div class="wrap">
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="hero-top">
+      <h1 id="h-hero">Following the stock trades of the U.S. Congress</h1>
+      <div class="intro">
+        <p>Ekklesia Capital is a rule-based paper fund. It buys the stocks that members of the House of Representatives disclose buying, at the market open after the disclosure becomes public, and holds each one for six months.</p>
+        <div class="actions">
+          <a class="button solid" href="#portfolio">Follow the live portfolio</a>
+          <a class="button line" href="#performance">See the performance</a>
+        </div>
+      </div>
+    </div>
+    <figure class="hero-chart">
+      <div class="chart-wide"><svg id="hero-chart" viewBox="0 0 1136 440" role="img" aria-label="Simulated growth of 100 dollars from January 2016 to November 2026: Ekklesia Capital ends at 500, the S&amp;P 500 at 438"></svg></div>
+      <figcaption class="small">Simulated growth of $100 invested in January 2016, after trading costs of 0.1% per trade. Ekklesia returned 16.0% a year against 14.6% for the S&amp;P 500, with higher volatility (21.6% against 17.5%).</figcaption>
+    </figure>
+    <dl class="facts">
+      <div><dt>Status</dt><dd class="status">Paper fund, not open to investors</dd></div>
+      <div><dt>Universe</dt><dd>U.S. stocks and ETFs</dd></div>
+      <div><dt>Benchmark</dt><dd>S&amp;P 500 (SPY, dividends reinvested)</dd></div>
+      <div><dt>Holding period</dt><dd>6 months per purchase</dd></div>
+      <div><dt>Execution</dt><dd>Market open, the day after a filing</dd></div>
+      <div><dt>Planned fee</dt><dd class="num">0.12% a year</dd></div>
+    </dl>
+  </section>
+
+  <section class="section split" id="strategy" aria-labelledby="h-idea">
+    <div class="lead">
+      <h2 id="h-idea">Public information, used with discipline</h2>
+      <p>Since 2012 the STOCK Act has required members of Congress to disclose their stock trades within 45 days. They sit close to legislation, hearings and budgets. Ekklesia turns their disclosures into a portfolio, with no human judgement in between.</p>
+      <p class="small">The name comes from the ekklesia, the citizens' assembly of ancient Athens.</p>
+    </div>
+    <dl class="principles">
+      <div><dt>Transparent</dt><dd><p>All code, all data and every single decision are public on GitHub. Anyone can check why a stock was bought or skipped. This is one line from the decision log:</p>
+        <pre class="logline"><b>Bought</b>  GOOGL, filed 12 Nov 2026
+Price since the member's trade: +0.1% (limit +10%)
+Order: market open, $1,000, sell after 6 months</pre></dd></div>
+      <div><dt>Rule-based</dt><dd><p>The rules were fixed before the results were known. No gut feeling, no override and no tuning along the way.</p></dd></div>
+      <div><dt>Low cost</dt><dd><p>The planned management fee is 0.12% a year. Everything from reading a filing to placing an order runs automatically.</p></dd></div>
+      <div><dt>Independently reviewed</dt><dd><p>A separate review recomputed all 18,068 trades from the raw data and searched for look-ahead and survivorship bias over two rounds.</p></dd></div>
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="h-process">
+    <div class="head">
+      <h2 id="h-process">From filing to order, every trading day</h2>
+      <p>The process runs on its own before the U.S. market opens. It can only act on what was public that day.</p>
+    </div>
+    <ol class="steps">
+      <li><h3>Disclosure</h3><p>A member, or their spouse, trades a stock and reports it to the Clerk of the House.</p><span class="rule-tag">Legal deadline: 45 days</span></li>
+      <li><h3>Reading</h3><p>The House index and each PDF filing are downloaded and read. Scanned paper filings are skipped.</p><span class="rule-tag">Median delay: 28 days</span></li>
+      <li><h3>Filtering</h3><p>Only purchases of stocks and ETFs count. Options, dividend reinvestments and duplicates are removed.</p><span class="rule-tag">The member's own decisions</span></li>
+      <li><h3>Buying</h3><p>The stock is bought at the open the day after the filing, unless its price has already risen more than 10%.</p><span class="rule-tag">Skip above +10%</span></li>
+      <li><h3>Selling</h3><p>Each position is sold after six months. Larger disclosed purchases get a larger weight.</p><span class="rule-tag">Hold for 6 months</span></li>
+    </ol>
+  </section>
+
+  <section class="section" id="performance" aria-labelledby="h-perf">
+    <div class="perf">
+      <div class="head" style="margin-bottom:0">
+        <h2 id="h-perf">16.0% a year since 2016</h2>
+        <p class="big-figure num">+400%</p>
+        <p>From January 2016 to November 2026 the simulated strategy grew $100 to $500, against $438 for the S&amp;P 500. The extra return came with larger swings, and most of the lead was built in 2020 to 2022.</p>
+      </div>
+      <div>
+        <div class="period" role="group" aria-label="Choose period">
+          <button type="button" id="p-all" aria-pressed="true">2016–2026</button>
+          <button type="button" id="p-oos" aria-pressed="false">2022–2026</button>
+        </div>
+        <div class="table-wrap"><table id="metrics">
+          <thead><tr><th>Key figures</th><th class="r">Ekklesia</th><th class="r">S&amp;P 500</th></tr></thead>
+          <tbody class="num"></tbody>
+        </table></div>
+        <p class="fine" id="metrics-note" style="margin-top:12px"></p>
+      </div>
+    </div>
+    <div class="years">
+      <h3>Calendar-year returns</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th>%%YEAR_HEAD%%</tr></thead>
+        <tbody class="num">%%YEAR_ROWS%%</tbody>
+      </table></div>
+    </div>
+    <p class="fine footnote">Simulated, not actual, results. Based on 41,998 stock and ETF trades from text-based House filings, 2016 to November 2026; scanned paper filings (24% of filings) are not included. Trading costs of 0.1% per trade are included, the planned management fee is not. The rules were chosen using 2016–2021 data. Method, review and limitations are on the <a href="research.html">research page</a>.</p>
+  </section>
+
+  <section class="section" id="portfolio" aria-labelledby="h-live">
+    <div class="head">
+      <span class="live-dot">Live since 18 November 2026</span>
+      <h2 id="h-live">The live paper portfolio</h2>
+      <p>Every trading day the fund trades on a paper account at the broker Alpaca, with $100,000 in simulated money. None of these filings existed when the rules were fixed, so this is a genuine test.</p>
+    </div>
+    <div id="live-root" class="live">
+      <div class="live-empty"><h3>Waiting for the first trading day</h3><p>The first automatic run is on Wednesday 18 November 2026 at 12:45 UTC. After that, this section shows the return against the S&amp;P 500, the open positions and the latest decisions.</p></div>
+    </div>
+    <p class="fine" style="margin-top:16px">Simulated money only. Not investment advice. The full trade log is on <a href="https://github.com/Oleo007pat/congress-fund/tree/main/data/live">GitHub</a>.</p>
+  </section>
+
+  <section class="section split" id="risks" aria-labelledby="h-risk">
+    <div class="lead">
+      <h2 id="h-risk">What can go wrong</h2>
+      <p>Risk indicator, on a scale from 1 (lower) to 7 (higher):</p>
+      <div class="scale" role="img" aria-label="Risk indicator 5 on a scale from 1 to 7"><span>1</span><span>2</span><span>3</span><span>4</span><span class="on">5</span><span>6</span><span>7</span></div>
+      <div class="scale-ends fine"><span>Lower risk</span><span>Higher risk</span></div>
+      <p class="fine">A simplified estimate from the simulated volatility of about 22% a year, which corresponds to class 5 on the EU scale. It is not an official PRIIPs calculation.</p>
+    </div>
+    <dl class="risks">
+      <div><dt>Market risk</dt><dd>The fund holds only U.S. stocks and moves closely with the market (beta 1.10). When the market falls, the fund usually falls further.</dd></div>
+      <div><dt>Concentration</dt><dd>Large disclosed purchases carry more weight, so a few members can dominate the portfolio for a while.</dd></div>
+      <div><dt>Delay</dt><dd>Trades become public a median of 28 days after they happen, and 19% are filed late. Any information edge may be gone before the fund buys.</dd></div>
+      <div><dt>Legislation</dt><dd>Bills have been introduced in Congress to restrict members from trading individual stocks. If one passes, the strategy loses its input.</dd></div>
+      <div><dt>Data</dt><dd>Scanned filings cannot be read automatically, filings can contain errors, and some delisted stocks are missing from the price data.</dd></div>
+      <div><dt>Currency</dt><dd>For an investor outside the U.S., returns also move with the dollar.</dd></div>
+    </dl>
+  </section>
+
+  <section class="section" id="investing" aria-labelledby="h-inv">
+    <div class="head">
+      <h2 id="h-inv">How to invest</h2>
+    </div>
+    <div class="not-open">
+      <span class="stamp">Not open</span>
+      <p>Ekklesia Capital does not accept money. It is a paper fund that runs in public to test the strategy on data nobody has seen. It would only open if it beats the market over several years and receives the necessary licences.</p>
+    </div>
+    <div class="ways">
+      <article><h3>Follow it daily</h3><p>The live portfolio on this page updates after every trading day, with positions, returns and the reason behind each purchase.</p><a href="#portfolio">Go to the live portfolio</a></article>
+      <article><h3>Run it yourself</h3><p>The code is open. With a free Alpaca paper account you can run exactly the same rules on your own account, without real money.</p><a href="https://github.com/Oleo007pat/congress-fund/blob/main/live/README.md">Read the setup guide</a></article>
+      <article><h3>If the fund opens</h3><p>Investors would buy units at the daily net asset value. The fee would be 0.01% a month, and an investor ledger would track units, deposits and withdrawals.</p><a href="https://github.com/Oleo007pat/congress-fund/tree/main/fund">See the fund modules</a></article>
+    </div>
+    <h3 class="subhead">Before the fund could open</h3>
+    <ol class="checklist">
+      <li><span class="mark done" aria-hidden="true"></span><div><b>Data and backtest</b><p>Ten years of filings, read, matched to prices and tested.</p></div><span class="state done">Done</span></li>
+      <li><span class="mark done" aria-hidden="true"></span><div><b>Independent review</b><p>Two rounds of review, no serious errors left.</p></div><span class="state done">Done</span></li>
+      <li><span class="mark done" aria-hidden="true"></span><div><b>Automated operation</b><p>A daily run that logs every decision.</p></div><span class="state done">Running</span></li>
+      <li><span class="mark" aria-hidden="true"></span><div><b>A live track record</b><p>Several years of live results that beat the market after costs and risk.</p></div><span class="state">In progress</span></li>
+      <li><span class="mark" aria-hidden="true"></span><div><b>Legal clearance</b><p>U.S. law prohibits commercial use of congressional disclosure reports, except by news media. A lawyer would need to assess this.</p></div><span class="state">Not started</span></li>
+      <li><span class="mark" aria-hidden="true"></span><div><b>A licence</b><p>Managing other people's money requires authorisation from the financial regulator, a depositary and an auditor.</p></div><span class="state">Not started</span></li>
+    </ol>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="h-faq">
+    <div class="head"><h2 id="h-faq">Questions</h2></div>
+    <div class="faq">
+      <details><summary>Does the strategy beat the market?</summary><div class="answer"><p>Over 2016 to 2026 it returned +400% against +338% for the S&amp;P 500, or 16.0% a year against 14.6%. It was also more volatile, so adjusted for risk the index did slightly better (a Sharpe ratio of 0.80 against 0.87). The live paper fund is the real test.</p></div></details>
+      <details><summary>Is it legal to trade on congressional stock disclosures?</summary><div class="answer"><p>The disclosures are public, and anyone can read them and trade on them for their own account. U.S. law does, however, prohibit using the reports for commercial purposes other than by news media. That is one reason Ekklesia is a paper fund and not a commercial product. This is not legal advice.</p></div></details>
+      <details><summary>Why not buy on the member's trade date?</summary><div class="answer"><p>Because the trade only becomes known when the filing is published, a median of 28 days later. Using the trade date in a backtest would produce returns nobody could actually have earned.</p></div></details>
+      <details><summary>What about following only the best members?</summary><div class="answer"><p>That was tested. Copying only the members with the best past results looked strong on paper, but most of it came from two members, and members who had done well did not keep doing well. Details are on the <a href="research.html">research page</a>.</p></div></details>
+      <details><summary>Why is the Senate not included?</summary><div class="answer"><p>The Senate's disclosure database blocks automated downloads. The Senate will be added in a later version if a suitable data source is found.</p></div></details>
+      <details><summary>Who is behind it?</summary><div class="answer"><p>Ekklesia Capital is an independent research project, built in Python on public data from the House of Representatives and prices from Alpaca. It has no connection to Congress or to any asset manager.</p></div></details>
+    </div>
+  </section>
+
+  <div class="closing">
+    <div>
+      <h2>Follow Ekklesia live</h2>
+      <p>The portfolio updates every trading day. See what Congress buys, and how the strategy does against the S&amp;P 500.</p>
+    </div>
+    <div class="actions">
+      <a class="button solid" href="#portfolio">See the portfolio</a>
+      <a class="button line" href="https://github.com/Oleo007pat/congress-fund">View the code</a>
+    </div>
+  </div>
+</div>
+</main>
+%%FOOTER%%
+
+<script id="fund-data" type="application/json">%%DATA%%</script>
+<script>
+(function(){
+  var D=JSON.parse(document.getElementById('fund-data').textContent),NS='http://www.w3.org/2000/svg';
+  function fmt(v,d){return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+  function sgn(v,d){return (v>0?'+':v<0?'−':'')+fmt(Math.abs(v),d);}
+  function mk(svg,n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;svg.appendChild(e);return e;}
+
+  // Hero chart: the one bold element. Direct labels at the line ends, two annotations.
+  var sv=document.getElementById('hero-chart');
+  if(sv){
+    var W=Math.round(Math.min(1136,Math.max(340,sv.parentNode.clientWidth||1136))),H=W<700?Math.round(W*0.9):440,L=24,R=W-(W<700?96:150),T=24,B=H-36,n=D.dates.length,min=80,max=640,narrow=W<700;
+    sv.setAttribute('viewBox','0 0 '+W+' '+H);
+    var t0=Date.parse(D.dates[0]),t1=Date.parse(D.dates[n-1]);
+    var X=function(d){return L+(Date.parse(d)-t0)/(t1-t0)*(R-L)},Y=function(v){return B-(v-min)/(max-min)*(B-T)};
+    [100,200,300,400,500,600].forEach(function(v){mk(sv,'line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'var(--rule)','stroke-width':1});
+      mk(sv,'text',{x:L,y:Y(v)-6},'$'+v);});
+    for(var yr=2016;yr<=2026;yr+=(narrow?3:1)){var x=X(yr+'-01-04');mk(sv,'line',{x1:x,x2:x,y1:B,y2:B+6,stroke:'var(--rule-strong)'});mk(sv,'text',{x:x,y:B+24,'text-anchor':yr===2016?'start':'middle'},yr);}
+    var path=function(a){return a.map(function(v,i){return (i?'L':'M')+X(D.dates[i]).toFixed(1)+' '+Y(v*100).toFixed(1)}).join('')};
+    mk(sv,'path',{d:path(D.s)+'L'+X(D.dates[n-1]).toFixed(1)+' '+B+'L'+X(D.dates[0]).toFixed(1)+' '+B+'Z',fill:'var(--green-tint)'});
+    mk(sv,'path',{d:path(D.m),fill:'none',stroke:'var(--stone)','stroke-width':1.75,'stroke-linejoin':'round'});
+    mk(sv,'path',{d:path(D.s),fill:'none',stroke:'var(--green)','stroke-width':2.5,'stroke-linejoin':'round'});
+    var ls=D.s[n-1]*100,lm=D.m[n-1]*100,xe=X(D.dates[n-1]);
+    mk(sv,'circle',{cx:xe,cy:Y(ls),r:4.5,fill:'var(--green)'});mk(sv,'circle',{cx:xe,cy:Y(lm),r:4,fill:'var(--stone)'});
+    mk(sv,'text',{x:xe+(narrow?10:16),y:Y(ls)+4,'class':'figure-green',style:'font-size:'+(narrow?24:34)+'px'},'+'+fmt(ls-100,0)+'%');
+    mk(sv,'text',{x:xe+(narrow?10:16),y:Y(ls)+24},'Ekklesia');
+    mk(sv,'text',{x:xe+(narrow?10:16),y:Y(lm)+18,'class':'figure',style:'font-size:'+(narrow?20:28)+'px'},'+'+fmt(lm-100,0)+'%');
+    mk(sv,'text',{x:xe+(narrow?10:16),y:Y(lm)+36},'S&P 500');
+    // annotation: the 2020 crash (lowest point in 2020)
+    var lo=1e9,li=0;D.dates.forEach(function(d,i){if(d>='2020-02-01'&&d<='2020-04-30'&&D.s[i]<lo){lo=D.s[i];li=i;}});
+    var ax=X(D.dates[li]),ay=Y(lo*100);
+    mk(sv,'circle',{cx:ax,cy:ay,r:4,fill:'none',stroke:'var(--seal)','stroke-width':1.5});
+    mk(sv,'line',{x1:ax,x2:ax,y1:ay-8,y2:ay-72,stroke:'var(--seal)','stroke-width':1});
+    mk(sv,'text',{x:narrow?ax+6:ax-6,y:ay-60,'class':'note','text-anchor':narrow?'start':'end'},'March 2020');
+    mk(sv,'text',{x:narrow?ax+6:ax-6,y:ay-44,'class':'note','text-anchor':narrow?'start':'end'},'Covid crash');
+  }
+
+  // Key figures with a period switch
+  var M=D.metrics,tb=document.querySelector('#metrics tbody'),note=document.getElementById('metrics-note');
+  var rows=[['Total return','total','pct'],['Annual return (CAGR)','cagr','pct'],['Volatility','vol','abs'],['Sharpe ratio','sharpe','dec'],['Maximum drawdown','mdd','abs']];
+  function show(k){
+    var p=M[k];tb.innerHTML='';
+    rows.forEach(function(r){
+      var f=r[2]==='dec'?function(v){return fmt(v,2)}:r[2]==='pct'?function(v){return sgn(v*100,1)+'%'}:function(v){return (v<0?'−':'')+fmt(Math.abs(v*100),1)+'%'};
+      var tr=document.createElement('tr');tr.innerHTML='<th>'+r[0]+'</th><td class="r">'+f(p.fund[r[1]])+'</td><td class="r">'+f(p.spy[r[1]])+'</td>';tb.appendChild(tr);});
+    note.textContent=p.note;
+    document.getElementById('p-all').setAttribute('aria-pressed',k==='all');document.getElementById('p-oos').setAttribute('aria-pressed',k==='oos');
+  }
+  document.getElementById('p-all').addEventListener('click',function(){show('all')});
+  document.getElementById('p-oos').addEventListener('click',function(){show('oos')});
+  show('all');
+})();
+</script>
+%%LIVEJS%%
