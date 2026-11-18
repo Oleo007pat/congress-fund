@@ -8,6 +8,9 @@ on:
     # tens of minutes at busy times; a run that is too late is detected by the runner (Alpaca clock) and
     # postpones new orders to the next run instead of sending them.
     - cron: "45 12 * * 1-5"
+    # Backup trigger: GitHub sometimes skips or long-delays scheduled runs. A second run the same morning is
+    # harmless (orders use idempotent client_order_ids, history is upserted per date).
+    - cron: "10 13 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:
