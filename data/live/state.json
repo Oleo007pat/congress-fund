@@ -1,20 +1,41 @@
 {
  "capabilities": {
-  "notional_opg": null
+  "notional_opg": false
  },
  "doc_failures": {},
  "last_run": {
   "dry_run": false,
-  "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
-  "new_signals": 0,
+  "filings_checked": 4,
+  "message": "Kørslen er gennemført. 4 nye indberetninger, 1 nye købssignaler, 0 ordrer sendt.",
+  "new_signals": 1,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-19T20:58:33+00:00"
+  "time_utc": "2026-11-19T21:25:24+00:00"
  },
  "lots": {},
  "pending_orders": {},
- "seen_doc_ids": {},
+ "seen_doc_ids": {
+  "20036844": {
+   "filing_date": "2026-11-19",
+   "seen_at": "2026-11-19T21:25:24+00:00",
+   "status": "parsed"
+  },
+  "20036849": {
+   "filing_date": "2026-11-18",
+   "seen_at": "2026-11-19T21:25:24+00:00",
+   "status": "parsed"
+  },
+  "20036855": {
+   "filing_date": "2026-11-18",
+   "seen_at": "2026-11-19T21:25:24+00:00",
+   "status": "parsed"
+  },
+  "20036864": {
+   "filing_date": "2026-11-18",
+   "seen_at": "2026-11-19T21:25:24+00:00",
+   "status": "parsed"
+  }
+ },
  "start_date": "2026-11-18",
  "start_equity": 100000.0,
  "started_at": "2026-11-18T15:01:38+00:00",

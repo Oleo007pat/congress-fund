@@ -1,0 +1,16 @@
+ts_utc,kind,doc_id,member,owner,ticker,symbol,filing_date,txn_date,trade_type,amount_low,amount_high,decision,reason,ref_close,ref_date,last_price,rise_pct,side,tif,notional,qty,client_order_id,order_id,order_status,filled_qty,fill_price,fill_time,on_site,dry_run
+2026-11-19T21:25:24+00:00,signal,20036849,Steve Cohen,self,WBD,,2026-11-18,2026-10-07,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,GOOGL,,2026-11-18,2026-11-04,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,COST,,2026-11-18,2026-11-12,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,LLY,,2026-11-18,2026-11-04,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,LITE,,2026-11-18,2026-11-04,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,NVDA,,2026-11-18,2026-10-28,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036864,Terri A. Sewell,self,TPR,,2026-11-18,2026-11-05,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,self,JNJ,,2026-11-19,2026-10-27,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,self,MSFT,,2026-11-19,2026-10-27,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,self,SYK,,2026-11-19,2026-10-27,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,self,,,2026-11-19,2026-10-20,buy,50001,100000,ignored,ingen ticker,,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,self,WBD,,2026-11-19,2026-10-07,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036844,Thomas H. Kean,spouse,WBD,,2026-11-19,2026-10-07,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-19T21:25:24+00:00,signal,20036855,Michael Rulli,self,MSFT,MSFT,2026-11-18,2026-11-04,buy,1001,15000,ignored,ordre afvist af Alpaca: opg orders must be submitted after 7:00pm and before 9:28am,554.73,2026-11-04,498.3,-10.17,,,,,,,,,,,1,0
+2026-11-19T21:25:24+00:00,order,20036855,Michael Rulli,,MSFT,MSFT,,,,,,,ordre afvist af Alpaca: opg orders must be submitted after 7:00pm and before 9:28am,,,,,buy,opg,,,cf-20036855-1de811b991,,rejected,,,,0,0
