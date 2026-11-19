@@ -1,18 +1,21 @@
 {
  "curve": {
   "dates": [
-   "2026-11-18"
+   "2026-11-18",
+   "2026-11-19"
   ],
   "fund": [
+   100.0,
    100.0
   ],
   "spy": [
-   100.0
+   100.0,
+   98.0102
   ]
  },
  "decisions": [],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-18T20:54:03+00:00",
+ "generated_at": "2026-11-19T20:58:33+00:00",
  "last_run": {
   "dry_run": false,
   "filings_checked": 0,
@@ -20,7 +23,7 @@
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-18T20:54:03+00:00"
+  "time_utc": "2026-11-19T20:58:33+00:00"
  },
  "latest_equity": 100000.0,
  "positions": [],
@@ -40,8 +43,8 @@
   "name": "v1_hold6m_amount_x10"
  },
  "total_return": {
-  "excess_pct_points": 0.0,
+  "excess_pct_points": 1.99,
   "fund_pct": 0.0,
-  "spy_pct": 0.0
+  "spy_pct": -1.99
  }
 }
