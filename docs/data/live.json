@@ -13,7 +13,7 @@
   "spy": [
    100.0,
    97.9651,
-   94.5589
+   94.5439
   ]
  },
  "decisions": [
@@ -26,15 +26,15 @@
   }
  ],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-20T20:43:50+00:00",
+ "generated_at": "2026-11-20T21:01:47+00:00",
  "last_run": {
   "dry_run": false,
   "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-20T20:43:50+00:00"
+  "time_utc": "2026-11-20T21:01:47+00:00"
  },
  "latest_equity": 100000.0,
  "positions": [],
@@ -54,8 +54,8 @@
   "name": "v1_hold6m_amount_x10"
  },
  "total_return": {
-  "excess_pct_points": 5.44,
+  "excess_pct_points": 5.46,
   "fund_pct": 0.0,
-  "spy_pct": -5.44
+  "spy_pct": -5.46
  }
 }
