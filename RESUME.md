@@ -118,7 +118,7 @@ Hentningen (de to første trin og kurserne) kræver netværksadgang til House Cl
   - `docs/research.html` er den detaljerede research-side.
 - **Byg siden igen:** `python3 site/build.py` læser `site/src/` (home.html, research.html, site.css m.fl., på engelsk) og `results/` og skriver `docs/`. Ret aldrig i `docs/*.html` direkte.
 - **Offentlig adresse:** https://ekklesia-capital.vercel.app (Vercel, root directory `docs`). Besøgsstatistik: PostHog EU, uden cookies.
-- **Live papirfond:** `live/` køres hver hverdag kl. 12:45 UTC af `.github/workflows/paper_fund.yml` på Alpaca PAPER.
+- **Live papirfond:** `live/` køres hver hverdag kl. 03:17 UTC (backup 05:17) af `.github/workflows/paper_fund.yml` på Alpaca PAPER.
   - Reglen ligger i `live/strategy.json`: hold 6 mdr., beløbsvægtet, X = 10 %.
   - Botten committer `data/live/` og `docs/data/live.json` hver dag.
   - **Klik derfor altid Sync i VS Code, før du ændrer noget.**

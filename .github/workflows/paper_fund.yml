@@ -2,15 +2,17 @@ name: Paper fund (daily)
 
 on:
   schedule:
-    # Weekdays 12:45 UTC. US market opens 14:30 UTC in winter (EST, UTC-5) and 13:30 UTC in summer (EDT, UTC-4),
-    # and market-on-open orders must be in before ~09:28 ET, i.e. 14:28 UTC (winter) / 13:28 UTC (summer).
-    # 12:45 UTC is therefore 7:45 ET in winter and 8:45 ET in summer. GitHub may delay scheduled runs by
-    # tens of minutes at busy times; a run that is too late is detected by the runner (Alpaca clock) and
-    # postpones new orders to the next run instead of sending them.
-    - cron: "45 12 * * 1-5"
-    # Backup trigger: GitHub sometimes skips or long-delays scheduled runs. A second run the same morning is
-    # harmless (orders use idempotent client_order_ids, history is upserted per date).
-    - cron: "10 13 * * 1-5"
+    # Alpaca accepts market-on-open (opg) orders only between 19:00 and 09:28 ET. GitHub often starts scheduled
+    # runs hours late (observed: ~8 hours), so the runs are placed early in that window:
+    #   03:17 UTC = 22:17 ET (winter) / 23:17 ET (summer) the evening before the session;
+    #   05:17 UTC = 00:17 ET / 01:17 ET (backup).
+    # Even 8 hours late, the backup lands at 08:17 ET (winter) / 09:17 ET (summer), still before 09:28 ET.
+    # Mon-Fri UTC = the evenings before the Mon-Fri sessions. A run outside the window is detected by the runner
+    # (Alpaca clock + ET time) and postpones new orders instead of sending them.
+    - cron: "17 3 * * 1-5"
+    # Backup trigger: a second run the same night is harmless (orders use idempotent client_order_ids,
+    # history is upserted per date).
+    - cron: "17 5 * * 1-5"
   workflow_dispatch:
     inputs:
       dry_run:

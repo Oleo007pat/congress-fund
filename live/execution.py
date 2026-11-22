@@ -4,7 +4,7 @@ Lots (state["lots"][lot_id]) hold one copied buy each:
   lot_id, doc_id, member, member_canon, owner, raw_ticker, symbol, filing_date, txn_date, amount_mid, exit_rule,
   status (open | closed | closed_external), qty (current), entry_qty, entry_price, entry_date, entry_order_id,
   planned_exit, exit_attempts, member_sale (None | {doc_id, filing_date, txn_date}), spy_entry,
-  exit_price, exit_date, spy_exit, exit_order_id.
+  exit_price, exit_date, spy_exit, exit_order_id.  simulated=True marks a paper-only lot (see live/simfill.py).
 Pending orders (state["pending_orders"][client_order_id]) hold submitted, not yet final orders.
 """
 from __future__ import annotations
@@ -12,7 +12,8 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time as dtime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
@@ -23,6 +24,10 @@ from live import strategy as strat
 from prices.alpaca_client import AlpacaError
 
 OPG_CUTOFF = timedelta(minutes=3)     # Alpaca accepts opg until ~09:28 ET
+OPG_WINDOW_START = dtime(19, 0)       # ... and only from 19:00 ET (orders submitted 09:28-19:00 ET are rejected)
+OPG_WINDOW_END = dtime(9, 28)
+CLS_DEAD_START = dtime(15, 50)        # cls orders are rejected 15:50-19:00 ET, queued for the next session after 19:00
+ET = ZoneInfo("America/New_York")
 CLS_CUTOFF = timedelta(minutes=12)    # ... and cls until ~15:50 ET
 FAILED = {"canceled", "expired", "rejected"}
 TIF_HINT = re.compile(r"fraction|notional|time.in.force|\bopg\b|\bcls\b|\bday\b|market on", re.I)
@@ -44,7 +49,7 @@ def _parse_ts(s: str) -> datetime:
 
 def trading_windows(clock: dict, now: datetime) -> Windows:
     """Target session for opg/cls orders from the Alpaca clock.  Market closed (pre-open, weekend, holiday):
-    the next session is the target.  Market open: opg is impossible; cls only until shortly before the close."""
+    the next session is the target, but opg only inside Alpaca's window 19:00-09:28 ET.  Market open: opg is impossible; cls only until shortly before the close."""
     today = str(clock["timestamp"])[:10]
     nxt_open, nxt_close = _parse_ts(clock["next_open"]), _parse_ts(clock["next_close"])
     if clock.get("is_open"):
@@ -54,11 +59,18 @@ def trading_windows(clock: dict, now: datetime) -> Windows:
         else:
             cls_s, cls_r = None, "for sent til market-on-close i dag"
     else:
-        cls_s, cls_r = str(clock["next_open"])[:10], ""
-        if now < nxt_open - OPG_CUTOFF:
-            opg_s, opg_r = str(clock["next_open"])[:10], ""
+        et = now.astimezone(ET).time()
+        if CLS_DEAD_START <= et < OPG_WINDOW_START:
+            cls_s, cls_r = None, "market-on-close modtages ikke mellem 15:50 og 19:00 ET"
         else:
+            cls_s, cls_r = str(clock["next_open"])[:10], ""
+        if now >= nxt_open - OPG_CUTOFF:
             opg_s, opg_r = None, "for sent til market-on-open (lukket for opg-ordrer lige før åbning)"
+        elif OPG_WINDOW_END <= et < OPG_WINDOW_START:
+            opg_s, opg_r = None, ("for tidligt til market-on-open: Alpaca modtager opg-ordrer fra kl. 19:00 til "
+                                  "09:28 ET (kl. %s ET nu)" % et.strftime("%H:%M"))
+        else:
+            opg_s, opg_r = str(clock["next_open"])[:10], ""
     return Windows(today, opg_s, opg_r, cls_s, cls_r)
 
 
@@ -114,11 +126,13 @@ class Executor:
             return None
 
     def committed_cash(self) -> float:
-        return sum(_f(p.get("est_cost")) for p in self.state["pending_orders"].values() if p["side"] == "buy")
+        return (sum(_f(p.get("est_cost")) for p in self.state["pending_orders"].values() if p["side"] == "buy")
+                + sum(_f(p.get("target")) for p in self.state.get("sim_pending", {}).values()))
 
     def committed_by_symbol(self, symbol: str) -> float:
-        return sum(_f(p.get("est_cost")) for p in self.state["pending_orders"].values()
-                   if p["side"] == "buy" and p["symbol"] == symbol)
+        return (sum(_f(p.get("est_cost")) for p in self.state["pending_orders"].values()
+                    if p["side"] == "buy" and p["symbol"] == symbol)
+                + sum(_f(p.get("target")) for p in self.state.get("sim_pending", {}).values() if p["symbol"] == symbol))
 
     def _adopt(self, pend: dict, order: dict) -> None:
         pend["order_id"] = order.get("id", "")
@@ -289,7 +303,7 @@ class Executor:
         notes = []
         pending_sell_lots = {p["lot_id"] for p in self.state["pending_orders"].values() if p["side"] == "sell"}
         for lot_id, lot in sorted(self.state["lots"].items()):
-            if lot_id in pending_sell_lots:
+            if lot_id in pending_sell_lots or lot.get("simulated"):     # simulated lots exit in live/simfill.py
                 continue
             member_sells = lot["exit_rule"] == "member_sells"
             session = windows.opg_session if member_sells else windows.cls_session
@@ -365,7 +379,7 @@ class Executor:
         out = []
         by_sym: dict[str, float] = {}
         for lot in self.state["lots"].values():
-            if lot["status"] == "open":
+            if lot["status"] == "open" and not lot.get("simulated"):     # simulated lots have no Alpaca position
                 by_sym[lot["symbol"]] = by_sym.get(lot["symbol"], 0.0) + _f(lot["qty"])
         for sym, q in by_sym.items():
             pq = _f((self.positions.get(sym) or {}).get("qty"))

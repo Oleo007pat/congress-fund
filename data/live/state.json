@@ -36,6 +36,28 @@
    "status": "parsed"
   }
  },
+ "sim_pending": {
+  "cf-20036855-1de811b991": {
+   "cid": "cf-20036855-1de811b991",
+   "queued_at": "2026-11-22T12:00:00+00:00",
+   "reason": "opg orders must be submitted after 7:00pm and before 9:28am (kørsel 2026-11-19 21:25 UTC; efterregistreret)",
+   "seed": {
+    "amount_mid": 8000.5,
+    "doc_id": "20036855",
+    "exit_rule": "hold_6m",
+    "filing_date": "2026-11-18",
+    "member": "Michael Rulli",
+    "member_canon": "Michael Rulli",
+    "owner": "self",
+    "raw_ticker": "MSFT",
+    "symbol": "MSFT",
+    "txn_date": "2026-11-04"
+   },
+   "session": "2026-11-20",
+   "symbol": "MSFT",
+   "target": 1000.0
+  }
+ },
  "start_date": "2026-11-18",
  "start_equity": 100000.0,
  "started_at": "2026-11-18T15:01:38+00:00",

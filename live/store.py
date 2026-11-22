@@ -12,7 +12,8 @@ import os
 import shutil
 from pathlib import Path
 
-HISTORY_FIELDS = ["date", "equity", "cash", "n_positions", "spy_close", "spy_close_date"]
+HISTORY_FIELDS = ["date", "equity", "cash", "n_positions", "spy_close", "spy_close_date", "sim_pnl"]
+# equity = Alpaca equity + sim_pnl (P&L of simulated fills, live/simfill.py); empty sim_pnl = none recorded
 LOG_FIELDS = ["ts_utc", "kind", "doc_id", "member", "owner", "ticker", "symbol", "filing_date", "txn_date",
               "trade_type", "amount_low", "amount_high", "decision", "reason", "ref_close", "ref_date",
               "last_price", "rise_pct", "side", "tif", "notional", "qty", "client_order_id", "order_id",
@@ -76,6 +77,7 @@ def new_state(start_date: str, start_equity: float, started_at: str, strategy_ha
         "doc_failures": {},        # doc_id -> number of failed download/parse attempts
         "lots": {},                # lot_id -> lot dict (see live/execution.py)
         "pending_orders": {},      # client_order_id -> pending order dict
+        "sim_pending": {},         # client_order_id -> queued simulated buy (live/simfill.py)
         "capabilities": {"notional_opg": None},
         "last_run": {},
     }
@@ -86,7 +88,8 @@ def load_state(path: Path) -> dict | None:
         return None
     state = json.loads(path.read_text(encoding="utf-8"))
     for key, default in (("seen_doc_ids", {}), ("doc_failures", {}), ("lots", {}), ("pending_orders", {}),
-                         ("capabilities", {"notional_opg": None}), ("strategy_changes", []), ("last_run", {})):
+                         ("capabilities", {"notional_opg": None}), ("strategy_changes", []), ("last_run", {}),
+                         ("sim_pending", {})):
         state.setdefault(key, default)
     return state
 
@@ -124,5 +127,11 @@ def upsert_history(path: Path, row: dict) -> list[dict]:
     rows = [r for r in read_csv(path) if r.get("date") != row["date"]]
     rows.append({k: row.get(k, "") for k in HISTORY_FIELDS})
     rows.sort(key=lambda r: r["date"])
+    write_csv(path, HISTORY_FIELDS, rows)
+    return rows
+
+
+def rewrite_history(path: Path, rows: list[dict]) -> list[dict]:
+    rows = sorted(({k: r.get(k, "") for k in HISTORY_FIELDS} for r in rows), key=lambda r: r["date"])
     write_csv(path, HISTORY_FIELDS, rows)
     return rows

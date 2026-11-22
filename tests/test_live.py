@@ -389,6 +389,22 @@ class TestExitScheduling(unittest.TestCase):
         w = execution.trading_windows(open_clock, datetime(2026, 11, 18, 20, 55, tzinfo=timezone.utc))   # 15:55 ET
         self.assertIsNone(w.cls_session)
 
+    def test_opg_window_starts_at_19_et(self):
+        after_close = {"timestamp": "2026-11-20T16:25:00-05:00", "is_open": False,
+                       "next_open": "2026-11-23T09:30:00-05:00", "next_close": "2026-11-23T16:00:00-05:00"}
+        w = execution.trading_windows(after_close, datetime(2026, 11, 20, 21, 25, tzinfo=timezone.utc))   # 16:25 ET
+        self.assertIsNone(w.opg_session)
+        self.assertIn("19:00", w.opg_reason)
+        self.assertIsNone(w.cls_session)                                 # cls also closed 15:50-19:00 ET
+        evening = execution.trading_windows(after_close, datetime(2026, 11, 21, 3, 17, tzinfo=timezone.utc))  # 22:17 ET
+        self.assertEqual((evening.opg_session, evening.cls_session), ("2026-11-23", "2026-11-23"))
+        sunday_noon = execution.trading_windows(after_close, datetime(2026, 11, 22, 17, 0, tzinfo=timezone.utc))
+        self.assertIsNone(sunday_noon.opg_session)
+        summer = {"timestamp": "2027-06-01T08:00:00-04:00", "is_open": False,
+                  "next_open": "2027-06-01T09:30:00-04:00", "next_close": "2027-06-01T16:00:00-04:00"}
+        self.assertEqual(execution.trading_windows(summer, datetime(2027, 6, 1, 12, 0, tzinfo=timezone.utc)).opg_session,
+                         "2027-06-01")                                   # 08:00 EDT
+
     def _executor(self, lot, broker=None, dry=False):
         b = broker or FakeBroker()
         state = store.new_state("2026-11-10", 100000.0, "x", "h", "n")
@@ -890,6 +906,113 @@ class TestLifecycle(unittest.TestCase):
         e.cleanup()
 
 
+class TestSimulatedFill(unittest.TestCase):
+    TIMING = "opg orders must be submitted after 7:00pm and before 9:28am"
+
+    def _queue_run(self):
+        e = standard_env()
+        real = e.broker.submit_order
+
+        def submit(symbol, side, tif, client_order_id, qty=None, notional=None):
+            if side == "buy" and symbol == "AAA":
+                raise OrderRejected(self.TIMING)
+            return real(symbol, side, tif, client_order_id, qty=qty, notional=notional)
+        e.broker.submit_order = submit
+        self.assertEqual(e.run(ARGS), 0)
+        return e
+
+    def test_timing_rejection_is_queued_and_logged_as_simulated_buy(self):
+        e = self._queue_run()
+        st = e.state()
+        self.assertEqual(len(st["sim_pending"]), 1)
+        p = next(iter(st["sim_pending"].values()))
+        self.assertEqual((p["symbol"], p["session"]), ("AAA", "2026-11-18"))
+        sig = [r for r in e.log_rows() if r["kind"] == "signal" and r["ticker"] == "AAA"][0]
+        self.assertEqual(sig["decision"], "taken")
+        self.assertIn("simuleret fyld", sig["reason"])
+        e.cleanup()
+
+    def test_other_rejections_are_not_simulated(self):
+        e = standard_env()
+        e.broker.submit_order = mock.Mock(side_effect=OrderRejected("asset is halted"))
+        e.run(ARGS)
+        self.assertEqual(e.state()["sim_pending"], {})
+        e.cleanup()
+
+    def test_resolved_at_official_open_valued_and_closed_on_paper(self):
+        e = self._queue_run()
+        cid = next(iter(e.state()["sim_pending"]))
+        target = e.state()["sim_pending"][cid]["target"]
+        e.broker.bar_data["AAA"] = [{"t": "2026-11-18T05:00:00Z", "o": 101.0, "h": 104, "l": 99, "c": 103.0, "v": 9},
+                                    {"t": "2026-11-19T05:00:00Z", "o": 103.0, "h": 111, "l": 102, "c": 110.0, "v": 9}]
+        e.broker.bar_data["SPY"] = [bar("2026-11-17", 602.0), bar("2026-11-18", 604.0), bar("2026-11-19", 606.0)]
+        e.broker.clock_ = {"timestamp": "2026-11-20T07:45:00-05:00", "is_open": False,
+                           "next_open": "2026-11-20T09:30:00-05:00", "next_close": "2026-11-20T16:00:00-05:00"}
+        e.run(ARGS, now=datetime(2026, 11, 20, 12, 45, tzinfo=timezone.utc))
+        st = e.state()
+        lot = st["lots"][cid]
+        qty = int(target // 101.0)
+        self.assertEqual((lot["simulated"], lot["entry_price"], lot["entry_date"], lot["qty"]), (True, 101.0, "2026-11-18", float(qty)))
+        self.assertEqual(lot["planned_exit"], "2027-05-18")
+        self.assertEqual(st["sim_pending"], {})
+        j = e.live_json()
+        pos = [x for x in j["positions"] if x["ticker"] == "AAA"][0]
+        self.assertTrue(pos["simulated"])
+        self.assertEqual(pos["return_pct"], round((110 / 101 - 1) * 100, 2))
+        hist = store.read_csv(e.p("history.csv"))
+        self.assertAlmostEqual(float(hist[-1]["sim_pnl"]), qty * 9.0, places=2)
+        self.assertAlmostEqual(float(hist[-1]["equity"]), 100000 + qty * 9.0, places=2)
+        # no real sell is ever sent for a simulated lot, and reconciliation ignores it
+        self.assertFalse([o for o in e.broker.submitted if o["symbol"] == "AAA" and o["side"] == "sell"])
+        self.assertNotIn("afstemning", e.out)
+        # planned exit reached: closed on paper at that session's close
+        e.broker.bar_data["AAA"].append({"t": "2027-05-18T04:00:00Z", "o": 120, "h": 126, "l": 119, "c": 125.0, "v": 9})
+        e.broker.clock_ = {"timestamp": "2027-05-19T07:45:00-04:00", "is_open": False,
+                           "next_open": "2027-05-19T09:30:00-04:00", "next_close": "2027-05-19T16:00:00-04:00"}
+        e.run(ARGS, now=datetime(2027, 5, 19, 12, 0, tzinfo=timezone.utc))
+        lot = e.state()["lots"][cid]
+        self.assertEqual((lot["status"], lot["exit_price"], lot["exit_date"]), ("closed", 125.0, "2027-05-18"))
+        self.assertFalse([o for o in e.broker.submitted if o["symbol"] == "AAA" and o["side"] == "sell"])
+        e.cleanup()
+
+    def test_history_rows_before_the_simulated_lot_are_backfilled(self):
+        e = self._queue_run()
+        cid = next(iter(e.state()["sim_pending"]))
+        # an earlier row written after the 18/11 close but before the simulated lot existed (as the real 20/11 row)
+        hist = store.read_csv(e.p("history.csv"))
+        self.assertEqual(hist[0]["sim_pnl"], "")
+        hist[0].update(spy_close_date="2026-11-18")
+        store.rewrite_history(e.p("history.csv"), hist)
+        e.broker.bar_data["AAA"] = [{"t": "2026-11-18T05:00:00Z", "o": 100.0, "h": 104, "l": 99, "c": 104.0, "v": 9},
+                                    {"t": "2026-11-19T05:00:00Z", "o": 103.0, "h": 111, "l": 102, "c": 110.0, "v": 9}]
+        e.broker.bar_data["SPY"] = [bar("2026-11-17", 602.0), bar("2026-11-18", 604.0), bar("2026-11-19", 606.0)]
+        e.broker.clock_ = {"timestamp": "2026-11-20T07:45:00-05:00", "is_open": False,
+                           "next_open": "2026-11-20T09:30:00-05:00", "next_close": "2026-11-20T16:00:00-05:00"}
+        e.run(ARGS, now=datetime(2026, 11, 20, 12, 45, tzinfo=timezone.utc))
+        hist = {h["date"]: h for h in store.read_csv(e.p("history.csv"))}
+        qty = e.state()["lots"][cid]["qty"]
+        self.assertAlmostEqual(float(hist["2026-11-18"]["sim_pnl"]), qty * 4.0, places=2)      # close 18/11
+        self.assertAlmostEqual(float(hist["2026-11-18"]["equity"]), 100000 + qty * 4.0, places=2)
+        self.assertAlmostEqual(float(hist["2026-11-20"]["sim_pnl"]), qty * 10.0, places=2)     # latest close
+        # a rerun does not add the P&L twice
+        e.run(ARGS, now=datetime(2026, 11, 20, 12, 50, tzinfo=timezone.utc))
+        hist = {h["date"]: h for h in store.read_csv(e.p("history.csv"))}
+        self.assertAlmostEqual(float(hist["2026-11-18"]["equity"]), 100000 + qty * 4.0, places=2)
+        e.cleanup()
+
+    def test_missing_open_is_never_guessed(self):
+        e = self._queue_run()
+        e.broker.bar_data["AAA"] = []
+        e.broker.clock_ = {"timestamp": "2026-12-01T07:45:00-05:00", "is_open": False,
+                           "next_open": "2026-12-01T09:30:00-05:00", "next_close": "2026-12-01T16:00:00-05:00"}
+        e.run(ARGS, now=datetime(2026, 12, 1, 12, 45, tzinfo=timezone.utc))
+        st = e.state()
+        self.assertEqual(st["sim_pending"], {})
+        self.assertFalse([l for l in st["lots"].values() if l.get("simulated")])
+        self.assertTrue([r for r in e.log_rows() if r.get("order_status") == "sim_dropped"])
+        e.cleanup()
+
+
 class TestHouseUnreachable(unittest.TestCase):
     def test_blocked_index_writes_status_and_trades_nothing(self):
         e = standard_env(index_status=403)
@@ -1050,7 +1173,7 @@ class TestLiveJsonSchema(unittest.TestCase):
         e.run(ARGS)
         j = e.live_json()
         self.assertEqual(set(j), {"schema_version", "generated_at", "start_date", "start_equity", "last_run",
-                                  "latest_equity", "curve", "total_return", "positions", "decisions", "strategy",
+                                  "latest_equity", "curve", "total_return", "positions", "decisions", "strategy", "simulated_fills",
                                   "disclaimer"})
         self.assertEqual(j["disclaimer"], "Papirfond med fiktive penge. Ikke investeringsrådgivning.")
         self.assertEqual((j["start_date"], j["start_equity"]), ("2026-11-10", 100000.0))

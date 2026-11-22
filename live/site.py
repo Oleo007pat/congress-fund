@@ -18,7 +18,8 @@ def _f(x):
 
 
 def build_curve(history: list[dict]) -> dict:
-    """Fund equity and SPY, both normalised to 100 at the first history row that has both values."""
+    """Fund equity and SPY, both normalised to 100 at the first history row that has both values.
+    "equity" already includes simulated fills (sim_pnl column, live/simfill.py)."""
     rows = [(r["date"], _f(r.get("equity")), _f(r.get("spy_close"))) for r in history]
     rows = [r for r in rows if r[1] and r[2]]
     if not rows:
@@ -35,18 +36,25 @@ def total_return(curve: dict) -> dict:
     return {"fund_pct": round(f, 2), "spy_pct": round(s, 2), "excess_pct_points": round(f - s, 2)}
 
 
-def build_positions(lots: dict, positions: dict) -> list[dict]:
+def build_positions(lots: dict, positions: dict, sim_prices: dict | None = None) -> list[dict]:
+    """Open lots with their current price: Alpaca position price, or for simulated lots (live/simfill.py) the
+    latest daily close from Alpaca."""
     out = []
+    sim_prices = sim_prices or {}
     for lot in sorted(lots.values(), key=lambda l: (l.get("entry_date", ""), l["lot_id"])):
         if lot.get("status") != "open":
             continue
-        cur = _f((positions.get(lot["symbol"]) or {}).get("current_price"))
+        if lot.get("simulated"):
+            cur = _f(sim_prices.get(lot["symbol"]))
+        else:
+            cur = _f((positions.get(lot["symbol"]) or {}).get("current_price"))
         entry = _f(lot.get("entry_price"))
         out.append({"ticker": lot["symbol"], "member": lot["member"], "owner": lot["owner"],
                     "filed": lot["filing_date"], "entered": lot.get("entry_date"), "entry_price": entry,
                     "current_price": cur,
                     "return_pct": round((cur / entry - 1) * 100, 2) if cur and entry else None,
-                    "planned_exit": lot.get("planned_exit") or "når medlemmet sælger"})
+                    "planned_exit": lot.get("planned_exit") or "når medlemmet sælger",
+                    "simulated": bool(lot.get("simulated"))})
     return out
 
 
@@ -58,7 +66,7 @@ def build_decisions(log_rows: list[dict]) -> list[dict]:
 
 
 def build_live_json(state: dict, cfg: dict, history: list[dict], positions: dict, log_rows: list[dict],
-                    last_run: dict, now: datetime | None = None) -> dict:
+                    last_run: dict, now: datetime | None = None, sim_prices: dict | None = None) -> dict:
     curve = build_curve(history)
     changed = bool(state.get("strategy_changes"))
     return {
@@ -70,7 +78,8 @@ def build_live_json(state: dict, cfg: dict, history: list[dict], positions: dict
         "latest_equity": _f(history[-1].get("equity")) if history else None,
         "curve": curve,
         "total_return": total_return(curve),
-        "positions": build_positions(state["lots"], positions),
+        "positions": build_positions(state["lots"], positions, sim_prices),
+        "simulated_fills": sum(1 for l in state["lots"].values() if l.get("simulated")) + len(state.get("sim_pending", {})),
         "decisions": build_decisions(log_rows),
         "strategy": {"name": cfg["name"], "hash": strat.strategy_hash(cfg), "changed_since_start": changed,
                      "description": strat.describe_da(cfg),

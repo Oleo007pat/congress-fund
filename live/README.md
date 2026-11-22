@@ -98,7 +98,8 @@ Intet af dette har kunnet afprøves uden netværk; formerne følger Alpacas doku
 * Har kontoen SIP-historik (ellers bruges `iex`, og referencekurser kan afvige)?
 * Svarformer: `/v2/clock`, `/v2/positions` (`qty_available`), `/v2/assets`, `/v2/stocks/snapshots`.
 * GitHub-køer kan forsinke cron med minutter; kørslen udskyder selv nye ordrer, hvis åbningsvinduet er gået.
-* Sommertid: 12:45 UTC er 8:45 ET om sommeren og 7:45 ET om vinteren; begge er før åbning.
+* Kørselstid: 03:17 UTC (backup 05:17 UTC), dvs. aftenen/natten før handelsdagen. Alpaca modtager market-on-open-ordrer kun fra 19:00 til 09:28 ET, og GitHub forsinker planlagte kørsler op til ca. 8 timer; tiderne holder sig inden for vinduet også med den forsinkelse. Uden for vinduet udskydes nye ordrer.
+* Simulerede fyld: en købsordre, som Alpaca afviser alene pga. tidspunktet, registreres på papir til den officielle åbningskurs (live/simfill.py) og markeres "simulated" på siden.
 
 ## Skema for `docs/data/live.json`
 

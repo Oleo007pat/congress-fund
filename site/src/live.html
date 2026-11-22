@@ -8,6 +8,7 @@
   // The fund's log is written in Danish; translate the common reasons for this English page.
   function reason(r){
     r=String(r||'');var m;
+    if((m=r.match(/^køb \(simuleret fyld\)[^,]*,[^,]*?kurs steget ([+\-−]?[\d.,]+) %.*?(\d{4}-\d{2}-\d{2})/)))return 'Bought on paper: price moved '+m[1].replace(',','.')+'% since the member\'s trade (limit +10%). Our scheduled run reached the broker after its order window closed, so the buy is booked at the official opening price on '+day(m[2]);
     if((m=r.match(/^køb[^,]*,[^,]*?kurs steget ([+\-−]?[\d.,]+) %/)))return 'Bought: price moved '+m[1].replace(',','.')+'% since the member\'s trade (limit +10%)';
     if((m=r.match(/^sprunget over: kursen er steget ([\d.,]+) %/)))return 'Skipped: price already up '+m[1].replace(',','.')+'% (limit 10%)';
     if((m=r.match(/^for sent: indgang ville ligge (\d+) dage/)))return 'Too late: entry would be '+m[1]+' days after the filing (maximum 7)';
@@ -33,8 +34,10 @@
     h+='<figure style="margin:0"><div class="chart-wide"><svg id="livechart" viewBox="0 0 1136 300" role="img" aria-label="Value of the paper fund against the S&amp;P 500, indexed to 100 at the start" style="width:100%;min-width:560px;height:auto"></svg></div><figcaption class="small" style="margin-top:8px">Value indexed to 100 at the start. Green: Ekklesia. Grey: S&amp;P 500.</figcaption></figure>';
     if(D.positions&&D.positions.length){
       h+='<div><h3 style="margin-bottom:8px">Open positions</h3><div class="table-wrap"><table><thead><tr><th>Stock</th><th>Member</th><th>Filed</th><th>Bought</th><th class="r">Return</th><th>Planned sale</th></tr></thead><tbody class="num">';
-      D.positions.forEach(function(p){h+='<tr><td><b>'+esc(p.ticker)+'</b></td><td>'+esc(p.member)+'</td><td>'+esc(day(p.filed))+'</td><td>'+esc(day(p.entered))+'</td><td class="r">'+pct(p.return_pct)+'</td><td>'+esc(/^\d{4}-/.test(p.planned_exit||'')?day(p.planned_exit):'when the member sells')+'</td></tr>';});
-      h+='</tbody></table></div></div>';}
+      D.positions.forEach(function(p){h+='<tr><td><b>'+esc(p.ticker)+'</b>'+(p.simulated?'<sup title="Simulated fill">*</sup>':'')+'</td><td>'+esc(p.member)+'</td><td>'+esc(day(p.filed))+'</td><td>'+esc(day(p.entered))+'</td><td class="r">'+pct(p.return_pct)+'</td><td>'+esc(/^\d{4}-/.test(p.planned_exit||'')?day(p.planned_exit):'when the member sells')+'</td></tr>';});
+      h+='</tbody></table></div>';
+      if(D.positions.some(function(p){return p.simulated;}))h+='<p class="small" style="margin-top:8px">* Simulated fill. The broker rejected the order because our scheduled run arrived after its order window closed. The position is booked at that day\'s official opening price and valued at the latest close, as the strategy prescribes. The scheduling error is fixed.</p>';
+      h+='</div>';}
     if(D.decisions&&D.decisions.length){
       var lbl={taken:'Bought',skipped:'Skipped',ignored:'Not included'};
       h+='<div><h3 style="margin-bottom:8px">Latest decisions</h3><div class="table-wrap"><table><thead><tr><th>Member</th><th>Stock</th><th>Filed</th><th>Decision</th><th>Reason</th></tr></thead><tbody>';

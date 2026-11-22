@@ -17,10 +17,10 @@ import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from live import house, store, strategy as strat
+from live import house, simfill, store, strategy as strat
 from live import signals as sg
 from live.broker import Broker
-from live.execution import Executor, trading_windows
+from live.execution import Executor, planned_exit_date, trading_windows
 from live.member_filter import MemberFilter, lots_history
 from live.safety import NotPaperError, redact, validate_paper_url
 from live.site import build_live_json
@@ -280,7 +280,8 @@ def evaluate_candidates(run: Run, cands: list, sales, session_date: str, retry_d
         mid = sg.midpoint(r)
         tgt = sg.target_notional(equity, cfg["weighting"], mid, cfg["sizing"])
         notes = []
-        existing = _f((run.positions.get(sym) or {}).get("market_value")) + run.ex.committed_by_symbol(sym) + dry_sym_used.get(sym, 0.0)
+        existing = (_f((run.positions.get(sym) or {}).get("market_value")) + run.ex.committed_by_symbol(sym)
+                    + dry_sym_used.get(sym, 0.0) + run.sim.value_by_symbol.get(sym, 0.0))
         tgt2, capped = sg.apply_position_cap(tgt, equity, existing, cfg["sizing"])
         if capped:
             notes.append("begrænset af positionsloft")
@@ -316,6 +317,16 @@ def evaluate_candidates(run: Run, cands: list, sales, session_date: str, retry_d
                 ticker=r["ticker"], symbol=sym, **orderinfo)
             if res["result"] == "submitted":
                 run.stats["orders_sent"] += 1
+        elif res["result"] == "rejected" and simfill.is_timing_reject(res["reason"]) and not run.dry_run:
+            # The strategy's buy was valid; only the submission time was outside Alpaca's opg window (a scheduling
+            # error on our side).  Book it on paper at the official open of the target session (live/simfill.py).
+            simfill.queue(st, plan, res["reason"], run.now.isoformat(timespec="seconds"))
+            run.ex.persist()
+            log(kind="signal", decision="taken", on_site="1", reason=f"køb (simuleret fyld): mål {tgt3:.0f} USD, kurs "
+                f"steget {rise*100:+.1f} % ({xs}), kilde {src}{extra_txt}; Alpaca afviste ordren pga. tidspunktet, "
+                f"så købet registreres til den officielle åbningskurs d. {plan['session']}", **base, **extra)
+            log(kind="order", reason=res["reason"] + " -> simuleret fyld", member=r["member"], doc_id=r["doc_id"],
+                ticker=r["ticker"], symbol=sym, **{**orderinfo, "order_status": "rejected"})
         elif res["result"] == "rejected":
             log(kind="signal", decision="ignored", on_site="1", reason=res["reason"], **base, **extra)
             log(kind="order", reason=res["reason"], member=r["member"], doc_id=r["doc_id"], ticker=r["ticker"], symbol=sym,
@@ -394,7 +405,7 @@ def run_main(argv=None, env=None, *, root: Path = ROOT, broker=None, house_sessi
     spy_last, spy_by_date = "", {}
     run = Run(root=Path(root), paths=paths, cfg=cfg, state=state, broker=broker, now=now, log=log, stats=stats,
               dry_run=args.dry_run, house_session=house_session, sleep=sleep, asset_cache={}, ex=None, equity=0.0,
-              cash=0.0, positions={}, windows=None, member_filter=None)
+              cash=0.0, positions={}, windows=None, member_filter=None, sim=simfill.SimBook(), sim_bars={})
 
     def persist():
         if run.state is not None:
@@ -444,6 +455,16 @@ def run_main(argv=None, env=None, *, root: Path = ROOT, broker=None, house_sessi
         mfcfg = cfg["member_filter"]
         run.member_filter = MemberFilter(mfcfg, lots_history(state["lots"])) if mfcfg["enabled"] else None
         extra += run.ex.sync_pending()                              # fills -> lots
+        # simulated fills (live/simfill.py): resolve queued buys at the official open, exit, value; the fund's
+        # equity and cash then include these paper-only positions
+        sim_syms = simfill.symbols(state)
+        if sim_syms:
+            run.sim_bars = fetch_bars(broker, sim_syms, simfill.bars_start(state), now)
+            run.sim, notes = simfill.process(state, run.sim_bars, run.windows.today, planned_exit_date, spy_price, log)
+            extra += notes
+            run.equity += run.sim.equity_adj
+            run.cash += run.sim.cash_adj
+            persist()
 
         # ---- 2.-4. filings -> signals -> orders (buys) and exits
         house_ok = True
@@ -489,12 +510,27 @@ def finish(run: Run, args, status: str, code: int, extra: list[str], spy_last: s
     if spy_last and status in ("ok", "house_unreachable"):
         history = store.upsert_history(paths.history, {
             "date": now.date().isoformat(), "equity": f"{run.equity:.2f}", "cash": f"{run.cash:.2f}",
-            "n_positions": len(run.positions), "spy_close": f"{float(spy_by_date[spy_last]['c']):.4f}",
-            "spy_close_date": spy_last})
+            "n_positions": len(set(run.positions) | run.sim.open_symbols),
+            "spy_close": f"{float(spy_by_date[spy_last]['c']):.4f}", "spy_close_date": spy_last,
+            "sim_pnl": f"{run.sim.equity_adj:.2f}" if run.sim_bars else ""})
+        if run.sim_bars and not args.dry_run:
+            # earlier rows written before a simulated lot existed: add its P&L at that row's market close
+            changed = False
+            for h in history:
+                if h.get("sim_pnl") not in (None, "") or not h.get("spy_close_date"):
+                    continue
+                pnl = simfill.pnl_on(state, run.sim_bars, h["spy_close_date"])
+                if pnl is None:
+                    continue
+                h["equity"] = f"{_f(h['equity']) + pnl:.2f}"
+                h["sim_pnl"] = f"{pnl:.2f}"
+                changed = True
+            if changed:
+                history = store.rewrite_history(paths.history, history)
     store.save_state(paths.state, state)
     store.append_csv(paths.trades_log, store.LOG_FIELDS, run.log.rows)
     log_rows = store.read_csv(paths.trades_log)
-    doc = build_live_json(state, cfg, history, run.positions, log_rows, last_run, now)
+    doc = build_live_json(state, cfg, history, run.positions, log_rows, last_run, now, run.sim.price_by_symbol)
     store.write_json(paths.live_json, doc)
     print(last_run["message"])
     return code
