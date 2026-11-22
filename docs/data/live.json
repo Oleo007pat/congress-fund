@@ -3,42 +3,59 @@
   "dates": [
    "2026-11-18",
    "2026-11-19",
-   "2026-11-20"
+   "2026-11-20",
+   "2026-11-22"
   ],
   "fund": [
    100.0,
    100.0,
-   100.0
+   99.9816,
+   99.9816
   ],
   "spy": [
    100.0,
    97.9651,
-   94.5439
+   94.5439,
+   94.3988
   ]
  },
  "decisions": [
   {
-   "decision": "ignored",
+   "decision": "taken",
    "filed": "2026-11-18",
    "member": "Michael Rulli",
-   "reason": "ordre afvist af Alpaca: opg orders must be submitted after 7:00pm and before 9:28am",
+   "reason": "køb (simuleret fyld): mål 1000 USD, kurs steget -10.2 % (grænse 10 %); Alpaca afviste ordren pga. tidspunktet (kørslen blev forsinket til efter lukketid), så købet registreres til den officielle åbningskurs d. 2026-11-20",
    "ticker": "MSFT"
   }
  ],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-20T21:01:47+00:00",
+ "generated_at": "2026-11-22T18:03:02+00:00",
  "last_run": {
   "dry_run": false,
   "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. simuleret køb MSFT: 2 stk. til åbningskursen 493.74 d. 2026-11-20 Nye indberetninger afventer: for tidligt til market-on-open: Alpaca modtager opg-ordrer fra kl. 19:00 til 09:28 ET (kl. 13:03 ET nu).",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-20T21:01:47+00:00"
+  "time_utc": "2026-11-22T18:03:02+00:00"
  },
- "latest_equity": 100000.0,
- "positions": [],
+ "latest_equity": 99981.56,
+ "positions": [
+  {
+   "current_price": 484.52,
+   "entered": "2026-11-20",
+   "entry_price": 493.74,
+   "filed": "2026-11-18",
+   "member": "Michael Rulli",
+   "owner": "self",
+   "planned_exit": "2027-05-20",
+   "return_pct": -1.87,
+   "simulated": true,
+   "ticker": "MSFT"
+  }
+ ],
  "schema_version": 1,
+ "simulated_fills": 1,
  "start_date": "2026-11-18",
  "start_equity": 100000.0,
  "strategy": {
@@ -54,8 +71,8 @@
   "name": "v1_hold6m_amount_x10"
  },
  "total_return": {
-  "excess_pct_points": 5.46,
-  "fund_pct": 0.0,
-  "spy_pct": -5.46
+  "excess_pct_points": 5.58,
+  "fund_pct": -0.02,
+  "spy_pct": -5.6
  }
 }
