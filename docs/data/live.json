@@ -4,11 +4,13 @@
    "2026-11-18",
    "2026-11-19",
    "2026-11-20",
-   "2026-11-22"
+   "2026-11-22",
+   "2026-11-23"
   ],
   "fund": [
    100.0,
    100.0,
+   99.9816,
    99.9816,
    99.9816
   ],
@@ -16,6 +18,7 @@
    100.0,
    97.9651,
    94.5439,
+   94.3988,
    94.3988
   ]
  },
@@ -29,15 +32,15 @@
   }
  ],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-22T18:03:02+00:00",
+ "generated_at": "2026-11-23T12:56:36+00:00",
  "last_run": {
   "dry_run": false,
   "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. simuleret køb MSFT: 2 stk. til åbningskursen 493.74 d. 2026-11-20 Nye indberetninger afventer: for tidligt til market-on-open: Alpaca modtager opg-ordrer fra kl. 19:00 til 09:28 ET (kl. 13:03 ET nu).",
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-22T18:03:02+00:00"
+  "time_utc": "2026-11-23T12:56:36+00:00"
  },
  "latest_equity": 99981.56,
  "positions": [
