@@ -6,11 +6,11 @@
  "last_run": {
   "dry_run": false,
   "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-23T12:56:36+00:00"
+  "time_utc": "2026-11-23T16:07:06+00:00"
  },
  "lots": {
   "cf-20036855-1de811b991": {
