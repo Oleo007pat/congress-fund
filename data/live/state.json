@@ -5,12 +5,12 @@
  "doc_failures": {},
  "last_run": {
   "dry_run": false,
-  "filings_checked": 2,
-  "message": "Kørslen er gennemført. 2 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
+  "filings_checked": 0,
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-24T13:50:47+00:00"
+  "time_utc": "2026-11-24T15:58:12+00:00"
  },
  "lots": {
   "cf-20036855-1de811b991": {

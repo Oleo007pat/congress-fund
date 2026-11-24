@@ -14,7 +14,7 @@
    99.9816,
    99.9816,
    100.0128,
-   99.9975
+   100.0044
   ],
   "spy": [
    100.0,
@@ -22,7 +22,7 @@
    94.5439,
    94.3988,
    99.1242,
-   98.8436
+   97.9637
   ]
  },
  "decisions": [
@@ -42,27 +42,27 @@
   }
  ],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-24T13:50:47+00:00",
+ "generated_at": "2026-11-24T15:58:12+00:00",
  "last_run": {
   "dry_run": false,
-  "filings_checked": 2,
-  "message": "Kørslen er gennemført. 2 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
+  "filings_checked": 0,
+  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-24T13:50:47+00:00"
+  "time_utc": "2026-11-24T15:58:12+00:00"
  },
- "latest_equity": 99997.52,
+ "latest_equity": 100004.36,
  "positions": [
   {
-   "current_price": 492.5,
+   "current_price": 495.92,
    "entered": "2026-11-20",
    "entry_price": 493.74,
    "filed": "2026-11-18",
    "member": "Michael Rulli",
    "owner": "self",
    "planned_exit": "2027-05-20",
-   "return_pct": -0.25,
+   "return_pct": 0.44,
    "simulated": true,
    "ticker": "MSFT"
   }
@@ -84,8 +84,8 @@
   "name": "v1_hold6m_amount_x10"
  },
  "total_return": {
-  "excess_pct_points": 1.15,
-  "fund_pct": -0.0,
-  "spy_pct": -1.16
+  "excess_pct_points": 2.04,
+  "fund_pct": 0.0,
+  "spy_pct": -2.04
  }
 }
