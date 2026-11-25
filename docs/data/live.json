@@ -6,7 +6,8 @@
    "2026-11-20",
    "2026-11-22",
    "2026-11-23",
-   "2026-11-24"
+   "2026-11-24",
+   "2026-11-25"
   ],
   "fund": [
    100.0,
@@ -14,7 +15,8 @@
    99.9816,
    99.9816,
    100.0128,
-   100.0044
+   100.0044,
+   100.0048
   ],
   "spy": [
    100.0,
@@ -22,47 +24,209 @@
    94.5439,
    94.3988,
    99.1242,
-   97.9637
+   97.9637,
+   98.3633
   ]
  },
  "decisions": [
   {
    "decision": "ignored",
-   "filed": "2026-11-21",
-   "member": "Ed Case",
-   "reason": "ikke medlemmets eget valg (dividend reinvestment)",
-   "ticker": "AAPL"
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "WM"
   },
   {
-   "decision": "taken",
-   "filed": "2026-11-18",
-   "member": "Michael Rulli",
-   "reason": "køb (simuleret fyld): mål 1000 USD, kurs steget -10.2 % (grænse 10 %); Alpaca afviste ordren pga. tidspunktet (kørslen blev forsinket til efter lukketid), så købet registreres til den officielle åbningskurs d. 2026-11-20",
-   "ticker": "MSFT"
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "WM"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "WM"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "WM"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "VZ"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "UPS"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "UPS"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "UNP"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "TXN"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "TSLA"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "TGT"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "TSM"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "TSM"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "SO"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "SNOW"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "SHOP"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "NOW"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "R"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PSA"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
+  },
+  {
+   "decision": "ignored",
+   "filed": "2026-11-23",
+   "member": "Harriet Hageman",
+   "reason": "ikke medlemmets eget valg (third party managed)",
+   "ticker": "PLD"
   }
  ],
  "disclaimer": "Papirfond med fiktive penge. Ikke investeringsrådgivning.",
- "generated_at": "2026-11-24T15:58:12+00:00",
+ "generated_at": "2026-11-25T13:02:26+00:00",
  "last_run": {
   "dry_run": false,
-  "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "filings_checked": 2,
+  "message": "Kørslen er gennemført. 2 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-24T15:58:12+00:00"
+  "time_utc": "2026-11-25T13:02:26+00:00"
  },
- "latest_equity": 100004.36,
+ "latest_equity": 100004.78,
  "positions": [
   {
-   "current_price": 495.92,
+   "current_price": 496.13,
    "entered": "2026-11-20",
    "entry_price": 493.74,
    "filed": "2026-11-18",
    "member": "Michael Rulli",
    "owner": "self",
    "planned_exit": "2027-05-20",
-   "return_pct": 0.44,
+   "return_pct": 0.48,
    "simulated": true,
    "ticker": "MSFT"
   }
@@ -84,8 +248,8 @@
   "name": "v1_hold6m_amount_x10"
  },
  "total_return": {
-  "excess_pct_points": 2.04,
+  "excess_pct_points": 1.64,
   "fund_pct": 0.0,
-  "spy_pct": -2.04
+  "spy_pct": -1.64
  }
 }

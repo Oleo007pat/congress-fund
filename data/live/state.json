@@ -2,15 +2,17 @@
  "capabilities": {
   "notional_opg": false
  },
- "doc_failures": {},
+ "doc_failures": {
+  "20036848": 1
+ },
  "last_run": {
   "dry_run": false,
-  "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "filings_checked": 2,
+  "message": "Kørslen er gennemført. 2 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-24T15:58:12+00:00"
+  "time_utc": "2026-11-25T13:02:26+00:00"
  },
  "lots": {
   "cf-20036855-1de811b991": {
@@ -41,6 +43,11 @@
  },
  "pending_orders": {},
  "seen_doc_ids": {
+  "20035776": {
+   "filing_date": "2026-11-23",
+   "seen_at": "2026-11-25T13:02:26+00:00",
+   "status": "parsed"
+  },
   "20036844": {
    "filing_date": "2026-11-19",
    "seen_at": "2026-11-19T21:25:24+00:00",

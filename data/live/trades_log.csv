@@ -18,3 +18,173 @@ ts_utc,kind,doc_id,member,owner,ticker,symbol,filing_date,txn_date,trade_type,am
 2026-11-22T18:03:02+00:00,fill,20036855,Michael Rulli,,MSFT,MSFT,,,,,,,simuleret fyld til officiel åbningskurs (ordren blev afvist pga. tidspunkt),,,,,buy,opg,,,cf-20036855-1de811b991,simulated,sim_filled,2,493.74,2026-11-20,0,0
 2026-11-24T13:50:47+00:00,signal,20036883,Jennifer McClellan,self,VZ,,2026-11-20,2026-11-19,partial_sale,50001,100000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
 2026-11-24T13:50:47+00:00,signal,20036891,Ed Case,spouse,AAPL,,2026-11-21,2026-11-16,buy,1001,15000,ignored,ikke medlemmets eget valg (dividend reinvestment),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,info,20036848,Daniel Meuser,,,,2026-11-24,,,,,ignored,indberetning kunne ikke hentes/læses (forsøg 1): 404,,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ABT,,2026-11-23,2026-09-08,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-17,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-17,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-13,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-13,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-13,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-02-13,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-01-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ACN,,2026-11-23,2026-01-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ADBE,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AMD,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,APD,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,APD,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ABNB,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ABNB,,2026-11-23,2026-07-02,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ABNB,,2026-11-23,2026-02-24,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GOOGL,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GOOG,,2026-11-23,2026-07-02,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AMZN,,2026-11-23,2026-07-02,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AMZN,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AEP,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AME,,2026-11-23,2026-06-01,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AMGN,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ADI,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AAPL,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ASML,,2026-11-23,2026-03-31,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AZN,,2026-11-23,2026-03-31,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AZN,,2026-11-23,2026-09-16,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,T,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BAC,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BAC,,2026-11-23,2026-08-27,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BAC,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BAC,,2026-11-23,2026-08-26,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BLK,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BA,,2026-11-23,2026-06-01,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,BSX,,2026-11-23,2026-04-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AVGO,,2026-11-23,2026-07-02,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AVGO,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,AVGO,,2026-11-23,2026-09-16,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SCHW,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CVX,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CSCO,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CSCO,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,C,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,C,,2026-11-23,2026-04-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CLX,,2026-11-23,2026-05-06,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CLX,,2026-11-23,2026-05-06,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CME,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,KO,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,KO,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,COST,,2026-11-23,2026-01-14,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CRWD,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CCI,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CVS,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CVS,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CVS,,2026-11-23,2026-02-13,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CVS,,2026-11-23,2026-02-13,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,FANG,,2026-11-23,2026-07-02,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,DG,,2026-11-23,2026-06-01,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,DG,,2026-11-23,2026-06-01,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,DG,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,LLY,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,EME,,2026-11-23,2026-06-01,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,XOM,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,FLEX,,2026-11-23,2026-10-20,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,FLEX,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,FLEX,,2026-11-23,2026-04-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GNRC,,2026-11-23,2026-06-01,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GD,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GIS,,2026-11-23,2026-08-27,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GIS,,2026-11-23,2026-05-06,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GIS,,2026-11-23,2026-05-06,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GIS,,2026-11-23,2026-08-26,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,GSK,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,HD,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,HONA,,2026-11-23,2026-09-08,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,HON,,2026-11-23,2026-02-24,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,IBM,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,INTU,,2026-11-23,2026-04-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ISRG,,2026-11-23,2026-09-16,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,JPM,,2026-11-23,2026-08-27,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,JPM,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,JPM,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,KLAC,,2026-11-23,2026-04-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,LMT,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,LOW,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,LYB,,2026-11-23,2026-04-29,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,LYB,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MRSH,,2026-11-23,2026-08-27,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MRSH,,2026-11-23,2026-08-26,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MRVL,,2026-11-23,2026-09-16,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MCD,,2026-11-23,2026-08-27,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MCD,,2026-11-23,2026-08-27,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MCD,,2026-11-23,2026-08-26,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MDT,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MRK,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MRK,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MU,,2026-11-23,2026-07-02,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MSFT,,2026-11-23,2026-07-02,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MSFT,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MSFT,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MS,,2026-11-23,2026-01-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MS,,2026-11-23,2026-01-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,MS,,2026-11-23,2026-01-22,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NKE,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NKE,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NVDA,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NVDA,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ORCL,,2026-11-23,2026-09-16,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,ORCL,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLTR,,2026-11-23,2026-03-31,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PANW,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PEP,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PFE,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PNC,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PG,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PG,,2026-11-23,2026-02-17,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PG,,2026-11-23,2026-02-17,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PG,,2026-11-23,2026-02-13,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-08-26,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-08-26,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-05-18,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-05-18,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-08-27,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PLD,,2026-11-23,2026-08-27,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,PSA,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,QSR,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,R,,2026-11-23,2026-06-01,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,CRM,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NOW,,2026-11-23,2026-04-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NOW,,2026-11-23,2026-10-20,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,NOW,,2026-11-23,2026-01-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SHOP,,2026-11-23,2026-09-16,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SNOW,,2026-11-23,2026-10-14,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SNOW,,2026-11-23,2026-04-26,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SO,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,SBUX,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TSM,,2026-11-23,2026-03-31,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TSM,,2026-11-23,2026-07-02,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TGT,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TGT,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TSLA,,2026-11-23,2026-03-31,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TXN,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,TXN,,2026-11-23,2026-10-14,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,USB,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UBER,,2026-11-23,2026-07-02,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UNP,,2026-11-23,2026-10-14,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UNP,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UPS,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UPS,,2026-11-23,2026-02-13,buy,15001,50000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,UPS,,2026-11-23,2026-02-13,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,VZ,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,VZ,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,VZ,,2026-11-23,2026-04-29,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,VZ,,2026-11-23,2026-08-27,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,V,,2026-11-23,2026-04-29,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMT,,2026-11-23,2026-08-26,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMT,,2026-11-23,2026-01-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMT,,2026-11-23,2026-01-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMT,,2026-11-23,2026-01-21,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMT,,2026-11-23,2026-08-27,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,DIS,,2026-11-23,2026-03-31,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WM,,2026-11-23,2026-02-17,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WM,,2026-11-23,2026-01-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WM,,2026-11-23,2026-01-21,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WM,,2026-11-23,2026-02-13,buy,1001,15000,ignored,ikke medlemmets eget valg (third party managed),,,,,,,,,,,,,,,1,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMB,,2026-11-23,2026-04-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WDAY,,2026-11-23,2026-02-24,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,XYL,,2026-11-23,2026-06-01,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
