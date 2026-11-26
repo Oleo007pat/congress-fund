@@ -188,3 +188,28 @@ ts_utc,kind,doc_id,member,owner,ticker,symbol,filing_date,txn_date,trade_type,am
 2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WMB,,2026-11-23,2026-04-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
 2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,WDAY,,2026-11-23,2026-02-24,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
 2026-11-25T13:02:26+00:00,signal,20035776,Harriet Hageman,spouse,XYL,,2026-11-23,2026-06-01,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036848,Daniel Meuser,spouse,NVDA,,2026-11-24,2026-10-27,partial_sale,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,ACLLY,,2026-11-24,2026-11-10,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,ASML,,2026-11-24,2026-11-09,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,CMI,,2026-11-24,2026-11-16,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,self,ETN,,2026-11-24,2026-11-10,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,INTC,,2026-11-24,2026-11-09,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,,,2026-11-24,2026-11-06,buy,15001,50000,ignored,ingen ticker,,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,PSX,,2026-11-24,2026-11-10,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,ROK,,2026-11-24,2026-11-17,partial_sale,50001,100000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,ROK,,2026-11-24,2026-11-17,partial_sale,50001,100000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,ROK,,2026-11-24,2026-11-16,partial_sale,100001,250000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,joint,,,2026-11-24,2026-10-27,sell,250001,500000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036875,Kevin Hern,self,STX,,2026-11-24,2026-11-10,partial_sale,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,AMP,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,CMCSA,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,DUK,,2026-11-24,2026-10-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,GEHCV,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,HPQ,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,MDT,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,MDLZ,,2026-11-24,2026-10-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,PEP,,2026-11-24,2026-10-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,PG,,2026-11-24,2026-10-29,sell,15001,50000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,VZ,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0
+2026-11-26T12:43:22+00:00,signal,20036908,Robert For Onder,self,DIS,,2026-11-24,2026-10-29,sell,1001,15000,ignored,salg registreret (bruges kun til member_sells-exit),,,,,,,,,,,,,,,0,0

@@ -7,12 +7,12 @@
  },
  "last_run": {
   "dry_run": false,
-  "filings_checked": 0,
-  "message": "Kørslen er gennemført. 0 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt. Nye indberetninger afventer: markedet er åbent: market-on-open kan ikke sendes.",
+  "filings_checked": 3,
+  "message": "Kørslen er gennemført. 3 nye indberetninger, 0 nye købssignaler, 0 ordrer sendt.",
   "new_signals": 0,
   "orders_sent": 0,
   "status": "ok",
-  "time_utc": "2026-11-25T15:44:27+00:00"
+  "time_utc": "2026-11-26T12:43:22+00:00"
  },
  "lots": {
   "cf-20036855-1de811b991": {
@@ -53,6 +53,11 @@
    "seen_at": "2026-11-19T21:25:24+00:00",
    "status": "parsed"
   },
+  "20036848": {
+   "filing_date": "2026-11-24",
+   "seen_at": "2026-11-26T12:43:22+00:00",
+   "status": "parsed"
+  },
   "20036849": {
    "filing_date": "2026-11-18",
    "seen_at": "2026-11-19T21:25:24+00:00",
@@ -68,6 +73,11 @@
    "seen_at": "2026-11-19T21:25:24+00:00",
    "status": "parsed"
   },
+  "20036875": {
+   "filing_date": "2026-11-24",
+   "seen_at": "2026-11-26T12:43:22+00:00",
+   "status": "parsed"
+  },
   "20036883": {
    "filing_date": "2026-11-20",
    "seen_at": "2026-11-24T13:50:47+00:00",
@@ -76,6 +86,11 @@
   "20036891": {
    "filing_date": "2026-11-21",
    "seen_at": "2026-11-24T13:50:47+00:00",
+   "status": "parsed"
+  },
+  "20036908": {
+   "filing_date": "2026-11-24",
+   "seen_at": "2026-11-26T12:43:22+00:00",
    "status": "parsed"
   }
  },
